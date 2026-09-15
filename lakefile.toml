@@ -1,0 +1,81 @@
+name = "prove2me"
+defaultTargets = ["Root"]
+
+# Match the platform's elaboration settings, so a proof that compiles here
+# compiles there for the same reasons. `autoImplicit` off is the server's
+# setting; leaving it on locally would let a solution typecheck here through an
+# implicit the server never introduces.
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+# Pinned to the platform's default environment as measured on 2026-09-13.
+# `p2m envs --assert-pin` fails when this drifts. Do not bump it casually: a
+# re-pin is a kill criterion, and the response is to finish what is in flight
+# and re-decide the disk cost, not to chase.
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "0df444a360eaa60ab8c11dca51a86af692955474"
+
+# WHAT KEEPS A BARE `lake build` NARROW IS `Root`, AND THE OLD COMMENT HERE WAS
+# WRONG ABOUT HOW.
+#
+# It said `defaultTargets = ["Solutions"]` meant a bare `lake build` touched
+# `Solutions.lean` and nothing else. It meant the opposite, for a reason worth
+# writing down. `defaultTargets` names a LIBRARY, not a module, and that
+# library's `globs = ["Solutions.+"]` is `Glob.submodules`, which matches every
+# submodule and EXCLUDES the root. So the one file the comment named was the
+# one file that was never built, and every solution was built instead. Three
+# solutions made that merely slow. A thousand would make it unusable.
+#
+# `Root` is the fix. It declares `roots = ["Prove2Me"]` and no `globs` at all,
+# and Lake defaults `globs` to `roots.map Glob.one`. `Glob.one` selects exactly
+# that module and never reads the directory, so the default build is one empty
+# file. The sentence is true for the first time.
+#
+# Name a target explicitly to build anything else:
+#
+#     lake build Definitions.Def_<name>              what `p2m admit` needs
+#     lake build Problems.<Ns>.<slug>.Solution       our own proof
+#
+# Never add `Problems` or `Definitions` to `defaultTargets`. `Problems` is a
+# whole-tree elaboration of every proof we have ever written, and at scale that
+# is the expensive mistake rather than the dangerous one.
+[[lean_lib]]
+name = "Root"
+roots = ["Prove2Me"]
+
+# Ours. `Problems.+` excludes `Problems.lean`, which is why that file can carry
+# the layout rule without becoming a build dependency of anything.
+[[lean_lib]]
+name = "Problems"
+roots = ["Problems"]
+globs = ["Problems.+"]
+
+# `Upstream` HAS NO LIBRARY, AND ITS ABSENCE IS THE DESIGN.
+#
+# `Upstream/<Ns>/<slug>/Statement.lean` holds a statement downloaded from the
+# platform. `p2m admit` elaborates each one exactly once, through
+# `leanck.audit_file(path, mode="statements")`, which runs `lake env` on a
+# single source file. `lake env` builds nothing and needs no target, so a
+# library here would buy nothing and would make `lake build Upstream` a
+# whole-tree elaboration of every stranger's bytes in the repo.
+#
+# That command now fails with `unknown target`. This is strictly stricter than
+# the old layout, where `Theorems` was a library.
+#
+# Do not read the omission as a security boundary on its own. `lake lean
+# <file>` and `lake setup-file` both fall back to building a non-library module
+# and will happily elaborate one of these. The boundary is the `skip` line in
+# ~/.claude/lean-gate-policy.conf plus the PreToolUse guard. This is the
+# `lake build` half of it.
+
+# Theirs, and it cannot move. An admitted statement contains `import
+# Definitions.Def_<Name>` in bytes we reproduce unmodified, so the module name
+# is fixed by their file and Lake derives it from this directory name. Flat at
+# the repo root is not a style choice.
+[[lean_lib]]
+name = "Definitions"
+roots = ["Definitions"]
+globs = ["Definitions.+"]
