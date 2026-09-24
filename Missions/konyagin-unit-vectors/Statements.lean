@@ -18,7 +18,7 @@ theorem sum_norm_le_of_triangle_free :
       ‖∑ i, u i‖ ≤ C * (n : ℝ) ^ ((2 : ℝ) / 3) := by sorry
 
 /-- Lower bound: `c n^(2/3) ≤ ‖∑ u_i‖` for every `n` (Alon). -/
-theorem exists_sum_norm_ge_of_triangle_free :
+theorem exists_sum_norm_ge_of_triangle_free_forall_n :
     ∃ c : ℝ, 0 < c ∧ ∀ n : ℕ,
       ∃ (d : ℕ) (u : Fin n → EuclideanSpace ℝ (Fin d)),
         (∀ i, ‖u i‖ = 1) ∧

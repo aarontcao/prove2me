@@ -54,4 +54,4 @@ The attribution is worth stating carefully, because it is commonly given wrong i
 ## Alon's lower bound, the half that avoids the theta function
 
 
-Exhibit, for arbitrarily large $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound, it settles that the exponent $2/3$ is the answer and not just a bound, and unlike the upper bound it does not wait on the Lovasz theta function.
+Exhibit, for every $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound, it settles that the exponent $2/3$ is the answer and not just a bound, and unlike the upper bound it does not wait on the Lovasz theta function.
