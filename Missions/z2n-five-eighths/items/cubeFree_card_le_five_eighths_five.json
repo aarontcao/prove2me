@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_card_le_five_eighths_five",
+  "theorem_title": "The conjecture at $n = 5$",
+  "natural_language_statement": "A cube-free $A \\subseteq \\mathbb{Z}/32\\mathbb{Z}$ satisfies $8|A| \\le 5 \\cdot 32$, that is $|A| \\le 20$.\n\nUnlike $n = 4$, counting is not enough here. The two-thirds bound gives $|A| \\le 21$, and the last element has to be excluded by a structural argument about which residues can coexist.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, Conjecture 5.1 at $n = 5$",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

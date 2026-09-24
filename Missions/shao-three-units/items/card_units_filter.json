@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.card_units_filter",
+  "theorem_title": "The units of $\\mathbb{Z}/m\\mathbb{Z}$ number $\\varphi(m)$",
+  "natural_language_statement": "The finite set of residues modulo $m$ that are units has exactly $\\varphi(m)$ elements.\n\nThis is the bridge between the two ways of writing the density hypothesis of the main theorem. One side counts a `Finset (ZMod m)` and the other is `Nat.totient m`. Mathlib proves the group-theoretic form, that the unit group $(\\mathbb{Z}/m\\mathbb{Z})^\\times$ has $\\varphi(m)$ elements; what is wanted here is the same count for the `Finset` of unit residues that the other statements sum over.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, used throughout Sections 1 and 3",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

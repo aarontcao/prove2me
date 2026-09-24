@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.averaging_asymmetric",
+  "theorem_title": "Shao's Lemma 2.2: the asymmetric averaging inequality",
+  "natural_language_statement": "Let $n$ be even with $n \\ge 10$ and let $a$, $b$, $c$ each be decreasing sequences of $n$ reals in $[0,1]$, with averages $A$, $B$ and $C$. Suppose that for every triple of indices $i, j, k$ with $i + j + k \\ge n$ we have\n\n$$a_i b_j + b_j c_k + c_k a_i \\le \\tfrac{5}{8}(a_i + b_j + c_k).$$\n\nThen $AB + BC + CA \\le \\frac{5}{8}(A + B + C)$.\n\nThis three-sequence version of Lemma 2.1 lets the induction split a function into three different fibers rather than three copies of one.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Lemma 2.2",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

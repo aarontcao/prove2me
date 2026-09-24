@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.five_eighths_attained",
+  "theorem_title": "Sharpness: the constant $\\frac{5}{8}$ is attained for every $n \\ge 3$",
+  "natural_language_statement": "For every $n \\ge 3$ there is a cube-free $A \\subseteq \\mathbb{Z}/2^n\\mathbb{Z}$ with $8|A| = 5 \\cdot 2^n$ exactly.\n\nThe witness is $\\{v : v \\bmod 8 \\in \\{1,3,4,5,7\\}\\}$, the odd residues together with those congruent to 4 mod 8, of size $2^{n-1} + 2^{n-3}$. In Long and Wagner's layer notation this is $C_3 = L_1 \\cup L_3$.\n\nThis is what makes the conjecture a conjecture about a sharp constant rather than about some constant.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, the construction $C_d$ of Section 1",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

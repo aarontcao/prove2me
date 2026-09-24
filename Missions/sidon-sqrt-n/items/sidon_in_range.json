@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.sidon_in_range",
+  "theorem_title": "A Sidon subset of $\\{0, \\dots, N-1\\}$ of size at least $\\sqrt{N}/4$",
+  "natural_language_statement": "For every $N$ there is a Sidon set inside $\\{0, \\dots, N-1\\}$ with at least $\\sqrt{N}/4$ elements.\n\nTwo regimes. For $N \\le 144$ the fixed set $\\{0, 1, 3\\}$ already has three elements and $\\sqrt{144}/4 = 3$, and for $N < 4$ the singleton $\\{0\\}$ does. For $N > 144$ take $m = \\lfloor\\sqrt{N/2}\\rfloor/2$ and apply Bertrand's postulate to get a prime $p$ with $m < p \\le 2m$. Then $2p^2 \\le N$, so the previous statement puts the Erdos-Turan set inside the interval, and $p > m$ beats $\\sqrt{N}/4$.\n\nEvery later milestone pigeonholes a set against this one. It is also the one place in the development where a Sidon set is constructed; everywhere else a Sidon set is found inside something given.",
+  "source": "Paul Erdos and Pal Turan, \"On a problem of Sidon in additive number theory, and on some related problems\", J. London Math. Soc. 16 (1941) 212-215; the constant $1/4$ is a convenient weakening",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

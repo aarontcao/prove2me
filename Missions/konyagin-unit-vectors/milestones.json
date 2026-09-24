@@ -1,0 +1,10 @@
+{
+  "note": "item_id holds a theorem_name, not a server item id. The goal item carries no milestone.",
+  "milestones": [
+    {
+      "item_id": "KonyaginUnitVectors.exists_sum_norm_ge_of_triangle_free",
+      "milestone_title": "Alon's lower bound, the half that avoids the theta function",
+      "milestone_description": "Exhibit, for arbitrarily large $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound, it settles that the exponent $2/3$ is the answer and not just a bound, and unlike the upper bound it does not wait on the Lovasz theta function."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.weighted_fifteen",
+  "theorem_title": "Shao's Proposition 3.2: the weighted case at $m = 15$",
+  "natural_language_statement": "Let $f_1, f_2, f_3 : \\mathbb{Z}/15\\mathbb{Z} \\to [0,1]$ and let $F_i$ be the sum of $f_i$ over the eight units modulo 15. If\n\n$$F_1F_2 + F_2F_3 + F_3F_1 > 5(F_1 + F_2 + F_3)$$\n\nthen every $x$ modulo 15 is a sum $a_1 + a_2 + a_3$ of three units with $f_1(a_1) f_2(a_2) f_3(a_3) > 0$ and $f_1(a_1) + f_2(a_2) + f_3(a_3) > \\frac{3}{2}$.\n\nThe induction of Proposition 3.1 cannot reach this half. Shao's proof here is a linear program over the eight units.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Proposition 3.2",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

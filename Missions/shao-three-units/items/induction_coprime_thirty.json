@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.induction_coprime_thirty",
+  "theorem_title": "Shao's Proposition 3.1: the induction away from 3 and 5",
+  "natural_language_statement": "Let $m$ be squarefree and coprime to 30, and let $f : \\mathbb{Z}/m\\mathbb{Z} \\to [0,1]$ satisfy $\\sum_{x \\text{ unit}} f(x) > \\frac{5}{8}\\varphi(m)$. Then every $x$ modulo $m$ is a sum $a + b + c$ of three units with\n\n$$f(a)f(b) + f(b)f(c) + f(c)f(a) > \\tfrac{5}{8}\\big(f(a) + f(b) + f(c)\\big).$$\n\nThe conclusion forces $f(a)$, $f(b)$, and $f(c)$ all nonzero. Proposition 3.2 takes exactly this conclusion as its hypothesis at the modulus 15.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Proposition 3.1",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

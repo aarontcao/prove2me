@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.max_sidon_exists",
+  "theorem_title": "A Sidon subset of maximum cardinality exists",
+  "natural_language_statement": "Every finite set of reals has a Sidon subset no smaller than any other Sidon subset.\n\nThere are finitely many subsets, so this is extremality on a finite nonempty family, the empty set being always available. Short, and it is what makes \"take a maximal Sidon subset\" a legal move in the next statement.",
+  "source": "The cube-root bound is folklore; this is its first step",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.finite_check_fifteen",
+  "theorem_title": "Shao's Lemma 2.3: the finite check at $m = 15$",
+  "natural_language_statement": "Let $A$, $B$, $C$ be sets of units modulo 15. If\n\n$$|A||B| + |B||C| + |C||A| > 5(|A| + |B| + |C|)$$\n\nthen every residue $x$ modulo 15 can be written $x = a + b + c$ with $a \\in A$, $b \\in B$ and $c \\in C$.\n\nThere are eight units modulo 15, so the hypothesis is a finite condition on three integers in $[0,8]$. Thirty-four unordered size triples satisfy it, of which $(2,7,8)$, $(3,6,7)$, $(4,5,7)$, $(4,6,6)$ and $(5,5,6)$ are the minimal ones under componentwise order.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Lemma 2.3",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

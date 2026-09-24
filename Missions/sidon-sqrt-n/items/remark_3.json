@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.remark_3",
+  "theorem_title": "Remark 3: a small remainder map preserves $a+b=c+d$",
+  "natural_language_statement": "If every $a$ in $A$ is written $a = k(a)q + r(a)$ with the remainder small, $4|r(a)| < q$, then $a \\mapsto r(a)$ preserves the relation $a + b = c + d$.\n\nThe two remainder sums each have absolute value below $q/2$, so their difference has absolute value below $q$; it is also a multiple of $q$, so it is zero.\n\nThe constant 4 is the paper's $\\alpha$ for the Sidon relation, whose coefficient vector is $(1, 1, -1, -1)$, and every later step of the 1975 route reduces to an application of this remark at some modulus.",
+  "source": "Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121, Remark 3",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

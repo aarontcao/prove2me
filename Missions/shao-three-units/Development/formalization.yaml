@@ -1,0 +1,165 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Shao's Corollary 1.5: dense sets of units are three-fold additive bases"
+  description: >-
+    A machine-checked proof, in Lean 4 with Mathlib, of Corollary 1.5 of Xuancheng
+    Shao's "A density version of the Vinogradov three primes theorem". For an odd
+    squarefree modulus m, every set A of units mod m with |A| > (5/8) phi(m)
+    satisfies A + A + A = Z/mZ. The development follows the paper: the two
+    averaging inequalities of Section 2, the finite check at m = 15, the induction
+    on prime factors of Section 3 with Cauchy-Davenport-Chowla, the weighted m = 15
+    linear program, and the assembly through Proposition 1.4.
+  authors:
+    - "Aaron Cao"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Aaron Cao"
+
+classification:
+  arxiv: ["math.NT", "math.CO"]
+  msc2020: ["11P32", "11B13"]
+
+sources:
+  - title: "A Density Version of the Vinogradov Three Primes Theorem"
+    authors:
+      - "Xuancheng Shao"
+    id: "arXiv:1206.6139v2"
+    type: "article"
+    location: "https://arxiv.org/abs/1206.6139"
+    relationship: "formalizes"
+    note: >-
+      Corollary 1.5 of the published version, Duke Math. J. 163 (2014) 489-512.
+      The development formalizes that corollary together with Proposition 1.4,
+      Propositions 3.1 and 3.2, and Lemmas 2.1, 2.2 and 2.3, which are the
+      results its proof depends on.
+    license: "unknown"
+    author_endorsement: "not-contacted"
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Corollary 1.5 is formalized in full, with no weakened hypothesis and no
+    omitted case. Two points where the formalization departs from the paper's
+    method, neither of which changes a statement.
+
+    Lemma 2.3, the finite check at m = 15, is discharged by a Chinese Remainder
+    reduction rather than by the paper's computer search over roughly 2 * 10^5
+    set triples. Splitting Z/15Z as Z/3Z x Z/5Z turns the claim into three
+    covering conditions in Z/5Z, one per residue mod 3, with fixed sign patterns.
+    Cauchy-Davenport settles each, and the residual arithmetic is a single kernel
+    `decide` over Fin 5 ^ 6 covering all 2205 admissible fibre-size tuples with no
+    remaining cases. No set enumeration survives.
+
+    Proposition 3.2 cites a linear-programming solver in the paper. Here each of
+    the admissible support-size triples carries an explicit Farkas certificate,
+    checked by `linarith`, so no solver is trusted.
+
+    Everything is checked by the Lean kernel. `native_decide` is not used
+    anywhere, so no result depends on `Lean.ofReduceBool` or
+    `Lean.trustCompiler`.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      tool_setup: >-
+        Lean 4 with Mathlib, the lean-lsp MCP server, and a local audit harness
+        that rejects any declaration whose axiom closure leaves propext,
+        Classical.choice and Quot.sound. Proof search was agent-driven from a
+        human-written statement file; every node was audited before being
+        recorded as closed, and the statement file was content-pinned so a
+        statement could not be weakened to make a proof go through.
+      cost:
+        wall_time: "approximately five days of intermittent work"
+        spend_usd: "subscription-based"
+        hardware: "single cloud VM, 8 vCPU, 32 GB"
+      prompting_notes: >-
+        One proof node per session, with a fixed tactic ladder attempted before
+        any search, and a node failing twice split into named sub-lemmas rather
+        than retried harder.
+  spend_usd: "subscription-based"
+  notes: >-
+    The mathematical statements were written by hand from the paper before any
+    proof work began, and were content-pinned thereafter. Proofs were produced
+    with agent assistance. Every statement was read against the paper by a human,
+    and the Chinese Remainder reduction for Lemma 2.3 was found by a numerical
+    probe and then proved.
+
+fidelity:
+  divergences: >-
+    No divergence in any statement. Two divergences in method, both recorded
+    under status.scope: Lemma 2.3 uses a Chinese Remainder reduction in place of
+    the paper's computer check, and Proposition 3.2 uses explicit Farkas
+    certificates in place of the paper's LP solver. Both are strictly stronger
+    than the paper's method in the sense that nothing outside the Lean kernel is
+    trusted.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    Every advertised statement was compared by hand against the corresponding
+    numbered result in arXiv:1206.6139v2. Each proposition in
+    ShaoThreeUnits/Statements.lean carries companion `example`s at concrete
+    values, which fail if the proposition is vacuous. Sharpness at m = 15 is
+    recorded as an arithmetic witness: a five-element set gives
+    5 * phi(15) = 8 * 5 exactly, and the solver-found set {2, 8, 11, 13, 14}
+    then omits 1 from A + A + A, so the strict inequality cannot be relaxed.
+    No independent reviewer has read this development.
+
+alignment:
+  namespace: "ShaoThreeUnits"
+  statements:
+    - source: "Corollary 1.5"
+      lean: "ShaoThreeUnits.three_units_of_five_eighths"
+      module: "Challenge"
+      status: "proved"
+      note: >-
+        The advertised statement. Written with Mathlib primitives only, so the
+        unit hypothesis reads as `∀ a ∈ A, IsUnit a` rather than through a
+        defined finset of units. Solution.lean discharges it from
+        ShaoThreeUnits.Proof.cor_1_5, whose hypothesis is the same condition
+        written as a subset of that finset.
+    - source: "Proposition 1.4"
+      lean: "ShaoThreeUnits.Proof.prop_1_4"
+      module: "ShaoThreeUnits.Proof"
+      status: "proved"
+      note: "The weighted local result Corollary 1.5 specialises."
+    - source: "Proposition 3.1"
+      lean: "ShaoThreeUnits.Proof.prop_3_1"
+      module: "ShaoThreeUnits.Proof"
+      status: "proved"
+      note: "The induction on prime factors, for gcd(m, 30) = 1."
+    - source: "Proposition 3.2"
+      lean: "ShaoThreeUnits.Proof.prop_3_2"
+      module: "ShaoThreeUnits.Proof"
+      status: "proved"
+      note: "The weighted m = 15 case, by explicit Farkas certificates."
+    - source: "Lemma 2.1"
+      lean: "ShaoThreeUnits.Proof.lemma_2_1"
+      module: "ShaoThreeUnits.Proof"
+      status: "proved"
+      note: "The symmetric averaging inequality."
+    - source: "Lemma 2.2"
+      lean: "ShaoThreeUnits.Proof.lemma_2_2"
+      module: "ShaoThreeUnits.Proof"
+      status: "proved"
+      note: "The asymmetric averaging inequality."
+    - source: "Lemma 2.3"
+      lean: "ShaoThreeUnits.Proof.lemma_2_3"
+      module: "ShaoThreeUnits.Proof"
+      status: "adapted"
+      note: >-
+        Same statement as the paper. Proved by a Chinese Remainder reduction and
+        Cauchy-Davenport rather than by the paper's computer check, so no
+        enumeration over set triples is trusted.
+
+acknowledgements: >-
+  Mathlib and its contributors. The Palomar template and Comparator. Xuancheng
+  Shao, whose paper this formalizes.

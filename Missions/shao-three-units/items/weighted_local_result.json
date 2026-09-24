@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.weighted_local_result",
+  "theorem_title": "Shao's Proposition 1.4: the weighted local result",
+  "natural_language_statement": "Let $m$ be an odd squarefree positive integer and let $f : \\mathbb{Z}/m\\mathbb{Z} \\to [0,1]$ satisfy $\\sum_{x \\text{ unit}} f(x) > \\frac{5}{8}\\varphi(m)$. Then every $x$ modulo $m$ can be written $x = a_1 + a_2 + a_3$ with $a_1, a_2, a_3$ units, $f(a_1)f(a_2)f(a_3) > 0$ and $f(a_1) + f(a_2) + f(a_3) > \\frac{3}{2}$.\n\nThe main theorem is the case $f = 1_A$ of this. The induction cannot be run on sets, because passing from $m$ to a prime factor splits $A$ into fibers of different densities, so the whole proof is carried by functions into $[0,1]$.\n\nThe constant $\\frac{3}{2}$ is sharp. Take $m = 3$, $f(1) = 1$, $f(2) = \\frac{1}{4}$ and $x = 2$, which forces the multiset $\\{1, 2, 2\\}$ and gives the sum exactly $\\frac{3}{2}$.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Proposition 1.4",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

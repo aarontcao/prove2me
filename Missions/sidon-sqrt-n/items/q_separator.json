@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.q_separator",
+  "theorem_title": "A $\\mathbb{Q}$-linear functional injective on a finite set of reals",
+  "natural_language_statement": "For every finite set $X$ of reals there is a $\\mathbb{Q}$-linear map from $\\mathbb{R}$ to $\\mathbb{Q}$ that is injective on $X$.\n\n$X$ is finite, so its $\\mathbb{Q}$-span is finite dimensional. Pick a basis, and take the functional whose value is the coordinate vector read as an integer in base $M$, for $M$ past every coordinate difference. Extend to all of $\\mathbb{R}$ by a Hamel basis, which is where the axiom of choice enters.",
+  "source": "Folklore; the reduction from the reals to the integers in Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

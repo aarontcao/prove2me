@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.lemma_5",
+  "theorem_title": "Lemma 5: any $n$ positive integers compress into $[1, n]$",
+  "natural_language_statement": "There is an absolute $c > 0$ such that any $n$ positive integers reduce to a Sidon-faithful set of at least $cn$ positive integers all at most $n$.\n\nThe assembly calls this statement and no other part of the 1975 chain. The paper's constant is $1/(4\\alpha^6)$, which is $1/16384$ for the Sidon relation. It is left existential here because that numeral was read off a rough scan, and a statement signed with a constant slightly too strong can never be proved.",
+  "source": "Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121, Lemma 5",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

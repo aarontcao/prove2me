@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.translate_averaging",
+  "theorem_title": "Some translate of $B$ meets $A$ in $|A||B|/m$ points",
+  "natural_language_statement": "For $A$ and $B$ inside $\\mathbb{Z}/m\\mathbb{Z}$, some translate $B + i$ meets $A$ in at least $|A||B|/m$ points. Double counting over all $m$ translates.\n\nThis stands in for Singer's 1938 covering of $\\mathbb{Z}/(q^2+q+1)\\mathbb{Z}$ by $q+1$ Sidon sets, which the published proof uses and which is not available here. It does the same job at the same order, since a Sidon set of size about $\\sqrt{m}$ averaged over $m$ translates meets a set of size $s$ in about $s/\\sqrt{m}$ points. The constant comes out worse than Singer's $1/(3\\sqrt{3})$, and the goal only claims that some $c > 0$ exists.",
+  "source": "Bailleul and Riblet, arXiv:2605.03181, https://arxiv.org/abs/2605.03181, the averaging step of Section 3",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

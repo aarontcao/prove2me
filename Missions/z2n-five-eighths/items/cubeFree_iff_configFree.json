@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_iff_configFree",
+  "theorem_title": "The two encodings of the forbidden configuration agree",
+  "natural_language_statement": "For a finite subset $A$ of an additive abelian group, $A$ has a cube exactly when some `config x y z` is a subset of $A$.\n\n`HasCube` lists the seven memberships separately; `config x y z` collects the same seven elements into a `Finset` and asks for a subset. The two are **not** definitionally equal, because the `Finset` collapses duplicates when the triple is degenerate: at $x = y = z = 1$ modulo 16 the configuration has three elements, not seven.\n\nThe claim is that deduplication leaves the equivalence intact, because subset of a `Finset` literal is the conjunction of the memberships either way.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, the definition of a cube in Section 1; the two encodings are a formalization choice rather than something the paper states",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

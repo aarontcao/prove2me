@@ -1,0 +1,3 @@
+
+=== 2026-08-25T14:42:26Z  python3 instruments/cubefree.py --decide 7 81
+{"ok": true, "n": 7, "t": 81, "sat": false, "witness_cubefree": null, "size": 0, "text": "f(7) >= 81 is False", "numkit": "1.0"}

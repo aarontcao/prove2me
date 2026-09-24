@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.sidon_subset_sqrt",
+  "theorem_title": "The Komlos-Sulyok-Szemeredi bound: a Sidon subset of size $c\\sqrt{|X|}$",
+  "natural_language_statement": "There is an absolute constant $c > 0$ such that every finite set $X$ of positive reals contains a subset $S$ all of whose pairwise sums are distinct, with $|S| \\ge c\\sqrt{|X|}$.\n\nA set with all pairwise sums distinct is a *Sidon set*. The condition is written out at each use: for $a, b, c, d \\in S$ with $a + b = c + d$, either $a = c$ and $b = d$, or $a = d$ and $b = c$. Repeats are allowed on both sides, so $a = b$ is not excluded; what is excluded is two genuinely different unordered pairs sharing a sum.\n\nThe constant is quantified outside the $\\forall X$, so it is absolute and there is no \"for $|X|$ large enough\" escape hatch. Small $X$ is covered by taking $c$ small, since a one-element set is Sidon. Positivity of the elements is never used, because the Sidon condition is translation invariant; it stays because the problem states it.",
+  "source": "the lower bound half of Erdos problem 530, https://www.erdosproblems.com/530, posed by Riddell and open as stated; proved by Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121; a second proof in Bailleul and Riblet, arXiv:2605.03181, https://arxiv.org/abs/2605.03181",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

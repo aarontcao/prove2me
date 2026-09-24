@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.divisor_reduction",
+  "theorem_title": "Divisor reduction: the weighted result descends to every divisor",
+  "natural_language_statement": "The weighted local result stated for a single modulus $M$ implies the same statement for every divisor $m$ of $M$.\n\nThis is the opening move in the proof of Proposition 1.4. It is what lets the proof assume $15 \\mid m$ without loss of generality, by passing from $m$ to $\\mathrm{lcm}(m, 15)$ and pulling the conclusion back along the reduction map.\n\nBoth halves of the implication are the statement of the weighted local result with the modulus fixed, written out in full here because a mission item cannot supply its own definitions.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, the reduction opening the proof of Proposition 1.4",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

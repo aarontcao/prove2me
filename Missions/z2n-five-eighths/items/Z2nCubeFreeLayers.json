@@ -1,0 +1,10 @@
+{
+  "definition_name": "Z2nCubeFreeLayers",
+  "definition_title": "Cube-free sets and layers in $\\mathbb{Z}/2^n\\mathbb{Z}$",
+  "natural_language_statement": "The six definitions the Long-Wagner cube-free mission is stated in.\n\n`HasCube A` says some triple $x, y, z$, not required distinct, has all seven of $x$, $y$, $z$, $x+y$, $y+z$, $z+x$, $x+y+z$ inside $A$. `CubeFree A` is its negation.\n\n`config x y z` is the same seven elements as a `Finset`, which collapses duplicates on a degenerate triple, and `ConfigFree A` says no `config` is a subset of $A$. The equivalence of the two encodings is a milestone of the mission, not an assumption of it.\n\n`layerIdx n x` is the layer of $x$ in the Long-Wagner partition of $\\mathbb{Z}/2^n\\mathbb{Z}$: layer $i$ for $1 \\le i \\le n$ is the residues congruent to $2^{i-1}$ mod $2^i$, and layer $n+1$ is $\\{0\\}$. It is defined through the 2-adic valuation rather than through a congruence, because the congruence form leaves $0$ in no layer at all. `IsLayerUnion n A` says $A$ contains a whole layer whenever it contains one element of it.",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, Section 1.2, which defines both the projective cube and the layer partition",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

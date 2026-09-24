@@ -1,0 +1,50 @@
+{
+  "note": "item_id holds a theorem_name, not a server item id. The ids exist only after item-add runs, so `p2m milestone-add --item <id>` takes the id read back out of `p2m proposal <id>`. The goal item carries no milestone: the platform returns 409 for a milestone on the goal, and a definition item cannot carry one either.",
+  "milestones": [
+    {
+      "item_id": "ShaoThreeUnits.card_units_filter",
+      "milestone_title": "Counting bridge: the units modulo $m$ number $\\varphi(m)$",
+      "milestone_description": "The density hypothesis is stated against `Nat.totient m` and every sum in the proof runs over a `Finset` of unit residues. This milestone is the identification of the two. It is short, and it is first because nothing else can be stated cleanly until the two counts are known to agree."
+    },
+    {
+      "item_id": "ShaoThreeUnits.cauchy_davenport_chowla",
+      "milestone_title": "Cauchy-Davenport-Chowla for three sets modulo a prime",
+      "milestone_description": "Mathlib has the two-set Cauchy-Davenport inequality. The induction on prime factors needs the three-set form: nonempty $I$, $J$, $K$ modulo a prime $p$ with $|I| + |J| + |K| \\ge p + 2$ cover every residue as $u + v + w$. Deriving it from the two-set form is the work."
+    },
+    {
+      "item_id": "ShaoThreeUnits.averaging_symmetric",
+      "milestone_title": "Lemma 2.1: the symmetric averaging inequality",
+      "milestone_description": "A decreasing sequence of $n$ reals in $[0,1]$, with $n$ even and at least 6, on which every index triple summing to at least $n$ satisfies $a_ia_j + a_ja_k + a_ka_i \\le \\frac{5}{8}(a_i + a_j + a_k)$, has average at most $5/8$. The proof uses the contrapositive, so this is where a density above $5/8$ becomes a single good triple. The bound $n \\ge 6$ cannot be dropped: $a = (1, 0.6, 0.5, 0.41)$ fails it at $n = 4$."
+    },
+    {
+      "item_id": "ShaoThreeUnits.averaging_asymmetric",
+      "milestone_title": "Lemma 2.2: the asymmetric averaging inequality",
+      "milestone_description": "The same statement for three different decreasing sequences $a$, $b$, $c$ with averages $A$, $B$, $C$, concluding $AB + BC + CA \\le \\frac{5}{8}(A + B + C)$, and needing $n \\ge 10$ rather than $n \\ge 6$. This is the version the induction actually calls, because passing to a prime factor produces three fibers that need not agree."
+    },
+    {
+      "item_id": "ShaoThreeUnits.finite_check_fifteen",
+      "milestone_title": "Lemma 2.3: the finite check at $m = 15$",
+      "milestone_description": "Three sets $A$, $B$, $C$ of units modulo 15 with $|A||B| + |B||C| + |C||A| > 5(|A| + |B| + |C|)$ have $A + B + C = \\mathbb{Z}/15\\mathbb{Z}$. There are eight units, so this is a finite condition on three integers in $[0,8]$. Thirty-four unordered size triples satisfy it, with five minimal ones under componentwise order: $(2,7,8)$, $(3,6,7)$, $(4,5,7)$, $(4,6,6)$ and $(5,5,6)$."
+    },
+    {
+      "item_id": "ShaoThreeUnits.weighted_fifteen",
+      "milestone_title": "Proposition 3.2: the weighted case at $m = 15$",
+      "milestone_description": "The weighted form of the modulus-15 check. Three functions into $[0,1]$ with unit sums $F_1, F_2, F_3$ satisfying $F_1F_2 + F_2F_3 + F_3F_1 > 5(F_1 + F_2 + F_3)$ give, for every $x$, a representation $x = a_1 + a_2 + a_3$ by units with $f_1(a_1)f_2(a_2)f_3(a_3) > 0$ and $f_1(a_1) + f_2(a_2) + f_3(a_3) > \\frac{3}{2}$. Shao's proof is a linear program over the eight units."
+    },
+    {
+      "item_id": "ShaoThreeUnits.induction_coprime_thirty",
+      "milestone_title": "Proposition 3.1: the induction away from 3 and 5",
+      "milestone_description": "For $m$ squarefree and coprime to 30, a function into $[0,1]$ with unit sum above $\\frac{5}{8}\\varphi(m)$ gives a triple of units summing to any prescribed $x$ on which $f(a)f(b) + f(b)f(c) + f(c)f(a) > \\frac{5}{8}(f(a) + f(b) + f(c))$. The proof inducts on prime factors, using Lemma 2.2 and Cauchy-Davenport-Chowla. Proposition 3.2 consumes the bilinear conclusion."
+    },
+    {
+      "item_id": "ShaoThreeUnits.divisor_reduction",
+      "milestone_title": "Divisor reduction: assume $15 \\mid m$ without loss of generality",
+      "milestone_description": "The weighted local result for a modulus $M$ implies it for every divisor $m$ of $M$. The proof of Proposition 1.4 opens with this reduction, which lets the two halves above be combined: pass from $m$ to $\\mathrm{lcm}(m, 15)$, apply the result there, and pull the conclusion back along the reduction map."
+    },
+    {
+      "item_id": "ShaoThreeUnits.weighted_local_result",
+      "milestone_title": "Proposition 1.4: the weighted local result",
+      "milestone_description": "The assembly. For odd squarefree $m$, a function $f$ into $[0,1]$ with unit sum above $\\frac{5}{8}\\varphi(m)$ writes every $x$ as a sum of three units with $f(a_1)f(a_2)f(a_3) > 0$ and $f(a_1) + f(a_2) + f(a_3) > \\frac{3}{2}$. The goal theorem is the case $f = 1_A$. The constant $\\frac{3}{2}$ is sharp: $m = 3$, $f(1) = 1$, $f(2) = \\frac{1}{4}$, $x = 2$ forces the multiset $\\{1,2,2\\}$ and gives exactly $\\frac{3}{2}$."
+    }
+  ]
+}

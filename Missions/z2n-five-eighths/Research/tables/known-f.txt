@@ -1,0 +1,8 @@
+n  known  got  witness_cubefree  verdict
+-  -----  ---  ----------------  -------
+1  1      1    yes               ok     
+2  2      2    yes               ok     
+3  5      5    yes               ok     
+4  10     10   yes               ok     
+5  20     20   yes               ok     
+6  40     40   yes               ok     

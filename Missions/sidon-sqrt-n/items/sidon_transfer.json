@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.sidon_transfer",
+  "theorem_title": "Pull a Sidon set back from the integer image",
+  "natural_language_statement": "Given $\\varphi$ injective on $X$ and preserving $a + b = c + d$, any Sidon subset $T$ of the image $\\varphi(X)$ comes from a Sidon subset of $X$ of at least the same size, namely its preimage in $X$.\n\nOnly the forward direction of the transfer is ever needed. That is why the embedding is asked to preserve the relation rather than to reflect it.",
+  "source": "Folklore; the reduction from the reals to the integers in Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

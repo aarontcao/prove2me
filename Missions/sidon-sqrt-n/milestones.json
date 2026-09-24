@@ -1,0 +1,85 @@
+{
+  "note": "item_id holds a theorem_name, not a server item id. The goal item carries no milestone: the platform returns 409 for one on the goal.",
+  "milestones": [
+    {
+      "item_id": "SidonSqrtN.max_sidon_exists",
+      "milestone_title": "Milestone A1: a maximum Sidon subset exists",
+      "milestone_description": "Every finite set of reals has a Sidon subset no smaller than any other. Finitely many subsets, so this is extremality on a finite nonempty family, the empty set being always available. It is what makes \"take a maximal Sidon subset\" a legal move."
+    },
+    {
+      "item_id": "SidonSqrtN.max_sidon_cube",
+      "milestone_title": "Milestone A2: maximality forces $|X| \\le 3|S|^3$",
+      "milestone_description": "Adding any element outside a maximum Sidon subset $S$ must break the Sidon property, and the broken relation has to involve the new element. That gives $x = c + d - b$ or $x = (c+d)/2$ for elements of $S$, so at most $|S|^3 + |S|^2$ outsiders. Formalize the counting as an injection into $S^3 \\sqcup S^2$."
+    },
+    {
+      "item_id": "SidonSqrtN.sidon_cbrt",
+      "milestone_title": "Milestone A3: the cube-root bound",
+      "milestone_description": "An absolute $c > 0$ with a Sidon subset of size $c|X|^{1/3}$ in every finite set of reals, immediate from A1 and A2. Worth stating on its own because it is the ceiling for any purely counting argument: an arithmetic progression of length $n$ has additive energy of order $n^3$."
+    },
+    {
+      "item_id": "SidonSqrtN.et_card",
+      "milestone_title": "Milestone B1: the Erdos-Turan set has $p$ elements",
+      "milestone_description": "The map $k \\mapsto 2pk + (k^2 \\bmod p)$ is injective on $\\{0, \\dots, p-1\\}$, because the remainder is below $p \\le 2p$ so the quotient by $2p$ recovers $k$. Primality is not needed, only $p > 0$."
+    },
+    {
+      "item_id": "SidonSqrtN.et_sidon",
+      "milestone_title": "Milestone B2: the Erdos-Turan set is Sidon",
+      "milestone_description": "The hardest leaf of the construction. Uniqueness of quotient and remainder mod $2p$ splits one equation into $k_1 + k_2 = k_3 + k_4$ and $k_1^2 + k_2^2 \\equiv k_3^2 + k_4^2 \\pmod p$, so the two pairs have equal sum and equal product and are the roots of the same quadratic over $\\mathbb{F}_p$. Primality is exactly what makes that a field. At $p = 4, 6, 8, 9, 10$ the construction genuinely fails."
+    },
+    {
+      "item_id": "SidonSqrtN.et_range",
+      "milestone_title": "Milestone B3: the Erdos-Turan set lives below $2p^2$",
+      "milestone_description": "The largest element is at most $2p(p-1) + (p-1)$. Bookkeeping, and it is what lets B4 place the set inside an interval of prescribed length."
+    },
+    {
+      "item_id": "SidonSqrtN.sidon_in_range",
+      "milestone_title": "Milestone B4: a Sidon subset of $[0, N)$ of size $\\sqrt{N}/4$",
+      "milestone_description": "Assemble B1 to B3 with Bertrand's postulate: for $N > 144$ pick a prime $p$ between $m$ and $2m$ for $m = \\lfloor\\sqrt{N/2}\\rfloor/2$, so that $2p^2 \\le N$. Small $N$ is covered by the fixed set $\\{0,1,3\\}$. Every later step pigeonholes a set against this one, and it is the one place in the development where a Sidon set is constructed."
+    },
+    {
+      "item_id": "SidonSqrtN.q_separator",
+      "milestone_title": "Milestone C1: a rational functional separating a finite set of reals",
+      "milestone_description": "A finite set of reals spans a finite dimensional $\\mathbb{Q}$-vector space, so a functional reading the coordinate vector in a large enough base separates its points. Extending to all of $\\mathbb{R}$ needs a Hamel basis, which is where choice enters."
+    },
+    {
+      "item_id": "SidonSqrtN.int_freiman",
+      "milestone_title": "Milestone C2: an integer-valued Freiman 2-embedding",
+      "milestone_description": "Clear denominators in C1. The functional takes finitely many rational values on the set, so one common denominator makes it integer-valued, and scaling a linear map keeps it linear. This is the step that turns a problem about arbitrary reals into a problem about integers."
+    },
+    {
+      "item_id": "SidonSqrtN.sidon_transfer",
+      "milestone_title": "Milestone C3: pull a Sidon set back to the reals",
+      "milestone_description": "A Sidon subset of the integer image lifts to a Sidon subset of the original set of at least the same size. Only the forward direction of the embedding is ever needed. That is why C2 asks the map to preserve $a + b = c + d$ rather than to reflect it."
+    },
+    {
+      "item_id": "SidonSqrtN.remark_3",
+      "milestone_title": "Milestone D0: a small remainder map preserves $a+b=c+d$",
+      "milestone_description": "The workhorse of the 1975 route. If the remainders satisfy $4|r(a)| < q$ then the two remainder sums differ by less than $q$ and by a multiple of $q$, so by nothing. The constant 4 is the paper's $\\alpha$ for the Sidon relation, whose coefficient vector is $(1,1,-1,-1)$."
+    },
+    {
+      "item_id": "SidonSqrtN.lemma_3",
+      "milestone_title": "Milestone D3: range reduction down to $n^{3/2}$",
+      "milestone_description": "Any $n$ positive integers bounded by $n^3$ reduce to a Sidon-faithful set of $cn$ of them bounded by $n^{3/2}$. The bound is squared in the statement to stay inside the integers and avoid a real exponent."
+    },
+    {
+      "item_id": "SidonSqrtN.lemma_4",
+      "milestone_title": "Milestone D4: range reduction down to $n$",
+      "milestone_description": "Any $n$ positive integers bounded by $n^{3/2}$ reduce to a Sidon-faithful set of $cn$ of them bounded by $n$. The paper's bound is $3n/\\alpha$, which is $3n/4$ here, so the stated $n$ is the weaker requirement."
+    },
+    {
+      "item_id": "SidonSqrtN.lemma_5",
+      "milestone_title": "Milestone D5: the interface of the 1975 chain",
+      "milestone_description": "Any $n$ positive integers compress into $[1, n]$, keeping a constant fraction and keeping Sidon-faithfulness. The assembly calls this statement and no other part of the 1975 chain. The constant is left existential on purpose: the paper's $1/(4\\alpha^6)$ was read off a rough scan, and a statement signed with a constant slightly too strong can never be proved."
+    },
+    {
+      "item_id": "SidonSqrtN.compression",
+      "milestone_title": "Milestone E1: one averaging lemma replacing the whole D chain",
+      "milestone_description": "Bailleul and Riblet's Lemma 2.3. Rotate by a real $\\theta$, keep the elements whose fractional part of $am\\theta$ is below $1/2$ so that no carry occurs, and the floor map into $\\mathbb{Z}/m\\mathbb{Z}$ is additive on what remains. Averaging over $\\theta$ gives at least $|A|/2 - |A|^2/(2m)$ survivors. With $m$ of order $n$ this is a constant fraction, and no prime counting appears anywhere."
+    },
+    {
+      "item_id": "SidonSqrtN.translate_averaging",
+      "milestone_title": "Milestone E2: some translate of $B$ meets $A$ in $|A||B|/m$ points",
+      "milestone_description": "Double counting over the $m$ translates. This stands in for Singer's 1938 covering by perfect difference sets, which is not available, and does the same job at the same order for a worse constant. Since the goal claims only that some $c > 0$ exists, the weaker constant is good enough."
+    }
+  ]
+}

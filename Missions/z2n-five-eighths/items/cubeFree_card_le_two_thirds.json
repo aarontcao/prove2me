@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_card_le_two_thirds",
+  "theorem_title": "The unconditional two-thirds bound",
+  "natural_language_statement": "For every $n$, a cube-free $A \\subseteq \\mathbb{Z}/2^n\\mathbb{Z}$ satisfies $3|A| + 1 \\le 2^{n+1}$, so $|A| < \\frac{2}{3}2^n$.\n\nThis bound should not be read as progress toward $\\frac{5}{8}$, though it is the best unconditional constant available. Meng calls the two-thirds bound \"quite trivial\" and proves it in one paragraph for every cyclic group, not just for $\\mathbb{Z}/2^n\\mathbb{Z}$.\n\nThe residual gap is exactly $\\frac{2}{3} - \\frac{5}{8} = \\frac{1}{24}$, so $2^n/24$ elements separate this from the conjecture.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Yuchen Meng, \"On Cube-Free Problems\", Electron. J. Combin. 33(1) (2026) #P1.16, Theorem 9 together with the remark following its proof, which drops the hypothesis that 3 divides N and so covers N = 2^n; see also Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

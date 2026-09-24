@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.lemma_3",
+  "theorem_title": "Lemma 3: the second range reduction, down to $n^{3/2}$",
+  "natural_language_statement": "There is an absolute $c > 0$ such that any $n$ positive integers bounded by $M$, with $M \\le n^3$, reduce to a Sidon-faithful set of at least $cn$ positive integers $b$ with $b^2 \\le n^3$, that is $b \\le n^{3/2}$.\n\n*Sidon-faithful* is written out: $A$ reduces to $B$ when every Sidon subset of $B$ is matched by a Sidon subset of $A$ at least as large. Note the direction. A reduct is a set that is no easier, so a lower bound proved for $B$ transfers back to $A$.\n\nThe bound is squared to stay inside $\\mathbb{Z}$ and avoid a real exponent.",
+  "source": "Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121, Lemma 3",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

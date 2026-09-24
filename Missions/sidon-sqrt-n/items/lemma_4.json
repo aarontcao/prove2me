@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.lemma_4",
+  "theorem_title": "Lemma 4: the third range reduction, down to $n$",
+  "natural_language_statement": "There is an absolute $c > 0$ such that any $n$ positive integers bounded by $n^{3/2}$ reduce to a Sidon-faithful set of at least $cn$ positive integers bounded by $n$.\n\nThe paper's bound is $3n/\\alpha$, which for the Sidon relation is $3n/4$, so $n$ is the weaker requirement and the statement stays true as written.",
+  "source": "Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121, Lemma 4",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

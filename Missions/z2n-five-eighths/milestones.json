@@ -1,0 +1,50 @@
+{
+  "note": "item_id holds a theorem_name, not a server item id. The goal item carries no milestone, and neither can the definition item: the platform returns 400 for a milestone on a definition and 409 for one on the goal.",
+  "milestones": [
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_mod_eight_card_le_five",
+      "milestone_title": "Base case: $f(3) = 5$ by exhaustion mod 8",
+      "milestone_description": "A cube-free subset of $\\mathbb{Z}/8\\mathbb{Z}$ has at most five elements. The proof checks each of the 256 subsets. The constant $\\frac{5}{8}$ enters here: the extremal set $\\{1,3,4,5,7\\}$ is the mod-8 shadow of the construction that attains the bound at every $n$."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_subset",
+      "milestone_title": "Cube-freeness passes to subsets",
+      "milestone_description": "A subset of a cube-free set is cube-free. Short, and needed by every induction that restricts the set to a coset or a subgroup."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_iff_configFree",
+      "milestone_title": "The membership form and the Finset form of a cube agree",
+      "milestone_description": "`HasCube` lists seven memberships and `config` collects the same seven elements into a `Finset`. They are not definitionally equal, because the `Finset` deduplicates: at the triple $(1,1,1)$ mod 16 the configuration has three elements. The milestone is that the equivalence holds despite the deduplication. A counting argument can then switch between the two forms freely."
+    },
+    {
+      "item_id": "Z2nFiveEighths.five_eighths_attained",
+      "milestone_title": "Sharpness: $\\frac{5}{8}$ is attained for every $n \\ge 3$",
+      "milestone_description": "Exhibit a cube-free set of size exactly $\\frac{5}{8}2^n$. The witness is $\\{v : v \\bmod 8 \\in \\{1,3,4,5,7\\}\\}$, of size $2^{n-1} + 2^{n-3}$. Without this the conjecture would be about some constant rather than about a sharp one, and a proof of any bound above $\\frac{5}{8}$ could not be called close."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_containing_odds",
+      "milestone_title": "The tight case: a set already containing every odd residue",
+      "milestone_description": "For $8 \\mid N$, a cube-free set containing all the odd residues of $\\mathbb{Z}/N\\mathbb{Z}$ satisfies $8|A| \\le 5N$. This is the configuration the extremal construction sits in, so it is where the bound is tightest and where any proof of the full conjecture has to be exact rather than generous."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_layerUnion_card_le_five_eighths",
+      "milestone_title": "Long-Wagner Theorem 1.10: the conjecture for unions of layers",
+      "milestone_description": "The conjectured bound, proved on the class of sets that contain a whole layer whenever they contain one element of it. This is proved mathematics and the largest class the constant is known on. The extremal set is itself a union of layers, so the restricted statement keeps the sharpness of the full one."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_card_le_two_thirds",
+      "milestone_title": "The unconditional two-thirds bound and its limits",
+      "milestone_description": "Every cube-free set satisfies $3|A| + 1 \\le 2^{n+1}$. Include it because it is the best unconditional constant and because the two closed instances rest on it, and read it with the caveat Meng attaches: the bound is \"quite trivial\" and holds in every cyclic group. The slack against the conjecture is exactly $\\frac{1}{24}$ of the group, so closing it is the whole remaining problem rather than a last step."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_card_le_five_eighths_four",
+      "milestone_title": "The conjecture at $n = 4$",
+      "milestone_description": "Counting suffices here. The two-thirds bound gives $|A| \\le 10$ at $n = 4$, and $\\frac{5}{8} \\cdot 16 = 10$, so the two constants admit the same integer maximum and the instance falls out."
+    },
+    {
+      "item_id": "Z2nFiveEighths.cubeFree_card_le_five_eighths_five",
+      "milestone_title": "The conjecture at $n = 5$, where counting stops working",
+      "milestone_description": "The two-thirds bound gives $|A| \\le 21$ and the conjecture asks for $|A| \\le 20$, so one element has to be excluded by a structural argument about which residues can coexist. This is the smallest case that shows what a proof of the general conjecture would have to supply."
+    }
+  ]
+}

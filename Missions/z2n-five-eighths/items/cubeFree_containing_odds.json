@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_containing_odds",
+  "theorem_title": "The tight case: a cube-free set containing every odd residue",
+  "natural_language_statement": "Let $8 \\mid N$ and let $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ be cube-free and contain every residue of odd value. Then $8|A| \\le 5N$.\n\nThis is the case where the conjecture is tightest: a cube-free set that already contains all $N/2$ odd residues cannot beat the construction by adding even ones, and the bound says exactly how many even residues it may add.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225; the all-odds bound stated here, for every modulus divisible by 8, is a step of this formalization rather than a numbered result of the paper",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

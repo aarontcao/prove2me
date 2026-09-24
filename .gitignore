@@ -1,0 +1,9 @@
+.lake/
+*.olean
+*.ilean
+*.trace
+
+# Python bytecode. A .pyc embeds the absolute path of the source it was
+# compiled from, so one reached the published tree carrying a home directory.
+__pycache__/
+*.pyc

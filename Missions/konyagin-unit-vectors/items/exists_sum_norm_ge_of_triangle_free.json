@@ -1,0 +1,11 @@
+{
+  "theorem_name": "KonyaginUnitVectors.exists_sum_norm_ge_of_triangle_free",
+  "theorem_title": "Alon's matching lower bound: $\\Omega(n^{2/3})$ is attained",
+  "natural_language_statement": "There is a positive constant $c$ such that for every $n$ there is a system of $n$ unit vectors, of which among any three some two are orthogonal, whose sum has norm at least $cn^{2/3}$.\n\nTogether with the upper bound this makes the exponent sharp at $2/3$, so the answer to Lovasz's problem is $\\Theta(n^{2/3})$ and not merely $O(n^{2/3})$.\n\nAlon's construction comes from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound and does not need the Lovasz theta function, so it is the half of this mission that can be attacked today.",
+  "source": "Noga Alon, \"Explicit Ramsey graphs and orthonormal labelings\", Electron. J. Combin. 1 (1994) R12, doi:10.37236/1192, https://doi.org/10.37236/1192",
+  "tags": [
+    "combinatorics",
+    "discrete-geometry",
+    "graph-theory"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_subset",
+  "theorem_title": "Cube-freeness passes to subsets",
+  "natural_language_statement": "If $B \\subseteq A$ and $A$ is cube-free, then $B$ is cube-free.\n\nImmediate from the definition, and needed by any induction that restricts the set to a coset or a subgroup.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, used implicitly throughout; the statement is a formalization convenience rather than a result of the paper",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

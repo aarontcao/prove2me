@@ -1,0 +1,12 @@
+{
+  "theorem_id": "1871e631-e241-49b0-9ccb-ca3425b60f60",
+  "theorem_name": "NgoFL.isogeny_coreflection",
+  "statement_sha256": "7144f48b7d1c73236773477db7e1d7fea16b76bc7a645322b471c6bf8b27f04b",
+  "mathlib_rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "admitted_at": "2026-09-14T01:09:53Z",
+  "submission_id": "999d1b04-618d-482c-b91a-3a8acfce3264",
+  "platform_status": "ACCEPTED",
+  "submitted_at": "2026-09-14T01:42:11Z",
+  "note": null
+}

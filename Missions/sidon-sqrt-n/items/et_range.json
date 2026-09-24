@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.et_range",
+  "theorem_title": "The Erdos-Turan set lives below $2p^2$",
+  "natural_language_statement": "Every element of $\\{2pk + (k^2 \\bmod p) : 0 \\le k < p\\}$ is less than $2p^2$. The largest is at most $2p(p-1) + (p-1) = 2p^2 - p - 1$.\n\nBookkeeping, and it is what lets the next statement place the set inside an interval of a prescribed length.",
+  "source": "Paul Erdos and Pal Turan, \"On a problem of Sidon in additive number theory, and on some related problems\", J. London Math. Soc. 16 (1941) 212-215",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

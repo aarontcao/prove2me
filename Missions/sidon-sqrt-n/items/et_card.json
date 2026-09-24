@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.et_card",
+  "theorem_title": "The Erdos-Turan set has exactly $p$ elements",
+  "natural_language_statement": "The set $\\{2pk + (k^2 \\bmod p) : 0 \\le k < p\\}$ has exactly $p$ elements.\n\nThe defining map is injective on $\\{0, \\dots, p-1\\}$. Since $k^2 \\bmod p$ is below $p$, and $p \\le 2p$, the value $2pk + (k^2 \\bmod p)$ determines $k$ as its quotient by $2p$. Primality is not needed here, only $p > 0$.",
+  "source": "Paul Erdos and Pal Turan, \"On a problem of Sidon in additive number theory, and on some related problems\", J. London Math. Soc. 16 (1941) 212-215",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

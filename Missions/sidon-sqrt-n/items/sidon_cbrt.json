@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.sidon_cbrt",
+  "theorem_title": "The cube-root bound: a Sidon subset of size $c|X|^{1/3}$",
+  "natural_language_statement": "There is an absolute $c > 0$ such that every finite set of reals has a Sidon subset of size at least $c|X|^{1/3}$. Immediate from the previous two with $c = 3^{-1/3}$.\n\nThis is the ceiling for any purely probabilistic argument, because an arithmetic progression of length $n$ really does have additive energy of order $n^3$. Getting from $1/3$ to $1/2$ is the whole problem.",
+  "source": "The cube-root bound is folklore; see the introduction of Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

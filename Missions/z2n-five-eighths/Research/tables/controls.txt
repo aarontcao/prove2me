@@ -1,0 +1,6 @@
+control       n  expected  got  verdict
+------------  -  --------  ---  -------
+over-certify  4  >= 10     SAT  ok     
+over-certify  5  >= 20     SAT  ok     
+over-certify  6  >= 40     SAT  ok     
+hold-out      6  40        40   ok     

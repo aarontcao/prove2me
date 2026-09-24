@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_mod_eight_card_le_five",
+  "theorem_title": "The base case: a cube-free subset of $\\mathbb{Z}/8\\mathbb{Z}$ has at most five elements",
+  "natural_language_statement": "Every cube-free $A \\subseteq \\mathbb{Z}/8\\mathbb{Z}$ has $|A| \\le 5$.\n\nA finite check over all $2^8 = 256$ subsets. The bound is attained by $\\{1, 3, 4, 5, 7\\}$, which is the mod-8 shadow of the extremal construction, so it is sharp and not slack.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, the $n = 3$ case of Conjecture 5.1",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

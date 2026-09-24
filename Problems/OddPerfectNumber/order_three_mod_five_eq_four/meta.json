@@ -1,0 +1,12 @@
+{
+  "theorem_id": "f1e7ec1c-8217-471f-b116-30ab01a1ec4e",
+  "theorem_name": "OddPerfectNumber.order_three_mod_five_eq_four",
+  "statement_sha256": "ece79ebbc24d19a85a607952f7aac5ae6e5700f05a3222e9b456e43305838813",
+  "mathlib_rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "admitted_at": "2026-09-14T02:30:02Z",
+  "submission_id": "61461f4e-1881-49f6-8368-c009c1894268",
+  "platform_status": "ACCEPTED",
+  "submitted_at": "2026-09-14T15:06:43Z",
+  "note": null
+}

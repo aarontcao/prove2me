@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.max_sidon_cube",
+  "theorem_title": "Maximality forces $|X| \\le 3|S|^3$",
+  "natural_language_statement": "If $S$ is a Sidon subset of $X$ of maximum size, then $|X| \\le 3|S|^3$.\n\nAdding any $x$ outside $S$ must break the Sidon property, and since $S$ itself is Sidon the broken relation has to involve $x$. Either $x + b = c + d$ with $b, c, d \\in S$, so $x = c + d - b$, at most $|S|^3$ values, or $x + x = c + d$, so $x = (c+d)/2$, at most $|S|^2$ values. With the $|S|$ elements of $S$ that gives $|X| \\le |S| + |S|^2 + |S|^3 \\le 3|S|^3$, the last step needing $|S| \\ge 1$, which holds unless $X$ is empty.",
+  "source": "The cube-root bound is folklore; this is its counting step",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

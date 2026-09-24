@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_card_le_five_eighths_four",
+  "theorem_title": "The conjecture at $n = 4$",
+  "natural_language_statement": "A cube-free $A \\subseteq \\mathbb{Z}/16\\mathbb{Z}$ satisfies $8|A| \\le 5 \\cdot 16$, that is $|A| \\le 10$.\n\nThe two constants differ at $n = 4$ but the integer maxima they admit coincide: $\\frac{2}{3} \\cdot 16 = 10.67$ and $\\frac{5}{8} \\cdot 16 = 10$, and the two-thirds bound already forces $|A| \\le 10$. So this instance of the conjecture follows from the unconditional bound.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, Conjecture 5.1 at $n = 4$",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

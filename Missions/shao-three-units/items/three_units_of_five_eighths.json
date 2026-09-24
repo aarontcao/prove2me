@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.three_units_of_five_eighths",
+  "theorem_title": "Shao's Corollary 1.5: density $5/8$ forces $A+A+A = \\mathbb{Z}/m\\mathbb{Z}$",
+  "natural_language_statement": "Let $m$ be an odd squarefree positive integer and let $A \\subseteq \\mathbb{Z}/m\\mathbb{Z}$ be a set every element of which is a unit. If $|A| > \\frac{5}{8}\\varphi(m)$, then every residue class $x$ modulo $m$, unit or not, can be written $x = a + b + c$ with $a, b, c \\in A$ not necessarily distinct. Equivalently $A + A + A = \\mathbb{Z}/m\\mathbb{Z}$.\n\nThe size hypothesis is written `5 * Nat.totient m < 8 * A.card`, which is $|A| > \\frac{5}{8}\\varphi(m)$ cleared of division so the statement stays in $\\mathbb{N}$ without rounding.\n\nThe constant is sharp and the inequality has to be strict: at $m = 15$ the set $\\{2, 8, 11, 13, 14\\}$ has five elements, so $5\\varphi(15) = 8 \\cdot 5$ exactly, and $1$ is not a sum of three of its elements.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Corollary 1.5",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

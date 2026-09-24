@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.et_sidon",
+  "theorem_title": "The Erdos-Turan set is Sidon, for $p$ prime",
+  "natural_language_statement": "All pairwise sums of $\\{2pk + (k^2 \\bmod p) : 0 \\le k < p\\}$ are distinct when $p$ is prime.\n\nWrite the four elements as $2pk_i + r_i$ with $r_i = k_i^2 \\bmod p$. Each $r_i$ is below $p$, so $r_1 + r_2 < 2p$ and $r_3 + r_4 < 2p$. Uniqueness of quotient and remainder modulo $2p$ splits the single equation $a_1 + a_2 = a_3 + a_4$ into $k_1 + k_2 = k_3 + k_4$ and $r_1 + r_2 = r_3 + r_4$. The second reads $k_1^2 + k_2^2 \\equiv k_3^2 + k_4^2 \\pmod p$. So the two pairs have equal sum and equal sum of squares, hence equal sum and equal product, hence they are the roots of the same quadratic over the field $\\mathbb{F}_p$.\n\nPrimality is exactly what makes $\\mathbb{Z}/p\\mathbb{Z}$ a field. The construction genuinely fails at $p = 4, 6, 8, 9, 10$.",
+  "source": "Paul Erdos and Pal Turan, \"On a problem of Sidon in additive number theory, and on some related problems\", J. London Math. Soc. 16 (1941) 212-215",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "theorem_name": "Z2nFiveEighths.cubeFree_layerUnion_card_le_five_eighths",
+  "theorem_title": "Long-Wagner Theorem 1.10 at $d = 3$: the conjecture holds for unions of layers",
+  "natural_language_statement": "For every $n \\ge 4$, a cube-free $A \\subseteq \\mathbb{Z}/2^n\\mathbb{Z}$ that is a union of layers satisfies $8|A| \\le 5 \\cdot 2^n$.\n\nThe layers partition $\\mathbb{Z}/2^n\\mathbb{Z}$ by 2-adic valuation: layer $i$ for $1 \\le i \\le n$ is the residues congruent to $2^{i-1}$ mod $2^i$, and layer $n+1$ is $\\{0\\}$. `IsLayerUnion` says that containing one element of a layer means containing all of it.\n\nThis is the largest class on which the conjectured constant is proved. The extremal set $L_1 \\cup L_3$ lies in the class, so the restriction keeps the sharpness.",
+  "preamble": "import Mathlib\nimport Definitions.Def_Z2nCubeFreeLayers",
+  "source": "Jason Long and Adam Zsolt Wagner, \"The largest projective cube-free subsets of Z_{2^n}\", arXiv:1810.01225, https://arxiv.org/abs/1810.01225, Theorem 1.10, specialized to $d = 3$",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics"
+  ]
+}

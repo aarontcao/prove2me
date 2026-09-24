@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.cauchy_davenport_chowla",
+  "theorem_title": "Cauchy-Davenport-Chowla for three sets modulo a prime",
+  "natural_language_statement": "Let $p$ be prime and let $I$, $J$, $K$ be nonempty sets of residues modulo $p$ with $|I| + |J| + |K| \\ge p + 2$. Then every residue $x$ modulo $p$ can be written $x = u + v + w$ with $u \\in I$, $v \\in J$ and $w \\in K$.\n\nMathlib has the two-set Cauchy-Davenport inequality `ZMod.cauchy_davenport`. This is the three-set consequence that the induction on prime factors in Section 3 consumes.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, the three-set form of Cauchy-Davenport used in Section 3",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

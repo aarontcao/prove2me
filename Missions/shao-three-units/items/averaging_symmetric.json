@@ -1,0 +1,10 @@
+{
+  "theorem_name": "ShaoThreeUnits.averaging_symmetric",
+  "theorem_title": "Shao's Lemma 2.1: the symmetric averaging inequality",
+  "natural_language_statement": "Let $n$ be even with $n \\ge 6$ and let $a_0 \\ge a_1 \\ge \\dots \\ge a_{n-1}$ be reals in $[0,1]$. Suppose that for every triple of indices $i, j, k$ with $i + j + k \\ge n$ we have\n\n$$a_i a_j + a_j a_k + a_k a_i \\le \\tfrac{5}{8}(a_i + a_j + a_k).$$\n\nThen $\\sum_i a_i \\le \\frac{5}{8} n$.\n\nThe proof uses this through its contrapositive: an average above $5/8$ yields one triple of indices summing to at least $n$ on which the inequality is strict the other way.\n\nThe hypothesis $n \\ge 6$ is needed. Shao gives the counterexample $a = (1, 0.6, 0.5, 0.41)$ at $n = 4$.",
+  "source": "Xuancheng Shao, \"A density version of the Vinogradov three primes theorem\", Duke Math. J. 163 (2014) 489-512, arXiv:1206.6139v2, https://arxiv.org/abs/1206.6139, Lemma 2.1",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics"
+  ]
+}

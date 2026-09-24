@@ -1,0 +1,26 @@
+{
+  "slug": "z2n-five-eighths",
+  "name": "Long-Wagner Conjecture 5.1: cube-free subsets of Z/2^nZ have density at most 5/8",
+  "mission_type": "OpenProblem",
+  "field_ids": [
+    "55eec41b-ff24-45ad-96b6-49d7a6869286",
+    "e76e77ab-38dd-426d-a533-0b37fb6dbabc"
+  ],
+  "visibility": "public",
+  "description": "Call $A \\subseteq \\mathbb{Z}/2^n\\mathbb{Z}$ *cube-free* if no triple $x, y, z$ has all seven of $x$, $y$, $z$, $x+y$, $y+z$, $z+x$, $x+y+z$ inside $A$. The triple is unconstrained, so a degenerate one counts. Write $f(n)$ for the largest size of a cube-free subset.\n\nThe conjecture is that $f(n) \\le \\frac{5}{8} 2^n$ for every $n$.\n\nThis is Conjecture 5.1 of Jason Long and Adam Zsolt Wagner, *The largest projective cube-free subsets of $\\mathbb{Z}_{2^n}$*, [arXiv:1810.01225](https://arxiv.org/abs/1810.01225). It has been open since October 2018, and a 2026 journal paper still names it as conjectured: Yuchen Meng, *On Cube-Free Problems*, Electron. J. Combin. 33(1) (2026) #P1.16.\n\n## The constant is attained\n\nThe bound is sharp, and the extremal set is explicit: $A = \\{v : v \\bmod 8 \\in \\{1,3,4,5,7\\}\\}$, the odd residues together with those congruent to 4 mod 8. Its size is $2^{n-1} + 2^{n-3} = \\frac{5}{8} 2^n$. In the layer language of Long and Wagner this is $C_3 = L_1 \\cup L_3$.\n\n## What is known\n\nThe conjecture holds for unions of layers. That is Long-Wagner Theorem 1.10 at $d = 3$, and it is the largest class on which the conjectured constant is proved.\n\nFor arbitrary sets the best published unconditional bound is $f(n) < \\frac{2}{3} 2^n$. Meng calls this bound \"quite trivial\" and gives it in one paragraph for every cyclic group, so it should not be read as progress toward $5/8$. The residual gap is exactly $\\frac{2}{3} - \\frac{5}{8} = \\frac{1}{24}$, that is $2^n/24$ elements.\n\nSmall values are $f(1) = 1$, $f(2) = 2$, $f(3) = 5$, $f(4) = 10$, $f(5) = 20$, $f(6) = 40$, $f(7) = 80$, matching $2^{n-1} + 2^{n-3}$ from $n = 3$ on.\n\nThose seven values come from solver searches rather than from proofs, Gurobi in Long and Wagner for $n \\le 7$ together with an independent SAT reproduction here, and the two halves of the claim are not on the same footing. The SAT half that matters, the unsatisfiability of \"a cube-free set of size 81 exists at $n = 7$\", is a solver claim backed by neither a checked proof certificate nor a kernel check. The witness half is verified: a set of exactly 80 elements was produced and re-checked cube-free. So $f(7) \\ge 80$ is solid and $f(7) \\le 80$ is not certified. No part of this mission rests on either.\n\n## What the items are\n\nThe goal item is the open conjecture itself, for $n \\ge 4$. Every other item is a milestone that is proved mathematics. The two closed instances $n = 4$ and $n = 5$ are stated separately because they are the only cases of the goal that a proof assistant has actually settled here.\n\nThe chain runs: the base case mod 8 by exhaustion, monotonicity under subsets, the bridge between the membership form and the `Finset` form of the forbidden configuration, sharpness, the odd-residue tight case, the layer-union theorem, the two-thirds bound, and then $n = 4$ and $n = 5$.\n\n## Notes on the formalization\n\nSix definitions live in one definition item, `Def_Z2nCubeFreeLayers`: `HasCube`, `CubeFree`, `config`, `ConfigFree`, `layerIdx` and `IsLayerUnion`. `layerIdx` is written through the 2-adic valuation rather than through a congruence, because the congruence form leaves $0$ in no layer at all and needs the last layer special-cased.\n\n`CubeFree` and `ConfigFree` are two encodings of the same condition and they are not definitionally equal, because `config` collapses duplicates on a degenerate triple. Their equivalence is a milestone rather than an assumption.",
+  "item_order": [
+    "Z2nCubeFreeLayers",
+    "Z2nFiveEighths.cubeFree_mod_eight_card_le_five",
+    "Z2nFiveEighths.cubeFree_subset",
+    "Z2nFiveEighths.cubeFree_iff_configFree",
+    "Z2nFiveEighths.five_eighths_attained",
+    "Z2nFiveEighths.cubeFree_containing_odds",
+    "Z2nFiveEighths.cubeFree_layerUnion_card_le_five_eighths",
+    "Z2nFiveEighths.cubeFree_card_le_two_thirds",
+    "Z2nFiveEighths.cubeFree_card_le_five_eighths_four",
+    "Z2nFiveEighths.cubeFree_card_le_five_eighths_five",
+    "Z2nFiveEighths.cubeFree_card_le_five_eighths"
+  ],
+  "main_item": "Z2nFiveEighths.cubeFree_card_le_five_eighths",
+  "note": "item_order lists a definition_name first and then theorem names, not server item ids. The definition item has to be uploaded before every theorem item that imports it, and it has to sit first in item_order, because the platform compiles the drafts in that order at Submit."
+}

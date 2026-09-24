@@ -1,0 +1,11 @@
+{
+  "theorem_id": "767f4337-9086-4d7b-953a-05448ea473bf",
+  "theorem_name": "BSS.quadratic_system_equiv_single_quartic",
+  "statement_sha256": "27a6ab0212e2527610333b5d8de28c0b16377f508fc54dac163c09b9344b8803",
+  "mathlib_rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "admitted_at": "2026-09-14T16:43:12Z",
+  "submission_id": "42b42c1b-c293-48fc-b58d-80526e5008c0",
+  "platform_status": "ACCEPTED",
+  "submitted_at": "2026-09-14T16:52:51Z"
+}

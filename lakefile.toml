@@ -1,0 +1,37 @@
+name = "prove2me"
+defaultTargets = ["Root"]
+
+# Match the platform's elaboration settings.
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+# Pinned to the platform's default environment, read off `p2m envs` on
+# 2026-09-13. `p2m envs --assert-pin` fails when this drifts.
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "0df444a360eaa60ab8c11dca51a86af692955474"
+
+# The default build target; only elaborates Prove2Me.lean.
+[[lean_lib]]
+name = "Root"
+roots = ["Prove2Me"]
+
+# Our proofs. `Problems.+` excludes Problems.lean.
+[[lean_lib]]
+name = "Problems"
+roots = ["Problems"]
+globs = ["Problems.+"]
+
+# Mission drafts. Slug is hyphenated, so needs French quotes on the command line.
+[[lean_lib]]
+name = "Missions"
+roots = ["Missions"]
+globs = ["Missions.+"]
+
+# Platform definitions. Flat at the root because upstream imports say `Definitions.Def_<Name>`.
+[[lean_lib]]
+name = "Definitions"
+roots = ["Definitions"]
+globs = ["Definitions.+"]

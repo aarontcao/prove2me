@@ -1,0 +1,11 @@
+{
+  "theorem_name": "SidonSqrtN.compression",
+  "theorem_title": "Bailleul-Riblet Lemma 2.3: compression by a real rotation parameter",
+  "natural_language_statement": "For any finite set $A$ of integers and any positive $m$, there is a subset $C$ of $A$ with at least $|A|/2 - |A|^2/(2m)$ elements carrying a map into $\\mathbb{Z}/m\\mathbb{Z}$ that is injective on $C$ and preserves $a + b = c + d$.\n\nPut $\\varphi_\\theta(a) = \\lfloor am\\theta \\rfloor \\bmod m$ and keep $B_\\theta = \\{a \\in A : \\{am\\theta\\} < 1/2\\}$. On $B_\\theta$ two fractional parts sum to less than one, so no carry occurs and $\\varphi_\\theta$ is additive. Multiplication by a nonzero integer preserves Lebesgue measure mod one, so the average of $|B_\\theta|$ over $\\theta \\in [0,1)$ is at least $|A|/2$, while each colliding pair contributes at most $1/m$. Choose a $\\theta$ beating both averages, then delete one element from each colliding pair.\n\nTaking $m$ of order $n$ makes the bound a constant fraction of $n$. The 1975 route reaches the same place through four lemmas and a prime counting bound, and this one statement replaces all of them.",
+  "source": "Bailleul and Riblet, arXiv:2605.03181, https://arxiv.org/abs/2605.03181, Lemma 2.3",
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "number-theory"
+  ]
+}
