@@ -33,18 +33,18 @@ Run `dry` and see exit 0 before `propose`, every time. `submit`, `explain`, and 
 
 ## Status
 
-All four went up as complete drafts and have moved out of `Draft`. The figures below were read on 2026-09-23; re-read them with `p2m proposal <id>`.
+All four missions are complete on the platform. The figures below were read on 2026-10-09; re-read them with `p2m proposal <id>`.
 
-| Mission | Items | Platform status | Proved | Open | Proposal id |
-|---|---|---|---|---|---|
-| `shao-three-units` | 10 theorems | Reviewed | 10 | 0 | `dc6c62ca-47f1-47e0-ad81-63ff92dc655f` |
-| `z2n-five-eighths` | 1 definition, 10 theorems | Reviewed | 9 | 1 | `4c610437-1abb-40bf-9e2c-e0427f7b17a1` |
-| `sidon-sqrt-n` | 17 theorems | Reviewed | 17 | 0 | `75753f60-2f7d-4a4a-b4e8-ea67c9106112` |
-| `konyagin-unit-vectors` | 2 theorems | In review | 0 | 2 | `591a6c72-bbae-444d-8ddb-e4b16a94e039` |
+| Mission | Items | Platform status | Proved | Proposal id |
+|---|---|---|---|---|
+| `shao-three-units` | 10 theorems | Reviewed | 10 | `dc6c62ca-47f1-47e0-ad81-63ff92dc655f` |
+| `z2n-five-eighths` | 1 definition, 10 theorems | Reviewed | 10 | `4c610437-1abb-40bf-9e2c-e0427f7b17a1` |
+| `sidon-sqrt-n` | 17 theorems | Reviewed | 17 | `75753f60-2f7d-4a4a-b4e8-ea67c9106112` |
+| `konyagin-unit-vectors` | 2 theorems | Reviewed | 2 | `591a6c72-bbae-444d-8ddb-e4b16a94e039` |
 
-`konyagin-unit-vectors` came back from review with one requested change: the lower-bound item said "for arbitrarily large `n`", where Alon's Theorem 3.1 gives the bound for every `n`. The item now quantifies every `n`, as the moderator's suggested statement does. A confirmed item is a reference the platform will not patch, so on 2026-09-23 the old item was removed and the fixed one added in its place, with its read-back and milestone. The first re-submit failed its compile check, because the first submission had already published the old statement under the same name. So on 2026-09-24 the fixed item took the name `exists_sum_norm_ge_of_triangle_free_forall_n`. It went back into review on 2026-09-24.
+`konyagin-unit-vectors` was approved on 2026-09-27 after one requested change.
 
-Other contributors proved every item of [`shao-three-units`](https://prove2.me/missions/Shao's_three_units_theorem%3A_density_5%2F8_forces_a_three-fold_additive_basis) and [`sidon-sqrt-n`](https://prove2.me/missions/The_Komlos-Sulyok-Szemeredi_bound%3A_every_finite_set_of_reals_has_a_Sidon_subset_of_size_c_sqrt_n) on the platform, and every accepted proof came from someone else: our ledger lists zero submissions to either mission. That is the platform's report, never a verdict here. The finished proofs in `shao-three-units/Development/` still audit clean locally, and no item now needs them.
+Other contributors proved every item of [`shao-three-units`](https://prove2.me/missions/Shao's_three_units_theorem%3A_density_5%2F8_forces_a_three-fold_additive_basis), [`z2n-five-eighths`](https://prove2.me/missions/Long-Wagner_Conjecture_5.1%3A_cube-free_subsets_of_Z%2F2%5EnZ_have_density_at_most_5%2F8), [`sidon-sqrt-n`](https://prove2.me/missions/The_Komlos-Sulyok-Szemeredi_bound%3A_every_finite_set_of_reals_has_a_Sidon_subset_of_size_c_sqrt_n), and [`konyagin-unit-vectors`](https://prove2.me/missions/Lovasz_Problem_11.8%3A_triangle-free_unit_vector_systems_sum_to_Theta(n%5E(2%2F3))) on the platform. Every accepted proof came from someone else: our ledger lists zero submissions to any of the four. That is the platform's report, never a verdict here. The finished proofs in `shao-three-units/Development/` still audit clean locally, and no item now needs them.
 
 `z2n-five-eighths/Research/` holds the SAT reproduction of `f(7) = 80`, its three referee reports, and the instrument that produced it. The UNSAT half is still uncertified, and the mission rests on neither half.
 
