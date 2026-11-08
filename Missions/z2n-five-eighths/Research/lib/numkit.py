@@ -87,9 +87,9 @@ def planted(fn, truth, label="", quiet=False, **kwargs):
 
     A function that ignores its input can match a known answer, but not a freshly planted one.
     """
+    tol = kwargs.pop("tol", 0)
     got = fn(**kwargs)
-    res = two_routes(got, truth, tol=kwargs.pop("tol", 0), label=label or "planted",
-                     quiet=True)
+    res = two_routes(got, truth, tol=tol, label=label or "planted", quiet=True)
     res["planted"] = truth
     res["recovered"] = got
     if not quiet:

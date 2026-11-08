@@ -230,13 +230,13 @@ def mode_control():
         print(f"control over-certify n={n}: a set of size {want} exists: "
               f"{sat_at}; witness cube-free: {is_cube_free(n, A) if A else False}")
 
-    fit = [KNOWN[n] for n in (1, 2, 3, 4, 5)]
+    fit = [KNOWN[n] for n in (3, 4, 5)]
     predicted = (1 << 5) + (1 << 3)          # 2^(6-1) + 2^(6-3) = 40
     held_out = KNOWN[6]
     hold_ok = predicted == held_out
     all_ok = all_ok and hold_ok
     rows.append(["hold-out", 6, held_out, predicted, "ok" if hold_ok else "FAIL"])
-    print(f"control hold-out: fitted 2^(n-1)+2^(n-3) on f(1..5)={fit}, "
+    print(f"control hold-out: fitted 2^(n-1)+2^(n-3) on f(3..5)={fit}, "
           f"predicted f(6)={predicted}, actual {held_out}")
 
     numkit.table(Path(__file__).resolve().parents[1] / "tables"
@@ -249,13 +249,19 @@ def mode_control():
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     g = ap.add_mutually_exclusive_group(required=True)
-    g.add_argument("--validate", action="store_true")
-    g.add_argument("--plant", action="store_true")
-    g.add_argument("--known", action="store_true")
-    g.add_argument("--control", action="store_true")
-    g.add_argument("--decide", nargs=2, type=int, metavar=("N", "T"))
+    g.add_argument("--validate", action="store_true",
+                   help="check that SAT and exhaustive search agree on f(1..4)")
+    g.add_argument("--plant", action="store_true",
+                   help="run the planted-set test")
+    g.add_argument("--known", action="store_true",
+                   help="reproduce f(1..6) by SAT")
+    g.add_argument("--control", action="store_true",
+                   help="run the hold-out and over-certification controls")
+    g.add_argument("--decide", nargs=2, type=int, metavar=("N", "T"),
+                   help="decide whether Z_2^N has a cube-free set of size >= T")
     a = ap.parse_args()
 
     if a.validate:

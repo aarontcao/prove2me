@@ -47,6 +47,12 @@ def test_planted_detects_and_misses():
     assert not bad["ok"]
 
 
+def test_planted_keeps_tol_from_fn():
+    # tol is for the comparison, so fn must not receive it.
+    res = numkit.planted(lambda: 25.4, truth=25, tol=0.5, quiet=True)
+    assert res["ok"]
+
+
 def test_pin_threads_raises_after_numpy(tmp_path):
     """pin_threads must raise once numpy has loaded, since the BLAS variables no longer apply."""
     script = tmp_path / "late.py"
