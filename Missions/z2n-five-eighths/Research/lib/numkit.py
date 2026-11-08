@@ -1,28 +1,6 @@
-"""numkit - the primitives every campaign instrument re-types otherwise.
+"""Shared primitives for the scripts in `instruments/`.
 
-WHY THIS FILE EXISTS
-  The zeta campaign's `gram.py` re-typed a prior run's sieve and von Mangoldt
-  code almost verbatim. That is wasted turns, and worse, it is a second copy
-  that can disagree with the first. One file, imported, ends both problems.
-
-WHY ONE FILE AND NOT A PACKAGE
-  A package needs an install step, and an install step goes stale. A campaign
-  script reaches this through PYTHONPATH, which `leanck campaign run` and
-  `leanck campaign instrument` both set. Nothing to install, nothing to rot.
-
-IMPORT ORDER MATTERS, AND THIS IS THE ONE GOTCHA
-  `import numkit` must come BEFORE `import numpy`. The BLAS thread variables
-  only take effect at numpy import time, so setting them afterwards does
-  nothing and does it silently. numkit sets them at its own import time and
-  imports numpy lazily, inside the functions that need it. `pin_threads` raises
-  if numpy is already loaded, so the mistake is loud rather than quiet.
-
-THE VERDICT CHANNEL IS THE LAST STDOUT LINE, AND ONLY THAT
-  A long numerical run prints a lot. `leanck campaign instrument` reads the
-  verdict from the last stdout line and requires it to be a JSON object with a
-  `numkit` key. Use `emit()`. Anything else you print is free text that cannot
-  be mistaken for a result. This mirrors the rule in docs/lean-verification.md
-  that the auditor's verdict never comes from scraping stdout.
+Import numkit before numpy, because the BLAS thread variables only take effect at numpy import.
 """
 import json
 import os
@@ -30,7 +8,7 @@ import sys
 
 __version__ = "1.0"
 
-# Set at import time, before numpy can be loaded. See the module docstring.
+# Set at import time, so the defaults are in place before numpy loads.
 _DEFAULT_THREADS = os.environ.get("NUMKIT_THREADS", "1")
 for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
              "NUMEXPR_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
@@ -42,14 +20,7 @@ for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
 # --------------------------------------------------------------------------
 
 def pin_threads(n=1):
-    """Pin every BLAS threading knob to `n`.
-
-    A PyPI numpy links OpenBLAS with pthreads and defaults to one thread per
-    core. Three jobs on this box's eight vCPUs then ask for twenty-four
-    threads, with no swap to absorb the thrash. The system numpy links Debian's
-    single-threaded reference libblas, so this problem appears the moment a
-    job uses a PyPI numpy and not before.
-    """
+    """Pin every BLAS threading knob to `n`, since OpenBLAS defaults to one thread per core."""
     if "numpy" in sys.modules:
         raise RuntimeError(
             "pin_threads() called after numpy was imported. The BLAS thread "
@@ -62,15 +33,10 @@ def pin_threads(n=1):
 
 
 def mem_guard(gb=None):
-    """Cap this process's address space, in GB.
+    """Cap this process's address space at `gb` GB, and return the cap or None if refused.
 
-    THE HIGHEST VALUE FOUR LINES IN THIS FILE
-      This box has 32 GB and no swap. Without a cap, an allocation that is too
-      large takes the whole machine into an OOM kill, and the kernel picks the
-      victim. With one, the process that asked for too much raises MemoryError
-      and everything else keeps running.
-
-    Returns the cap actually applied, in GB, or None when the platform refuses.
+    An allocation over the cap raises MemoryError in this process.
+    Without it, the kernel's OOM killer picks a victim, which may be another process.
     """
     if gb is None:
         gb = float(os.environ.get("NUMKIT_MEM_GB", 8))
@@ -91,15 +57,9 @@ def mem_guard(gb=None):
 # --------------------------------------------------------------------------
 
 def two_routes(a, b, tol=1e-9, label="", quiet=False):
-    """Cross-check one quantity computed two independent ways.
+    """Compare one quantity computed two ways, and return the residual in a dict.
 
-    THE POINT IS INDEPENDENCE, AND ONLY YOU CAN SUPPLY THAT
-      This function compares two numbers. It cannot tell whether they came from
-      genuinely different derivations or from the same code called twice. An
-      instrument validated against itself is validated against nothing. State
-      in the campaign ledger what the two routes actually were.
-
-    Returns a dict, so that every instrument reports a residual the same way.
+    It can't tell two derivations from one code path called twice, so record the routes in `ledger.ndjson`.
     """
     try:
         a_f, b_f = float(a), float(b)
@@ -107,7 +67,7 @@ def two_routes(a, b, tol=1e-9, label="", quiet=False):
         scale = max(abs(a_f), abs(b_f), 1.0)
         rel = residual / scale
     except (TypeError, ValueError):
-        # Exact objects, integers or Fractions: equality is the whole test.
+        # Values that float() rejects, like tuples or sets, compare by equality.
         residual = 0.0 if a == b else float("inf")
         rel = residual
     ok = residual <= float(tol)
@@ -123,14 +83,9 @@ def two_routes(a, b, tol=1e-9, label="", quiet=False):
 
 
 def planted(fn, truth, label="", quiet=False, **kwargs):
-    """Run `fn` on an input whose answer is known, and confirm it recovers it.
+    """Run `fn(**kwargs)` and check that it recovers the planted answer `truth`.
 
-    THE TEST PEOPLE SKIP, AND THE ONE THAT MATTERS
-      An instrument that reproduces a known answer but cannot detect a planted
-      signal may be a constant function. The zeta campaign found exactly that
-      failure fifty minutes in: the brief's quantity was identically zero in
-      every computable range, so there was nothing to fit. A planted-answer
-      test catches it before a day is spent.
+    A function that ignores its input can match a known answer, but not a freshly planted one.
     """
     got = fn(**kwargs)
     res = two_routes(got, truth, tol=kwargs.pop("tol", 0), label=label or "planted",
@@ -145,10 +100,9 @@ def planted(fn, truth, label="", quiet=False, **kwargs):
 
 
 def emit(obj):
-    """Print one JSON object as the LAST stdout line. The verdict channel.
+    """Print the verdict as one JSON line with a `numkit` key. Call it last.
 
-    `leanck campaign instrument` reads this line and nothing else. A stray
-    print elsewhere in the run therefore cannot be mistaken for a verdict.
+    A caller that records verdicts reads only the last stdout line, so other prints can't pass for a verdict.
     """
     payload = dict(obj)
     payload["numkit"] = __version__
@@ -163,7 +117,7 @@ def emit(obj):
 # --------------------------------------------------------------------------
 
 def table(path, rows, header=None):
-    """Write a column-aligned, greppable table. One format everywhere."""
+    """Write a column-aligned, greppable table to `path` and return its text."""
     rows = [[str(c) for c in r] for r in rows]
     head = [str(h) for h in (header or [])]
     widths = []
@@ -183,12 +137,7 @@ def table(path, rows, header=None):
 
 
 def checkpoint(path, obj):
-    """Write a JSON checkpoint atomically.
-
-    Temp file plus os.replace, so a process killed mid-write leaves either the
-    old checkpoint or the new one, never a truncated file. A nine-minute run
-    that dies against the ten-minute wall must not lose everything.
-    """
+    """Write a JSON checkpoint via a temp file and os.replace, so a kill mid-write can't truncate it."""
     tmp = str(path) + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:
         json.dump(obj, fh, default=str)
@@ -225,7 +174,7 @@ def primes_upto(n):
 
 
 def factorize(n):
-    """Prime factorisation as a dict {p: e}. Trial division, fine to 10^12."""
+    """Prime factorization as a dict {p: e}, by trial division, fine to 10^12."""
     out, n = {}, int(n)
     if n <= 1:
         return out
@@ -249,8 +198,7 @@ def divisors(n):
 
 
 def v2(n):
-    """The 2-adic valuation of n. v2(0) is defined here as -1, not infinity,
-    because every caller in this tree wants a sortable integer."""
+    """The 2-adic valuation of n, with v2(0) = -1 so the result is always an int."""
     n = int(n)
     if n == 0:
         return -1
@@ -262,10 +210,6 @@ def v2(n):
 
 
 def layer(x, n):
-    """The 2-adic layer of x in Z_{2^n}: v2(x), with 0 in its own top layer.
-
-    The layer decomposition is the structure the z2n bench's whole argument
-    runs on, so it lives here rather than being re-derived per instrument.
-    """
+    """The 2-adic layer of x in Z_{2^n}: v2(x), with 0 in its own top layer n."""
     x = int(x) % (1 << n)
     return n if x == 0 else v2(x)

@@ -13,7 +13,7 @@ project:
     linear program, and the assembly through Proposition 1.4.
   authors:
     - "Aaron Cao"
-  license: "Apache-2.0"
+  license: "AGPL-3.0-or-later"
   responsible_maintainers:
     - "Aaron Cao"
 

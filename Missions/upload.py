@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Drive one mission proposal onto the platform, one gated step at a time.
 
-    ./upload.py <slug> sweep              the duplicate sweep the gate demands
+    ./upload.py <slug> sweep              search the platform for duplicates before proposing
     ./upload.py <slug> dry                dry-run every call, no socket opened
     ./upload.py <slug> propose            create the draft proposal
-    ./upload.py <slug> items <pid>        add every item, in item_order
-    ./upload.py <slug> finish <pid>       attach read-backs, add milestones
-    ./upload.py <slug> order <pid>        set item_order and the goal
+    ./upload.py <slug> items [<pid>]      add every item, in item_order
+    ./upload.py <slug> finish [<pid>]     attach read-backs, add milestones
+    ./upload.py <slug> order [<pid>]      set item_order and the goal
 
+Without a pid, items, finish, and order read the newest one from the ledger.
 Locates `p2m` via P2M_PATH or PATH.
 """
 
@@ -104,7 +105,7 @@ def item_args(d, name, meta, pid, extra):
 
 
 def cmd_dry(slug, *_):
-    """Dry-run every item; exit nonzero if any refuses."""
+    """Dry-run the proposal and every item, and exit 1 if any refuses."""
     d, prop, metas, ms = load(slug)
     refused = []
     rc, _ = run(["propose", "--spec", str(d / "proposal.json"), "--dry-run"])
@@ -158,8 +159,7 @@ def cmd_finish(slug, pid, *_):
         f, meta = metas[name]
         lean = lean_for(d, meta)
         if "definition_name" in meta:
-            # A definition item is a whole module, so its read-back covers every
-            # declaration in it.
+            # A definition item is a whole module, so read back every declaration.
             import re
             decls = re.findall(r"(?m)^(?:noncomputable\s+)?(?:def|abbrev|structure"
                                r"|inductive|instance|class)\s+([^\s:{(\[]+)",
@@ -183,7 +183,7 @@ def cmd_finish(slug, pid, *_):
 
 
 def cmd_order(slug, pid, *_):
-    """Set item_order and the goal. The platform compiles in that order at Submit."""
+    """Send the goal and item_order from proposal.json with `proposal-set`."""
     d, _, _, _ = load(slug)
     rc, _ = run(["proposal-set", pid, "--spec", str(d / "proposal.json"),
                  "--confirm"])

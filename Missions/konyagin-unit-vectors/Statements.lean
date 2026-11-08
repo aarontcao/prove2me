@@ -4,7 +4,7 @@ open scoped RealInnerProductSpace
 
 /-!
 Draft mission items for Konyagin's bound on triangle-free unit vector systems,
-each ending in `:= by sorry`. Upper bound and Alon's matching lower bound.
+each ending in `:= by sorry`.
 -/
 
 namespace KonyaginUnitVectors

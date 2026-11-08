@@ -2,9 +2,7 @@
 
 ## Problem
 
-Fix $n$ variables and finitely many polynomials $p_0, \dots, p_{m-1}$ in
-$\mathbb{R}[x_1, \dots, x_n]$, each of total degree at most $2$. One polynomial
-of total degree at most $4$ cuts out the same real zero set:
+Fix $n$ variables and finitely many polynomials $p_0, \dots, p_{m-1}$ in $\mathbb{R}[x_1, \dots, x_n]$, each of total degree at most $2$. One polynomial of total degree at most $4$ cuts out the same real zero set:
 
 $$\exists f \in \mathbb{R}[x_1, \dots, x_n], \quad \deg f \le 4
 \ \text{ and } \ \forall x \in \mathbb{R}^n,
@@ -16,122 +14,49 @@ Add up the squares:
 
 $$f = \sum_{i=0}^{m-1} p_i^2.$$
 
-A finite sum of real squares vanishes exactly when every summand vanishes, so
-$f$ computes the conjunction of the $m$ equations. Squaring doubles the
-degree, so the bound goes from $2$ to $4$.
+A finite sum of real squares vanishes exactly when every summand vanishes, so $f$ computes the conjunction of the $m$ equations. Squaring doubles the degree, so the bound goes from $2$ to $4$.
 
 ## Where it comes from
 
-The problem asks for one equation equivalent to a conjunction of $m$ equations.
-Which algebraic operation on polynomials computes an intersection of zero sets
-rather than some other combination of them?
+We want an operation on polynomials whose zero set is the intersection of theirs. Multiplication gives the union, since $p_0 p_1$ vanishes wherever either factor does. Addition is worse, because $p_0 + p_1$ also vanishes wherever the two cancel, at points where neither is zero.
 
-The first thing anyone tries is multiplication, which computes the union instead
-of the intersection. The product $p_0 p_1$ vanishes wherever either factor
-does, and in a field that is the only way it vanishes. Addition on its own is
-worse again, because $p_0 + p_1$ vanishes wherever the two polynomials happen
-to cancel, at points where neither one is zero.
+That leaves the order on $\mathbb{R}$. A square is nonnegative and is zero only at zero, so in a sum of squares no term can cancel another. The trick works only because $\mathbb{R}$ is ordered.
 
-That leaves the order on $\mathbb{R}$. The order supplies exactly one useful
-operation. A square is nonnegative and is zero only at zero, so a sum of
-several squares can vanish only when every term does. No term can cancel
-another the way two polynomials of opposite sign can. So a sum of squares
-expresses a conjunction algebraically. It works only because $\mathbb{R}$ is
-ordered: over a field that cannot be ordered, the same expression loses that
-reading.
-
-Now count the degree. The sum of squares is the cheapest AND gate the ordering
-offers. Its price is a factor of two in degree, so quadratics go in and a
-quartic comes out. The $4$ in the statement is therefore the price of the
-cheapest available construction starting from degree $2$, however this
-particular proof happens to be arranged.
-
-That price is the point of the statement. In the Blum, Shub, and Smale model of
-computation over $\mathbb{R}$, the standard complete problem for the class
-$\text{NP}_{\mathbb{R}}$ is the feasibility of a single real polynomial of
-degree $4$, so a reduction landing on degree $4$ lands exactly on the complete
-problem and says something about the class. A construction costing a factor of
-three instead of two would produce sextics, which is no worse as mathematics and
-useless here.
+The bound $4$ matters for complexity. In the Blum, Shub, and Smale model of computation over $\mathbb{R}$, the standard complete problem for $\text{NP}_{\mathbb{R}}$ is feasibility of one real quartic. So this reduction lands exactly on the complete problem.
 
 ## The proof
 
-The construction splits into a bound and an equivalence, proved independently.
+For the degree bound, total degree is subadditive under multiplication, so $\deg(p_i^2) \le 2 \deg p_i \le 4$. A finite sum has total degree at most the largest among its summands, so $\deg f \le 4$.
 
-Take the degree bound first. Total degree is subadditive under multiplication,
-so $\deg(p_i^2) \le 2 \deg p_i \le 4$ for every $i$. The total degree of a
-finite sum is at most the largest total degree of a summand, so $\deg f \le 4$.
-Both inequalities are non-strict, and neither one asks any $p_i$ to be nonzero,
-which matters because the statement quantifies over a family that may contain
-the zero polynomial.
-
-For the equivalence, fix $x \in \mathbb{R}^n$. Evaluation at $x$ is a ring
-homomorphism, so
+For the equivalence, fix $x \in \mathbb{R}^n$. Evaluation at $x$ is a ring homomorphism, so
 
 $$f(x) = \sum_{i=0}^{m-1} p_i(x)^2 .$$
 
-Every summand is a real square and therefore nonnegative, so the sum vanishes
-only when every summand does, and in $\mathbb{R}$ a square vanishes only when
-its base does. Composing those two observations,
+Every summand is a real square, so the sum vanishes only when every summand does. Since in $\mathbb{R}$ a square vanishes only when its base does,
 
 $$f(x) = 0 \iff \forall i, p_i(x)^2 = 0 \iff \forall i, p_i(x) = 0 .$$
 
-Both steps are equivalences at a point, so the two zero sets are equal.
-Implications alone would give only one inclusion, in the convenient direction.
+## Dropping hypotheses
 
-## What breaks when a hypothesis is dropped
+The equivalence never reads $\deg p_i \le 2$, so the degree hypothesis only feeds the bound. For real polynomials of any degrees the sum of squares still works, with $4$ replaced by twice the largest degree.
 
-The degree hypothesis feeds only the bound, since the equivalence half never
-reads $\deg p_i \le 2$. The sum of squares cuts out the same zero set for any
-finite family of real polynomials of any degrees. Without the hypothesis the
-theorem still holds, with $4$ replaced by twice the largest degree.
+The witness needs $m$ finite, but the existence claim doesn't. Since $\mathbb{R}[x_1, \dots, x_n]$ is Noetherian, the ideal generated by an infinite family $\{p_i\}$ has finitely many generators $q_1, \dots, q_k$. A point kills every $p_i$ exactly when it kills every $q_j$, so $\sum_j q_j^2$ works. The degree bound survives too. Polynomials of degree at most $2$ form a finite-dimensional space, so finitely many of the $p_i$ already span the rest. Their squares sum to degree at most $4$.
 
-Finiteness is a hypothesis on the witness rather than on the theorem. A sum of
-squares inside the polynomial ring has finitely many terms, so this particular
-witness does need $m$ finite. The existence claim survives anyway, because
-$\mathbb{R}[x_1, \dots, x_n]$ is Noetherian, so the ideal generated by an
-infinite family $\{p_i\}$ is generated by finitely many $q_1, \dots, q_k$. A
-point kills every $p_i$ exactly when it kills every element of that ideal, so
-$\sum_j q_j^2$ cuts out the same real zero set. This route loses the bound,
-because the degrees of the $q_j$ are uncontrolled.
+The ordering can't be dropped, as $\mathbb{C}$ shows. Over $\mathbb{C}$ the sum of squares fails outright. Take $n = 1$, $p_0 = x_1$, and $p_1 = i x_1$. The sum $p_0^2 + p_1^2$ is identically zero, while the system cuts out the origin. A system in two variables defeats every witness.
 
-The ordering is the one hypothesis nothing can be traded for, as $\mathbb{C}$
-shows. The usual remark here is that the sum of squares fails over
-$\mathbb{C}$: for $p_0 = x_1$ and $p_1 = i x_1$ the sum $p_0^2 + p_1^2$ is
-identically zero, while the system cuts out the origin. That example only
-retires one witness. A stronger statement holds, with a short proof.
+Claim: over $\mathbb{C}$ the theorem is false. No polynomial $f \in \mathbb{C}[x_1, x_2]$ has zero set exactly $\{(0,0)\}$, though $p_0 = x_1$ and $p_1 = x_2$ cut out that point.
 
-Claim: over $\mathbb{C}$ the theorem is false, in the strong sense that no
-polynomial $f \in \mathbb{C}[x_1, x_2]$ at all, of any degree, has zero set
-exactly $\{(0,0)\}$, while $p_0 = x_1$ and $p_1 = x_2$ cut that point out.
+*Proof.* The zero polynomial vanishes on all of $\mathbb{C}^2$, so take $f$ nonzero. Write $f = \sum_{j=0}^{d} c_j(x_1) x_2^j$ with $c_d \ne 0$ as a polynomial in $x_2$ over $\mathbb{C}[x_1]$.
 
-*Proof.* Write $f = \sum_{j=0}^{d} c_j(x_1) x_2^j$ with $c_d \ne 0$ as a
-polynomial in $x_2$ over $\mathbb{C}[x_1]$.
+If $d \ge 1$, all but finitely many $a$ have $c_d(a) \ne 0$. For each such $a$, the polynomial $f(a, x_2)$ has degree $d$, so it has a root $b$ because $\mathbb{C}$ is algebraically closed. That gives infinitely many zeros $(a, b)$.
 
-Suppose $d \ge 1$. The polynomial $c_d$ is nonzero, so it has finitely many
-roots, and for every other value $a$ the one-variable polynomial $f(a, x_2)$
-has degree exactly $d \ge 1$. Since $\mathbb{C}$ is algebraically closed it has
-a root $b$, and $(a,b)$ lies in the zero set. Distinct values of $a$ give
-distinct points, so the zero set is infinite.
+If $d = 0$, then $f = c_0(x_1)$. Its zero set is empty when $c_0$ is constant, and otherwise a nonempty finite union of vertical lines. In every case the zero set isn't $\{(0,0)\}$. $\square$
 
-Suppose instead $d = 0$, so $f = c_0(x_1)$ depends on $x_1$ alone. If $c_0$ is
-a nonzero constant the zero set is empty. If $c_0$ is the zero polynomial the
-zero set is all of $\mathbb{C}^2$. Otherwise the zero set is a finite nonempty
-union of vertical lines, which is infinite.
-
-In every case the zero set is empty, infinite, or everything, so it is never
-the single point $\{(0,0)\}$. $\square$
-
-So the failure over $\mathbb{C}$ goes deeper than a shortage of witnesses. An
-ordered field lets a finite conjunction of equations collapse to one equation,
-and an algebraically closed field forbids it, because a hypersurface there is
-either empty or of dimension $n-1$. The construction belongs to real algebraic
-geometry.
+So over $\mathbb{C}$ some systems of two equations can't be replaced by one.
 
 ## Context
 
-The model of computation and the complexity result are from the paper the
-namespace is named after. Titles are quoted exactly as published.
+The model and the completeness result come from the paper the namespace is named after.
 
 > L. Blum, M. Shub, and S. Smale, *On a theory of computation and complexity
 > over the real numbers: NP-completeness, recursive functions and universal
@@ -144,28 +69,11 @@ namespace is named after. Titles are quoted exactly as published.
 > This book gives the textbook treatment of the same model, and the literature
 > points to it for the completeness of degree-4 feasibility.
 
-The 1989 paper is open access and its bibliographic record was read directly.
-Its body sits behind a bot filter from this machine. So the sentence naming
-4-Feasibility as the complete problem was read from the indexed text of the
-publisher's own PDF, then corroborated by a secondary source that calls the
-problem 4-FEAS and attributes it to the 1998 book. No chapter or proposition
-number appears here, because none could be confirmed against either source.
-
-No pinpoint locator appears for the sum-of-squares reduction either, for the
-same reason. The construction is standard and elementary, and the argument
-given above stands on its own without one.
-
-These sources do not cover the optimality of $4$ for a given system, or the
-bit-complexity model, where the corresponding decision problem is a different
-question.
+Neither covers the bit-complexity model, where the decision problem is a different question.
 
 ## Formalization
 
-The Lean is routine. `MvPolynomial.totalDegree_pow`
-and `MvPolynomial.totalDegree_finsetSum` give the two halves of the degree
-bound directly. `Finset.sum_eq_zero_iff_of_nonneg`, fed `sq_nonneg` at each
-index, is the ordering argument already packaged in Mathlib. Only this step uses
-anything specific to the real numbers.
+The Lean is routine. `MvPolynomial.totalDegree_pow` and `MvPolynomial.totalDegree_finsetSum` give the two halves of the degree bound. `Finset.sum_eq_zero_iff_of_nonneg`, fed `sq_nonneg` at each index, is the ordering argument. Only this step uses anything specific to the real numbers.
 
 ```lean
 theorem solution {n m : ℕ} (p : Fin m → MvPolynomial (Fin n) ℝ)
@@ -186,35 +94,14 @@ theorem solution {n m : ℕ} (p : Fin m → MvPolynomial (Fin n) ℝ)
     simp
 ```
 
-The statement is restated in the solution file instead of imported from the
-upstream statement file. That file proves its theorem with `sorry`, and
-importing it would pull `sorryAx` into the axiom closure of everything
-downstream, so the audit would pass on an unproved theorem.
+The solution file restates the theorem, to avoid importing the `sorry` in the upstream statement file.
 
 ## What it does not say
 
-The theorem only asserts that a witness exists. It leaves open whether $4$ is
-optimal for a given system, and whether $f$ is unique.
+The theorem only asserts that a witness exists, and doesn't say whether $4$ is optimal for a given system. This witness attains the bound once some $p_i$ has total degree exactly $2$. Its degree-$4$ part is the sum of the squares of the degree-$2$ leading forms of the $p_i$. A sum of squares of real forms vanishes only when every form does.
 
-The degree-$4$ part of $f$ is the sum of the squares of the degree-$2$ leading
-forms of the $p_i$. A sum of squares of real forms vanishes only when every
-form does, so the bound is attained as soon as some $p_i$ has total degree
-exactly $2$.
+An existence statement about zero sets can hold vacuously, so the solution file has two companion examples. The first takes the system $x_1 = 0$, $1 = 0$, whose real solution set is empty, and gets a quartic that never vanishes. The second takes $x_1 = 0$ and gets a quartic that vanishes at $0$ but not at $1$. Together they use both directions of the equivalence at named real points.
 
-An existence statement about zero sets is the kind of claim that can hold
-vacuously, so the solution file has two companion examples at concrete data.
-The first instantiates the system $x_1 = 0$, $1 = 0$, whose real solution set
-is empty, and concludes that the quartic vanishes nowhere. The second
-instantiates $x_1 = 0$, which has the single solution $0$, and concludes that
-the quartic vanishes at $0$ and not at $1$. Together they exercise both
-directions of the equivalence at named real points, which no vacuous statement
-could do.
+For $m = 0$ the system is empty, so $f = 0$ and both sides of the equivalence hold everywhere. For $n = 0$ the theorem still holds, on the single point of $\mathbb{R}^0$.
 
-The same witness covers two degenerate cases in one branch. For
-$m = 0$ the system is empty, the right side of the equivalence is vacuously
-true, and $f = 0$ vanishes everywhere. For $n = 0$ the space $\mathbb{R}^0$ is
-a single point and the equivalence is one scalar identity.
-
-The proof does not use `decide`, `native_decide`, or a hand-written `axiom`,
-and the axiom closure stays within `propext`, `Classical.choice`, and
-`Quot.sound`.
+The proof doesn't use `decide`, `native_decide`, or a hand-written `axiom`, and its axioms stay within `propext`, `Classical.choice`, and `Quot.sound`.

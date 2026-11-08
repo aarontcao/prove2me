@@ -1,7 +1,7 @@
 {
   "theorem_name": "KonyaginUnitVectors.sum_norm_le_of_triangle_free",
   "theorem_title": "Konyagin's theorem: a triangle-free unit vector system sums to $O(n^{2/3})$",
-  "natural_language_statement": "There is an absolute constant $C$ such that for any system of $n$ unit vectors in a Euclidean space, of which among any three some two are orthogonal, the norm of the sum is at most $Cn^{2/3}$.\n\nThe hypothesis says exactly that the *non-orthogonality graph*, joining $i$ to $j$ when $\\langle u_i, u_j \\rangle \\ne 0$, is triangle-free. It is written here as a condition on triples so that the statement avoids a definition item; in Mathlib's vocabulary it is `SimpleGraph.CliqueFree 3`.\n\nThe constant is quantified outside everything, so it depends neither on the dimension nor on $n$.\n\nThe attribution is worth stating carefully, because it is commonly given wrong in both halves. Lovasz posed the problem; Konyagin proved the $O(n^{2/3})$ bound.",
+  "natural_language_statement": "Let $u_1, \\dots, u_n$ be unit vectors in a Euclidean space such that among any three some two are orthogonal. Then $\\|u_1 + \\dots + u_n\\| \\le Cn^{2/3}$ for an absolute constant $C$.\n\nThe hypothesis says the non-orthogonality graph, joining $i$ to $j$ when $\\langle u_i, u_j \\rangle \\ne 0$, is triangle-free (`SimpleGraph.CliqueFree 3` in Mathlib). We quantify $C$ before the dimension and $n$, so it depends on neither.",
   "source": "Laszlo Lovasz, \"Combinatorial Problems and Exercises\", North Holland, 1979, Problem 11.8; proved in Sergei V. Konyagin, \"Systems of vectors in Euclidean space and an extremal problem for polynomials\", Mat. Zametki 29 (1981) 63-74, doi:10.1007/BF01142512, https://doi.org/10.1007/BF01142512",
   "tags": [
     "combinatorics",

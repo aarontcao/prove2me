@@ -10,14 +10,13 @@ namespace ShaoThreeUnits.Statements
 open scoped Classical
 open Finset
 
-/-- The units of `ZMod m`, as a `Finset (ZMod m)`. This is the ambient set the
-whole problem lives in, since `A` is a subset of it and its size is `phi m`. -/
+/-- The units of `ZMod m`, as a `Finset (ZMod m)`. -/
 noncomputable def U (m : ℕ) [NeZero m] : Finset (ZMod m) :=
   Finset.univ.filter (fun x => IsUnit x)
 
 /-! ## The goal -/
 
-/-- Node `cor_1_5`, which is the question this development was built to answer. -/
+/-- Node `cor_1_5`. Shao's Corollary 1.5, the goal. -/
 abbrev Cor15 : Prop :=
   ∀ (m : ℕ) [NeZero m], Odd m → Squarefree m →
     ∀ A : Finset (ZMod m), A ⊆ U m → 5 * Nat.totient m < 8 * A.card →
@@ -26,8 +25,8 @@ abbrev Cor15 : Prop :=
 
 /-! ## The weighted local result
 
-`Cor15` is the `f = 1_A` case of `Prop14`. The induction that proves it cannot
-be run on sets alone, so the whole proof works with functions into `[0,1]`.
+`Cor15` is the `f = 1_A` case of `Prop14`. The induction doesn't run on sets
+alone, so the proof works with functions into `[0,1]`.
 -/
 
 /-- Node `prop_1_4`. Shao's Proposition 1.4, the weighted local result. -/
@@ -39,7 +38,7 @@ abbrev Prop14 : Prop :=
         0 < f a₁ * f a₂ * f a₃ ∧ 3 / 2 < f a₁ + f a₂ + f a₃
 
 
-/-- Node `divisor_reduction`. Shao's opening move in the proof of Prop 1.4. -/
+/-- `Prop14` at one modulus. Node `divisor_reduction` passes it from `M` to a divisor. -/
 abbrev Prop14At (M : ℕ) [NeZero M] : Prop :=
   ∀ g : ZMod M → ℝ, (∀ x, 0 ≤ g x) → (∀ x, g x ≤ 1) →
     (5 : ℝ) / 8 * (Nat.totient M) < (∑ x ∈ U M, g x) →
@@ -52,7 +51,7 @@ abbrev DivisorReduction : Prop :=
 
 /-! ## The two halves of Proposition 1.4 -/
 
-/-- Node `prop_3_1`. Shao's Proposition 3.1, the induction away from 3 and 5. -/
+/-- Node `prop_3_1`. Shao's Proposition 3.1, the induction away from 2, 3, and 5. -/
 abbrev Prop31 : Prop :=
   ∀ (m : ℕ) [NeZero m], Squarefree m → Nat.Coprime m 30 →
     ∀ f : ZMod m → ℝ, (∀ x, 0 ≤ f x) → (∀ x, f x ≤ 1) →
@@ -61,7 +60,7 @@ abbrev Prop31 : Prop :=
         5 / 8 * (f a + f b + f c) < f a * f b + f b * f c + f c * f a
 
 
-/-- Node `prop_3_2`. Shao's Proposition 3.2, the weighted case `m = 15`, which -/
+/-- Node `prop_3_2`. Shao's Proposition 3.2, the weighted case `m = 15`. -/
 abbrev Prop32 : Prop :=
   ∀ f₁ f₂ f₃ : ZMod 15 → ℝ,
     (∀ x, 0 ≤ f₁ x ∧ 0 ≤ f₂ x ∧ 0 ≤ f₃ x) →
@@ -114,27 +113,26 @@ abbrev CDChowla : Prop :=
     ∀ x : ZMod p, ∃ u ∈ I, ∃ v ∈ J, ∃ w ∈ K, u + v + w = x
 
 
-/-- Node `card_U`. The unit classes mod `m` number `phi m`. -/
+/-- Node `card_U`. There are `phi m` units mod `m`. -/
 abbrev CardU : Prop :=
   ∀ (m : ℕ) [NeZero m], (U m).card = Nat.totient m
 
 
 /-! ## Anti-vacuity
 
-A clean audit says that a theorem follows from standard axioms, and it does not
-say whether the hypotheses can be met, so the witnesses below are the
-human check that the nodes above are not vacuous. Each of them must be proved,
-and none of them may ever be `sorry`ed.
+A clean audit doesn't show that a node's hypotheses can be met. The examples
+below check that for the goal at m = 15, and none of them may be `sorry`ed.
 -/
 
-/-- The hypotheses of `Cor15` can be met, since `m = 15` is odd and squarefree and -/
+/-- The hypotheses of `Cor15` hold at `m = 15` with `A` all eight units. -/
 example : Odd 15 ∧ Squarefree 15 ∧ 5 * Nat.totient 15 < 8 * 8 := by
   refine ⟨⟨7, by norm_num⟩, by decide +kernel, by decide⟩
 
-/-- Sharpness, as a plain arithmetic fact. At `m = 15` a set of size 5 gives -/
+/-- At `m = 15` a 5-element set gives equality in `5 phi m < 8 |A|`, so the
+hypothesis fails. -/
 example : 5 * Nat.totient 15 = 8 * 5 := by decide
 
-/-- The `m = 15` nodes are not quantified over an empty class either, because -/
+/-- `ZMod 15` has eight units. -/
 example : Nat.totient 15 = 8 := by decide
 
 end ShaoThreeUnits.Statements

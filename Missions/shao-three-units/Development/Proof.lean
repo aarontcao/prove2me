@@ -1,8 +1,8 @@
 import Missions.«shao-three-units».Development.Statements
 
 /-!
-Shao's argument through Corollary 1.5, 140 declarations free of `sorry`,
-`native_decide`, and any axiom outside `propext`, `Classical.choice`, `Quot.sound`.
+Shao's argument through Corollary 1.5. `sorry` and `native_decide` never appear.
+The only axioms are `propext`, `Classical.choice`, and `Quot.sound`.
 -/
 
 namespace ShaoThreeUnits.Proof
@@ -10,9 +10,7 @@ namespace ShaoThreeUnits.Proof
 open Finset
 open scoped Pointwise
 
-/-- The unit classes mod `m` number `phi m`. The `Finset` of units is the image
-of the unit group under `Units.val`, that map is injective, and Mathlib already
-counts the unit group as `Nat.totient m`, so the three facts compose. -/
+/-- The units mod `m` are the injective image of the unit group, which has `Nat.totient m` elements. -/
 theorem card_U : Statements.CardU := by
   intro m _
   classical
@@ -30,9 +28,7 @@ theorem card_U : Statements.CardU := by
   rw [h, Finset.card_image_of_injective _ Units.val_injective, Finset.card_univ,
     ZMod.card_units_eq_totient]
 
-/-- Cauchy-Davenport-Chowla for three sets mod a prime. Two applications of
-Mathlib's two-set `ZMod.cauchy_davenport` push the sumset up to size `p`, and a
-subset of `ZMod p` with `p` elements is everything. -/
+/-- Cauchy-Davenport-Chowla for three sets: apply `ZMod.cauchy_davenport` twice to reach size `p`. -/
 theorem cd_chowla : Statements.CDChowla := by
   intro p hp I J K hI hJ hK hsize x
   classical
@@ -60,18 +56,13 @@ theorem cd_chowla : Statements.CDChowla := by
 
 /-! ## Anti-vacuity
 
-Each proved node, instantiated at a concrete value. A statement quantified over
-an empty class cannot produce one of these, so these witnesses are the check
-that an inspection of the axiom closure cannot make.
+Each proved node at a concrete value, which a statement about an empty class could not produce.
 -/
 
-/-- `card_U` at `m = 15`, where the units really are 8 classes rather than 0. -/
+/-- `card_U` at `m = 15`. -/
 example : (Statements.U 15).card = 8 := by rw [card_U]; decide
 
-/-- `cd_chowla` at `p = 5` with `I = J = K = {1,2,3}`. The size hypothesis
-`5 + 2 ≤ 3 + 3 + 3` holds, so the theorem applies and returns an actual
-representation of `0` as a sum of three elements, which is more than a
-consistency check, because it shows the hypotheses can be met. -/
+/-- `cd_chowla` at `p = 5` with `I = J = K = {1,2,3}`, where `5 + 2 ≤ 3 + 3 + 3` holds. -/
 example : ∃ u ∈ ({1, 2, 3} : Finset (ZMod 5)), ∃ v ∈ ({1, 2, 3} : Finset (ZMod 5)),
     ∃ w ∈ ({1, 2, 3} : Finset (ZMod 5)), u + v + w = (0 : ZMod 5) :=
   cd_chowla 5 (by norm_num) _ _ _ ⟨1, by decide⟩ ⟨1, by decide⟩ ⟨1, by decide⟩
@@ -80,51 +71,29 @@ example : ∃ u ∈ ({1, 2, 3} : Finset (ZMod 5)), ∃ v ∈ ({1, 2, 3} : Finset
 
 /-! ## Node `lemma_2_3`: the finite check at `m = 15`, by Chinese Remainder
 
-The paper discharges this step with a computer check over about `2 * 10^5` set
-triples. A kernel `decide` will not finish that check, and `native_decide` is
-not permitted here, so the development takes a different route and removes the
-enumeration altogether.
-
-The key observation is that `ZMod 15` splits as `ZMod 3 × ZMod 5`, so writing
-each of `A`, `B`, and `C` as its two fibers over the units mod 3 turns
-`A + B + C = ZMod 15` into three covering conditions in `ZMod 5`, one for each
-residue mod 3 and each with its sign pattern fixed. Cauchy-Davenport in `ZMod 5`
-covers on its own whenever a pattern has three nonempty fibers whose sizes add
-to at least 7, and `shao_lemma23_arith` shows by kernel `decide` that Shao's
-hypothesis always supplies such a pattern; all 2205 admissible fiber-size tuples
-are settled there, and no case is left over.
+The paper uses a computer check over about `2 * 10^5` set triples, too many for kernel `decide`.
+We split `ZMod 15` as `ZMod 3 × ZMod 5` and cut each set into its fibers over the units mod 3.
+Cauchy-Davenport in `ZMod 5` covers each residue mod 3 once some sign pattern has three nonempty
+fibers with sizes adding to at least 7. `shao_lemma23_arith` shows Shao's hypothesis always gives one.
 -/
 
--- The kernel `decide` in `shao_lemma23_arith` needs this recursion depth and
--- nothing after `end` does, so the option is scoped; left unscoped it would
--- also cover `lemma_2_1`.
+-- Only the kernel `decide` in `shao_lemma23_arith` needs this recursion depth.
 section DeepRecursion
 set_option maxRecDepth 100000
 
 /-! ## The CRT coordinates on `ZMod 15`
 
-`ZMod 15 ≃ ZMod 3 × ZMod 5`, and a unit mod 15 is a unit in each coordinate.
-Only the injectivity half of the equivalence is needed anywhere below, and at
-this size that half is a kernel `decide` over 225 pairs. -/
+We only need injectivity of `ZMod 15 → ZMod 3 × ZMod 5`, a kernel `decide` over 225 pairs. -/
 
-/-- Reduction `ZMod 15 →+* ZMod 3`. -/
 def q3 : ZMod 15 →+* ZMod 3 := ZMod.castHom (by norm_num) (ZMod 3)
 
-/-- Reduction `ZMod 15 →+* ZMod 5`. -/
 def q5 : ZMod 15 →+* ZMod 5 := ZMod.castHom (by norm_num) (ZMod 5)
 
-/-- The CRT map `ZMod 15 → ZMod 3 × ZMod 5` is injective. Injectivity alone is
-all the argument draws from the Chinese remainder equivalence, and it suffices
-to turn a single identity in `ZMod 15` into the pair of identities mod 3 and
-mod 5. -/
 theorem crt_inj : ∀ y z : ZMod 15, q3 y = q3 z → q5 y = q5 z → y = z := by decide
 
-/-- `ZMod 3` has exactly the three elements `0`, `1`, `2`. -/
 theorem zmod3_cases : ∀ y : ZMod 3, y = 0 ∨ y = 1 ∨ y = 2 := by decide
 
-/-- The units mod 15, listed. `Statements.U` is a `Classical` filter on
-`IsUnit`, so it is not itself decidable, and `isUnit_iff_exists_inv` replaces it
-by an existential over a `Fintype`, which is. -/
+/-- `IsUnit` is not decidable here, so `isUnit_iff_exists_inv` turns it into a decidable existential. -/
 theorem U15 : Statements.U 15 = ({1, 2, 4, 7, 8, 11, 13, 14} : Finset (ZMod 15)) := by
   ext x
   simp only [Statements.U, Finset.mem_filter, Finset.mem_univ, true_and,
@@ -132,19 +101,15 @@ theorem U15 : Statements.U 15 = ({1, 2, 4, 7, 8, 11, 13, 14} : Finset (ZMod 15))
   revert x
   decide
 
-/-- A unit mod 15 reduces to a unit mod 3, that is to `1` or `2`. -/
 theorem q3_unit : ∀ a : ZMod 15, a ∈ ({1, 2, 4, 7, 8, 11, 13, 14} : Finset (ZMod 15)) →
     q3 a = 1 ∨ q3 a = 2 := by decide
 
-/-- A unit mod 15 reduces to a unit mod 5, that is to `1`, `2`, `3`, or `4`. -/
 theorem q5_unit : ∀ a : ZMod 15, a ∈ ({1, 2, 4, 7, 8, 11, 13, 14} : Finset (ZMod 15)) →
     q5 a ∈ ({1, 2, 3, 4} : Finset (ZMod 5)) := by decide
 
 /-! ## Fibers
 
-`A` is cut into its two fibers over the units mod 3, each of them recorded as a
-subset of `ZMod 5`. Injectivity of the CRT map makes each fiber the same size as
-its preimage, so the two fiber sizes add to `|A|`. -/
+By injectivity of the CRT map, the two fiber sizes of `A ⊆ U 15` add to `|A|`. -/
 
 /-- The fiber of `A` over `i : ZMod 3`, pushed into `ZMod 5`. -/
 def fib (A : Finset (ZMod 15)) (i : ZMod 3) : Finset (ZMod 5) :=
@@ -160,16 +125,14 @@ theorem mem_fib {A : Finset (ZMod 15)} {i : ZMod 3} {u : ZMod 5} :
   · rintro ⟨a, ha, h3, h5⟩
     exact Finset.mem_image.mpr ⟨a, Finset.mem_filter.mpr ⟨ha, h3⟩, h5⟩
 
-/-- Pushing a fiber into `ZMod 5` loses nothing, because two elements of `A`
-with the same image mod 3 and the same image mod 5 are equal. -/
+/-- `q5` is injective on a fiber, by `crt_inj`. -/
 theorem card_fib (A : Finset (ZMod 15)) (i : ZMod 3) :
     (fib A i).card = (A.filter (fun a => q3 a = i)).card := by
   apply Finset.card_image_of_injOn
   intro y hy z hz h
   exact crt_inj y z (by rw [(Finset.mem_filter.mp hy).2, (Finset.mem_filter.mp hz).2]) h
 
-/-- The two fiber sizes add to `|A|`, because every unit mod 15 lands in one of
-the two unit classes mod 3. -/
+/-- Every unit mod 15 lands in class `1` or `2` mod 3. -/
 theorem card_split {A : Finset (ZMod 15)} (hA : A ⊆ Statements.U 15) :
     (fib A 1).card + (fib A 2).card = A.card := by
   rw [card_fib, card_fib]
@@ -180,7 +143,6 @@ theorem card_split {A : Finset (ZMod 15)} (hA : A ⊆ Statements.U 15) :
   rw [hsw]
   exact Finset.card_filter_add_card_filter_not (fun a => q3 a = 1)
 
-/-- A fiber sits inside the four units of `ZMod 5`, so it has at most 4 elements. -/
 theorem card_fib_lt {A : Finset (ZMod 15)} (hA : A ⊆ Statements.U 15) (i : ZMod 3) :
     (fib A i).card < 5 := by
   have hsub : fib A i ⊆ ({1, 2, 3, 4} : Finset (ZMod 5)) := by
@@ -193,10 +155,8 @@ theorem card_fib_lt {A : Finset (ZMod 15)} (hA : A ⊆ Statements.U 15) (i : ZMo
 
 /-! ## One covering step
 
-Fix a sign pattern `(i, j, k)` of unit classes mod 3 whose sum matches `x` mod 3.
-If the three fibers over that pattern are nonempty and their sizes add to at
-least `7 = 5 + 2`, then `cd_chowla` at `p = 5` covers `ZMod 5`, and injectivity
-of the CRT map lifts the representation it produces back to `ZMod 15`. -/
+Take a pattern `(i, j, k)` with `i + j + k = q3 x` and nonempty fibers of total size at least 7.
+Then `cd_chowla` at `p = 5` and `crt_inj` represent `x`. -/
 
 theorem step {A B C : Finset (ZMod 15)} {i j k : ZMod 3} {x : ZMod 15}
     (hijk : i + j + k = q3 x)
@@ -217,12 +177,9 @@ theorem step {A B C : Finset (ZMod 15)} {i j k : ZMod 3} {x : ZMod 15}
 
 /-! ## The arithmetic core
 
-Shao's size hypothesis, read in fiber sizes, always supplies a usable pattern for
-each of the three residues mod 3 at once. The kernel checks all `5 ^ 6`
-fiber-size tuples, and every one of the 2205 that satisfy the hypothesis yields
-a pattern. -/
+In fiber sizes, Shao's hypothesis gives a usable pattern for every residue mod 3.
+The kernel checks all `5 ^ 6` size tuples, of which 2205 satisfy the hypothesis. -/
 
-/-- The arithmetic core of the CRT reduction for Shao's Lemma 2.3. -/
 theorem shao_lemma23_arith :
     ∀ a0 a1 b0 b1 c0 c1 : Fin 5,
       5 * ((a0.val + a1.val) + (b0.val + b1.val) + (c0.val + c1.val))
@@ -239,8 +196,7 @@ theorem shao_lemma23_arith :
        (0 < a1.val ∧ 0 < b1.val ∧ 0 < c0.val ∧ 7 ≤ a1.val + b1.val + c0.val)) := by
   decide
 
-/-- `shao_lemma23_arith` with the `Fin 5` bounds stated as hypotheses, which is
-the shape the fiber sizes arrive in. -/
+/-- `shao_lemma23_arith` with the `Fin 5` bounds as hypotheses, the shape the fiber sizes arrive in. -/
 theorem shao_arith_nat (a0 a1 b0 b1 c0 c1 : ℕ)
     (ha0 : a0 < 5) (ha1 : a1 < 5) (hb0 : b0 < 5) (hb1 : b1 < 5)
     (hc0 : c0 < 5) (hc1 : c1 < 5)
@@ -258,12 +214,7 @@ theorem shao_arith_nat (a0 a1 b0 b1 c0 c1 : ℕ)
 
 /-! ## Assembly -/
 
-/-- Shao's Lemma 2.3, the finite check at `m = 15`, with the finite check
-replaced by a Chinese Remainder reduction. `ZMod 15` splits as
-`ZMod 3 × ZMod 5`, the size hypothesis hands each residue mod 3 a sign pattern
-whose three fibers are nonempty with sizes adding to at least `7`, and
-Cauchy-Davenport-Chowla in `ZMod 5` covers from there. No enumeration of set
-triples appears anywhere in the proof. -/
+/-- Shao's Lemma 2.3, by the Chinese Remainder reduction instead of enumerating set triples. -/
 theorem lemma_2_3 : Statements.Lemma23 := by
   intro A B C hA hB hC hsize x
   obtain ⟨H0, H1, H2⟩ :=
@@ -290,31 +241,20 @@ theorem lemma_2_3 : Statements.Lemma23 := by
 
 /-! ## Anti-vacuity -/
 
-/-- `lemma_2_3` at `A = B = C = U 15`. The unit group has 8 elements, so
-`5 * (8 + 8 + 8) = 120 < 192 = 8 * 8 + 8 * 8 + 8 * 8` and the hypothesis is met,
-after which the theorem returns an actual representation of `0`, which a
-statement quantified over an empty class could not produce. -/
+/-- `lemma_2_3` at `A = B = C = U 15`, where `5 * (8 + 8 + 8) = 120 < 192 = 8 * 8 + 8 * 8 + 8 * 8`. -/
 example : ∃ a ∈ Statements.U 15, ∃ b ∈ Statements.U 15, ∃ c ∈ Statements.U 15,
     a + b + c = (0 : ZMod 15) := by
   have hcard : (Statements.U 15).card = 8 := by rw [card_U]; decide
   exact lemma_2_3 _ _ _ (subset_refl _) (subset_refl _) (subset_refl _)
     (by rw [hcard]; norm_num) 0
 
-/-- The extremal sizes really are excluded, since at `|A| = |B| = |C| = 5` the
-hypothesis reads `75 < 75` and so fails. That is Shao's sharp example, and the
-inequality is strict in order to exclude it. -/
+/-- At `|A| = |B| = |C| = 5`, Shao's sharp example, the strict hypothesis reads `75 < 75` and fails. -/
 example : ¬ (5 * (5 + 5 + 5) < 5 * 5 + 5 * 5 + 5 * 5) := by norm_num
 
 /-! ## The index map `nu`, shared by both averaging lemmas
 
-For `i, j < m` there is exactly one `k` in `[m, 2m)` with `m ∣ i + j + k`, and
-that `k` is `m + nu m i j`. Writing `nu` by cases on `i + j`, instead of through
-`%`, is what makes every side condition below fall to `omega`.
-
-For fixed `i` the map `j ↦ nu m i j` is an involution of `range m`, so `nu_row`
-says a row sum reindexes to the plain tail sum. `lemma_2_1` uses this machinery
-once over one index square and `lemma_2_2` uses it four times over four
-different squares, so it lives at top level rather than inside either proof.
+For `i, j < m`, the unique `k` in `[m, 2m)` with `m ∣ i + j + k` is `m + nu m i j`.
+We define `nu` by cases on `i + j` instead of with `%`, so `omega` closes every side condition.
 -/
 
 private def nu (m i j : ℕ) : ℕ :=
@@ -342,10 +282,7 @@ private theorem nu_invol (m i j : ℕ) (hi : i < m) (hj : j < m) :
   simp only [nu] at h1 ⊢
   split_ifs at h1 ⊢ <;> omega
 
-/-- The row sum. For fixed `i < m`, summing any `h` along `j ↦ m + nu m i j` over
-`range m` is the same as summing `h` over the whole tail block `[m, 2m)`, because
-`j ↦ nu m i j` is an involution of `range m`. Generic in `h`, since the two
-averaging lemmas need it at three different sequences. -/
+/-- A row sum reindexes to the tail sum, because `j ↦ nu m i j` is an involution of `range m`. -/
 private theorem nu_row (m : ℕ) (h : ℕ → ℝ) (i : ℕ) (hi : i < m) :
     ∑ j ∈ range m, h (m + nu m i j) = ∑ s ∈ range m, h (m + s) := by
   have hinj : ∀ p ∈ range m, ∀ q ∈ range m, nu m i p = nu m i q → p = q := by
@@ -368,48 +305,18 @@ private theorem nu_row (m : ℕ) (h : ℕ → ℝ) (i : ℕ) (hi : i < m) :
 
 /-! ## Node `lemma_2_1`: the symmetric averaging inequality
 
-Shao's Lemma 2.1, formalized from the proof in arXiv:1206.6139v2, pages 4 to 5.
+Shao's Lemma 2.1, from the proof in arXiv:1206.6139v2, pages 4 to 5.
 
-The argument runs as follows. Substitute `x i = 16/5 * a i - 1`, which turns
-the hypothesis into `x i * x j + x j * x k + x k * x i <= 3` and the goal
-into `sum x i <= n`, and suppose that goal fails. Write `n = 2m` and split the
-sum into `S0` over the first `m` indices and `S1` over the last `m`, then sum
-the hypothesis over the `m^2` triples `(i, j, k)` with `i, j < m <= k < 2m` and
-`i + j + k = 0 mod m`. That sum equals `S0^2 + 2*S0*S1`, and every triple in it
-except `(0, 0, m)` is admissible, so the corner has to be added back by hand;
-what is left after that is a split on the sign of `S1`.
-
-Three points in the sketch above are easy to lose, and a first attempt at the
-formalization lost all three of them.
-
-The reindexing runs through three separate bijections, one for each term of the
-summand, and each of the three needs its own argument, so a single telescoping
-substitution does not deliver it. The third index here is `m + nu i j`, where
-`nu i j` depends only on `i + j` and is written by cases instead of through `%`,
-so that every side condition falls to `omega`. For fixed `i` the map
-`j |-> nu i j` is an involution of `range m`, and `hrow` turns that involution
-into `sum_j x (m + nu i j) = S1`.
-
-The corner triple `(0, 0, m)` lies outside the range the hypothesis covers, so
-its value `x 0 ^ 2 + 2 * x 0 * x m` has to be added back, and bounding it calls
-on the hypothesis at the triple `(m, m, 0)`, which is not one of the `m^2`
-triples either.
-
-The case `S1 > 0` calls on the hypothesis at `(m, m, m)` as well, which gives
-`x m ^ 2 <= 1`. So the hypothesis is used at three kinds of triple, and two of
-the three sit outside the summation.
-
-`6 <= n` enters at exactly two numeric thresholds, both of which need `m >= 3`,
-namely `24 * m^2 > 121` in the first case and
-`(m^2 - 7) * (25 * m^2 - 21) > 0` in the second. The paper's counterexample at `n = 4` is recorded below as a witness.
-
-The hypothesis `0 <= a i` is never used in this proof, and it is kept in the
-statement anyway, because that statement is the one the paper publishes.
+Substitute `x i = 16/5 * a i - 1`, so the hypothesis reads `x i * x j + x j * x k + x k * x i <= 3`.
+Suppose `sum x i > n`, write `n = 2m`, and let `S0` and `S1` sum the two halves.
+Summing the hypothesis over `(i, j, m + nu i j)` for `i, j < m` gives `S0^2 + 2*S0*S1`.
+The corner `(0, 0, m)` is not admissible, so we add it back and bound it with the triple `(m, m, 0)`.
+We then split on the sign of `S1`, and the case `S1 > 0` uses the triple `(m, m, m)`.
+`6 <= n` enters only as `m >= 3`, and the proof never uses the paper's hypothesis `0 <= a i`.
 -/
 
 set_option maxHeartbeats 1000000 in
--- The reindexing identity `hprod` elaborates three nested `Finset` sums over the
--- `m × m` square, and the endgame runs several `nlinarith` calls in the variable `v`.
+-- The nested sums in `hprod` and the `nlinarith` endgame need the extra heartbeats.
 theorem lemma_2_1 : Statements.Lemma21 := by
   intro n hn6 hev a hanti ha0 ha1 hyp
   by_contra hgoal
@@ -649,34 +556,18 @@ theorem lemma_2_1 : Statements.Lemma21 := by
 
 /-! ### Anti-vacuity for `lemma_2_1`
 
-A witness for this node has to mention the sequence, the hypothesis, and
-`Lemma21` itself, since a bare arithmetic fact such as `251/100 > 5/2` would
-hold whether or not the node said anything. The two witnesses below apply the
-proved theorem to a concrete input, and a third records why `6 ≤ n` cannot be
-dropped.
+A bare arithmetic fact would hold whatever the node said, so these witnesses apply `lemma_2_1` itself.
 -/
 
-/-- The hypothesis class of `lemma_2_1` is inhabited at `n = 6`, and the bound
-is attained there, so the node is neither vacuous nor slack.
-
-The constant sequence `5/8` meets every hypothesis, since the triple condition
-reads `3 * (5/8)^2 ≤ 5/8 * (3 * 5/8)` with both sides equal to `75/64`, and its
-sum is exactly `5/8 * 6`. The statement below is `lemma_2_1` applied to that
-instance, so it also checks that the proved theorem accepts a real input. -/
+/-- `lemma_2_1` at `n = 6` and the constant `5/8`, where the triple condition reads `75/64 ≤ 75/64`. -/
 example : (∑ _i : Fin 6, (5 / 8 : ℝ)) ≤ 5 / 8 * 6 :=
   lemma_2_1 6 (by norm_num) (by decide) (fun _ => 5 / 8) antitone_const
     (fun _ => by norm_num) (fun _ => by norm_num) (fun _ _ _ _ => by norm_num)
 
-/-- The bound above is attained, not merely satisfied. -/
+/-- The bound above is attained. -/
 example : (∑ _i : Fin 6, (5 / 8 : ℝ)) = 5 / 8 * 6 := by simp; norm_num
 
-/-- The hypothesis `6 ≤ n` is necessary, because the paper's counterexample at
-`n = 4` meets every other hypothesis and breaks the conclusion, so no proof can
-drop it.
-
-Every part of that counterexample is checked here, including the triple
-condition at all 64 triples; the binding triple is `(0, 2, 2)`, where the
-condition holds with equality. -/
+/-- The paper's counterexample at `n = 4` meets every other hypothesis and breaks the bound. -/
 example : ∃ a : Fin 4 → ℝ, Antitone a ∧ (∀ i, 0 ≤ a i) ∧ (∀ i, a i ≤ 1) ∧
     (∀ i j k : Fin 4, 4 ≤ (i : ℕ) + (j : ℕ) + (k : ℕ) →
       a i * a j + a j * a k + a k * a i ≤ 5 / 8 * (a i + a j + a k)) ∧
@@ -696,64 +587,45 @@ end DeepRecursion
 
 /-! ## Node `lemma_2_2`: the asymmetric averaging inequality
 
-Shao's Lemma 2.2, from the proof in arXiv:1206.6139v2, pages 6 to 8. Same
-substitution as Lemma 2.1, `x i = 16/5 * a i - 1`, so the hypothesis reads
-`x i * y j + y j * z k ≤ 3` and the goal reads `X*Y + Y*Z + Z*X ≤ 3` on the
-averages. Write `n = 2m`, and let `X0, X1` be the head and tail halves of the
-`x` sum, and likewise for `y` and `z`.
+Shao's Lemma 2.2, from the proof in arXiv:1206.6139v2, pages 6 to 8.
+We use the substitution `x i = 16/5 * a i - 1` from Lemma 2.1.
+Write `n = 2m`, and let `X0, X1` be the head and tail halves of the `x` sum, and likewise for `y` and `z`.
 
 ## Shape of the argument
 
-Sum the hypothesis over four index squares rather than the single square Lemma
-2.1 uses, and run all four through the same generic `nu_square_bound`:
+We sum the hypothesis over four index squares, each through `nu_square_bound`.
 
     M1 : i, j < m ≤ k < 2m      value `X0*Y0 + Y0*Z1 + Z1*X0`, corner `(0,0,m)`
     M2 : i, k < m ≤ j < 2m      value `X0*Z0 + Z0*Y1 + Y1*X0`, corner `(0,m,0)`
     M3 : j, k < m ≤ i < 2m      value `Y0*Z0 + Z0*X1 + X1*Y0`, corner `(m,0,0)`
     M4 : i, j, k all in [m, 2m) value `X1*Y1 + Y1*Z1 + Z1*X1`, corner `(m,m,m)`
 
-The summand `x i * y j + y j * z k + z k * x i` is fully symmetric in its three
-values, so M2 and M3 are one lemma with the sequences permuted. A single
-`nu_square_bound` therefore covers all four squares. The four values add up to
-exactly `Sx*Sy + Sy*Sz + Sz*Sx`, and the three corners of M1, M2, and M3 add up
-to exactly `U - W`, where `U` is the quadratic in the pair sums `x 0 + x m` and
-`W` is the quadratic in `x m, y m, z m`, so the whole argument reduces to
-`U + V - W ≤ 3m² + 9` with `V` the M4 value, and M4 itself supplies Shao's (8).
+The summand is symmetric in its three values, so one `nu_square_bound` covers all four squares.
+The four values add up to `Sx*Sy + Sy*Sz + Sz*Sx`.
+The corners of M1, M2, and M3 add up to `U - W`.
+Here `U` is the quadratic in the pair sums `x 0 + x m`, and `W` is the quadratic in `x m, y m, z m`.
+So everything reduces to `U + V - W ≤ 3m² + 9`, with `V` the M4 value and M4 giving Shao's (8).
 
-That reduction is `l22_core`, ten real variables with every summation eliminated,
-and it splits five ways, each branch a separate lemma below:
+That reduction is `l22_core`, in ten real variables, and its branches are separate lemmas:
 
-  1. some pair sum of `x 0 + x m, y 0 + y m, z 0 + z m` is negative:
-     `l22_U_le_12` gives `U ≤ 12`, and (8) closes it with no slack.
-  2. otherwise, all of `X1, Y1, Z1` negative: `l22_case_i`. Both `U` and `V` are
-     monotone here, so push each variable to its bound; the shift
-     `p = x m - (m - 16/5)` cancels the linear term and leaves `3m² + 33/25`.
-  3. not all negative, some pair sum of `X1, Y1, Z1` negative: `l22_V_le_msq`
-     gives `V ≤ m²`, against the unconditional `l22_UW_le`. Closing needs
-     `2m² ≥ 864/25`, which is exactly where `10 ≤ n` is spent.
-  4. all pair sums of `X1, Y1, Z1` nonneg, so `V ≤ m² W`. Split on whether every
-     pair sum of `x m, y m, z m` reaches `11/20`, where `l22_case_iv_a` runs
-     Shao's (10) to (12) and closes with no slack at all, while `l22_case_iv_b`
-     instead bounds `W < 1.3` directly.
+  1. Some pair sum of `x 0 + x m, y 0 + y m, z 0 + z m` is negative.
+     Then `l22_U_le_12` gives `U ≤ 12`, and (8) closes it with no slack.
+  2. Case (i). All of `X1, Y1, Z1` are negative: `l22_case_i` pushes each variable to its bound.
+     The shift `p = x m - (m - 16/5)` cancels the linear term and leaves `3m² + 33/25`.
+  3. Cases (ii) and (iii). Some pair sum of `X1, Y1, Z1` is negative: `l22_V_le_msq` gives `V ≤ m²`.
+     Adding `l22_UW_le` needs `2m² ≥ 864/25`, and that is where `10 ≤ n` is spent.
+  4. Case (iv). All pair sums of `X1, Y1, Z1` are nonnegative, so `V ≤ m² W`.
+     If every pair sum of `x m, y m, z m` reaches `11/20`, `l22_case_iv_a` runs Shao's (10) to (12).
+     Otherwise `l22_case_iv_b` bounds `W ≤ 13/10` directly.
 
-Two places in that outline mislead, and the first is the corner of M4, which is
-admissible, unlike the other three corners, and is still erased and added back,
-because `l22_core` wants `V - W ≤ 3(m²-1)` and the immediate `V ≤ 3m²` is too
-weak to supply it.
-The other place is `l22_case_iv_b`, which needs `x m + y m ≥ 0`; that is not a
-hypothesis of the lemma, and it follows instead from `X1 + Y1 ≥ 0` together with
-`X1 ≤ m * x m`, divided through by `m > 0`.
-
-The hypothesis `0 ≤ a i` is used here, unlike in Lemma 2.1, for the lower bound
-`-1 ≤ x i` that every box constraint rests on.
+The M4 corner is admissible, but we still erase it and add it back.
+We do this because `l22_core` wants `V - W ≤ 3(m²-1)`, and `V ≤ 3m²` is too weak.
+In `l22_case_iv_b`, `x m + y m ≥ 0` follows from `X1 + Y1 ≥ 0` and `X1 ≤ m * x m`.
+Unlike Lemma 2.1, this proof uses `0 ≤ a i`, for the lower bound `-1 ≤ x i`.
 -/
 
 
-/-- The summation step. Sum the hypothesis over one `m × m` index square whose
-third index is `m + nu m i j`. The value of that sum is the product expression on
-the left, and every triple in the square is admissible except the corner
-`(0, 0)`, whose value has to be added back by hand. The lemma is generic in
-`u, v, w`, because `lemma_2_2` runs it over four different squares. -/
+/-- Sum the hypothesis over one square with third index `m + nu m i j`, adding back the corner `(0, 0)`. -/
 private theorem nu_square_bound (m : ℕ) (hm : 1 ≤ m) (u v w : ℕ → ℝ)
     (hb : ∀ i j : ℕ, i < m → j < m → ¬ (i = 0 ∧ j = 0) →
       u i * v j + v j * w (m + nu m i j) + w (m + nu m i j) * u i ≤ 3) :
@@ -926,7 +798,7 @@ private theorem l22_case_i {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 4 ≤ m)
   have hUbound : (x0+xm) * (y0+ym) + (y0+ym) * (z0+zm) + (z0+zm) * (x0+xm)
       ≤ (11 / 5+xm) * (11 / 5+ym) + (11 / 5+ym) * (11 / 5+zm) + (11 / 5+zm) * (11 / 5+xm) := by
     linarith [d1, d2, d3]
-  -- Step 4: bound the shifted product sum.
+  -- Step 3: bound the shifted product sum.
   have hK : (0:ℝ) ≤ m - 11 / 5 := by linarith
   have q1 : (xm - (m - 16 / 5)) * (ym - (m - 16 / 5)) ≤ (m - 11 / 5) ^ 2 :=
     ci_prod_le hK (by linarith) (by linarith) (by linarith) (by linarith)
@@ -936,7 +808,7 @@ private theorem l22_case_i {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 4 ≤ m)
     ci_prod_le hK (by linarith) (by linarith) (by linarith) (by linarith)
   have hQ : (xm - (m - 16 / 5)) * (ym - (m - 16 / 5)) + (ym - (m - 16 / 5)) * (zm - (m - 16 / 5))
       + (zm - (m - 16 / 5)) * (xm - (m - 16 / 5)) ≤ 3 * (m - 11 / 5) ^ 2 := by linarith
-  -- Step 5: finish.  Both sides expand to the same monomials.
+  -- Step 4: finish. Both sides expand to the same monomials.
   linarith [hUbound, hVbound, hQ]
 
 
@@ -1002,19 +874,19 @@ private theorem l22_case_iv_a {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 4 ≤ m
   have p3 : 0 ≤ (m * zm - Z1) * (m * xm + m * ym) := mul_nonneg (by linarith) (by linarith)
   have hV : X1 * Y1 + Y1 * Z1 + Z1 * X1 ≤ m ^ 2 * (xm * ym + ym * zm + zm * xm) := by
     linarith [p1, p2, p3]
-  -- Step 3 : three sign products
+  -- Step 2 : three sign products
   have q1 : (x0 + y0 - 8 * (xm + ym)) * (z0 - zm) ≤ 0 :=
     mul_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith)
   have q2 : (y0 + z0 - 8 * (ym + zm)) * (x0 - xm) ≤ 0 :=
     mul_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith)
   have q3 : (z0 + x0 - 8 * (zm + xm)) * (y0 - ym) ≤ 0 :=
     mul_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith)
-  -- Step 4 : 2*P + 25*W ≤ 81
+  -- Step 3 : 2*P + 25*W ≤ 81
   have h12 : 2 * (x0 * y0 + y0 * z0 + z0 * x0) + 25 * (xm * ym + ym * zm + zm * xm) ≤ 81 := by
     linarith [q1, q2, q3, h0mm, hm0m, hmm0]
   -- m^2 ≥ 16
   have hm2 : (16:ℝ) ≤ m ^ 2 := by nlinarith [hm, sq_nonneg (m - 4)]
-  -- Step 5 : finish
+  -- Step 4 : finish
   have hfin : 0 ≤ (m ^ 2 - 27 / 2) * (3 - (xm * ym + ym * zm + zm * xm)) :=
     mul_nonneg (by linarith) (by linarith)
   linarith [hV, h12, hfin, h0mm, hm0m, hmm0]
@@ -1027,8 +899,7 @@ private theorem ivb_prod_le {a b : ℝ} (ha : -1 ≤ a) (ha' : a ≤ 11 / 5)
   have h2 : (0:ℝ) ≤ (1 + a) * (11 / 5 - b) := mul_nonneg (by linarith) (by linarith)
   linarith [h1, h2]
 
-/-- If `xm + ym` is nonnegative and smaller than `11/20`, the symmetric sum is at
-most `13/10`. -/
+/-- If `0 ≤ xm + ym < 11/20`, the symmetric sum is at most `13/10`. -/
 private theorem ivb_W_small {xm ym zm : ℝ} (_hxm : -1 ≤ xm) (_hxm' : xm ≤ 11 / 5)
     (_hym : -1 ≤ ym) (_hym' : ym ≤ 11 / 5) (_hzm : -1 ≤ zm) (hzm' : zm ≤ 11 / 5)
     (hxy0 : 0 ≤ xm + ym) (hsmall : xm + ym < 11 / 20) :
@@ -1087,7 +958,7 @@ private theorem l22_case_iv_b {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 3 ≤ m
     mul_nonneg (by linarith) (by linarith)
   linarith [hV, hW, q1, q2, q3, hm2, hfin, h0mm, hm0m, hmm0]
 
-/-- Shao's inequality (9), the whole real-arithmetic core of Lemma 2.2. -/
+/-- Shao's inequality (9), the real-arithmetic core of Lemma 2.2. -/
 private theorem l22_core {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 5 ≤ m)
     (hx0 : -1 ≤ x0) (hx0' : x0 ≤ 11 / 5) (hy0 : -1 ≤ y0) (hy0' : y0 ≤ 11 / 5)
     (hz0 : -1 ≤ z0) (hz0' : z0 ≤ 11 / 5)
@@ -1145,10 +1016,7 @@ private theorem l22_core {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 5 ≤ m)
           exact l22_case_iv_b (by linarith) hx0 hx0' hy0 hy0' hz0 hz0' hxm hxm' hym hym'
             hzm hzm' hX1hi hY1hi hZ1hi hXY hYZ hZX h0mm hm0m hmm0 hsmall
 
-/-- Moving off `Fin n`. Clamp an antitone `[0,1]`-valued tuple into `x : ℕ → ℝ`
-under Shao's substitution `x i = 16/5 * a i - 1`, so that every index side
-condition becomes `omega` and the shifted range is `[-1, 11/5]`. `lemma_2_2`
-needs this three times over. -/
+/-- Clamp an antitone `[0,1]`-valued tuple into `x : ℕ → ℝ` with `x i = 16/5 * a i - 1`. -/
 private theorem l22_clamp {n : ℕ} (hn : 0 < n) (a : Fin n → ℝ) (hanti : Antitone a)
     (h0 : ∀ i, 0 ≤ a i) (h1 : ∀ i, a i ≤ 1) :
     ∃ x : ℕ → ℝ, (∀ (i : ℕ) (h : i < n), x i = 16 / 5 * a ⟨i, h⟩ - 1) ∧
@@ -1188,8 +1056,7 @@ private theorem l22_clamp {n : ℕ} (hn : 0 < n) (a : Fin n → ℝ) (hanti : An
     simp
 
 set_option maxHeartbeats 1000000 in
--- The four `nu_square_bound` instances each elaborate a product of six sums, and
--- the closing `linarith` runs over the resulting degree-four monomials.
+-- The four `nu_square_bound` instances and the closing `linarith` need the extra heartbeats.
 theorem lemma_2_2 : Statements.Lemma22 := by
   intro n hn10 hev a b c hanti_a hanti_b hanti_c hnn hub hyp A B C hA hB hC
   obtain ⟨m, hm⟩ := hev
@@ -1316,19 +1183,9 @@ theorem lemma_2_2 : Statements.Lemma22 := by
   linarith [hkey, hexp, h12, hgap]
 
 
-/-! ### Anti-vacuity for `lemma_2_2`
+/-! ### Anti-vacuity for `lemma_2_2` -/
 
-Three checks sit below, of which the first two apply the proved theorem to a
-real input and so also confirm that it accepts one, while the third records
-where the hypothesis `10 ≤ n` is spent.
--/
-
-/-- The hypothesis class is inhabited at `n = 10`, and the bound is attained
-there rather than merely satisfied, so the node is neither vacuous nor slack.
-
-At the constant `5/8` in all three sequences the triple condition reads
-`3 * (5/8)^2 ≤ 5/8 * (3 * 5/8)`, and both sides are `75/64`. The three averages
-are all `5/8`, and the conclusion is again `75/64 ≤ 75/64`. -/
+/-- `lemma_2_2` at `n = 10` with all three sequences `5/8`, where the bound is attained at `75/64`. -/
 example : (5 / 8 : ℝ) * (5 / 8) + (5 / 8) * (5 / 8) + (5 / 8) * (5 / 8)
     ≤ 5 / 8 * (5 / 8 + 5 / 8 + 5 / 8) :=
   lemma_2_2 10 (by norm_num) (by decide)
@@ -1339,10 +1196,7 @@ example : (5 / 8 : ℝ) * (5 / 8) + (5 / 8) * (5 / 8) + (5 / 8) * (5 / 8)
     (fun _ _ _ _ => by norm_num)
     (5 / 8) (5 / 8) (5 / 8) (by norm_num) (by norm_num) (by norm_num)
 
-/-- The three sequences really may differ, and that extra freedom is what
-Lemma 2.2 offers over Lemma 2.1. Here `c` is the constant `1/2` while `a` and `b` are `5/8`, so the
-hypothesis holds strictly at `65/64 < 70/64` and the conclusion holds strictly
-as well; a witness with all three sequences equal could not have shown it. -/
+/-- The sequences may differ: with `c = 1/2` and `a = b = 5/8`, both sides read `65/64 < 70/64`. -/
 example : (5 / 8 : ℝ) * (5 / 8) + (5 / 8) * (1 / 2) + (1 / 2) * (5 / 8)
     ≤ 5 / 8 * (5 / 8 + 5 / 8 + 1 / 2) :=
   lemma_2_2 10 (by norm_num) (by decide)
@@ -1353,35 +1207,18 @@ example : (5 / 8 : ℝ) * (5 / 8) + (5 / 8) * (1 / 2) + (1 / 2) * (5 / 8)
     (fun _ _ _ _ => by norm_num)
     (5 / 8) (5 / 8) (1 / 2) (by norm_num) (by norm_num) (by norm_num)
 
-/-- Where `10 ≤ n` is spent, as a plain arithmetic fact. Cases (ii) and (iii)
-close by `l22_UW_le` against `l22_V_le_msq`, which needs
-`1089/25 + m ^ 2 ≤ 3 * m ^ 2 + 9`, that is `864/25 ≤ 2 * m ^ 2`. At `m = 4`, so
-`n = 8`, that fails; at `m = 5`, so `n = 10`, it holds. No other case in
-`l22_core` needs more than `m ≥ 4`. -/
+/-- Where `10 ≤ n` is spent. Cases (ii) and (iii) of `l22_core` need `864/25 ≤ 2 * m ^ 2`.
+That fails at `m = 4` and holds at `m = 5`, and no other case needs more than `m ≥ 4`. -/
 example : ¬ (864 / 25 ≤ 2 * (4 : ℝ) ^ 2) ∧ (864 / 25 ≤ 2 * (5 : ℝ) ^ 2) := by
   norm_num
 
 
 /-! ## Corollary 1.5 from Proposition 1.4
 
-Corollary 1.5 is the `f = 1_A` case of Proposition 1.4, and that specialization
-only needs the indicator function of `A`, so it is discharged here
-rather than at the end of the file; with `prop_1_4` in hand the node is the
-single line
-
-    theorem cor_1_5 : Statements.Cor15 := cor15_of_prop14 prop_1_4
-
-Keeping the specialization apart from the induction makes plain that `prop_1_4`
-has to deliver the weighted statement, from which the set statement then
-follows.
+Corollary 1.5 is the `f = 1_A` case of Proposition 1.4, and `cor15_of_prop14` records that step.
 -/
 
-/-- `Cor15` is the `f = 1_A` case of `Prop14`. Feeding in the indicator of `A`
-makes the sum over the units equal `|A|`, because `A` sits inside the units, and
-the product condition `0 < f a₁ * f a₂ * f a₃` then says that all three
-indicator values are `1`, which is membership in `A`. The strength condition
-`3/2 < f a₁ + f a₂ + f a₃` plays no part here, since it is what the induction
-inside `Prop14` consumes. -/
+/-- With `f = 1_A`, the product condition `0 < f a₁ * f a₂ * f a₃` puts all three in `A`. -/
 private theorem cor15_of_prop14 : Statements.Prop14 → Statements.Cor15 := by
   classical
   intro H m inst hodd hsq A hAU hcard x
@@ -1421,9 +1258,7 @@ private theorem cor15_of_prop14 : Statements.Prop14 → Statements.Cor15 := by
     · exfalso; rw [← h] at hpos; simp at hpos
   exact ⟨a₁, hmem a₁ h1, a₂, hmem a₂ h2, a₃, hmem a₃ h3, hxsum⟩
 
-/-- Anti-vacuity for `cor15_of_prop14`. The reduction is not a statement about
-an empty hypothesis class, since at `m = 15` the whole unit group has
-`8 = phi 15` elements and clears the density condition `5 * 8 < 8 * 8`. -/
+/-- At `m = 15` the whole unit group clears the density condition `5 * 8 < 8 * 8`. -/
 example : (5 * Nat.totient 15 < 8 * (Statements.U 15).card) := by
   rw [card_U 15]
   decide +kernel
@@ -1431,36 +1266,21 @@ example : (5 * Nat.totient 15 < 8 * (Statements.U 15).card) := by
 
 /-! ## Node `divisor_reduction`
 
-Shao asserts this step in one sentence: "if the result holds for
-`m`, then it also holds for any `m'` dividing `m`". The construction below is a
-reconstruction, since the paper supplies none.
+Shao states this step in one sentence: "if the result holds for
+`m`, then it also holds for any `m'` dividing `m`". The paper omits the proof, so we supply one.
 
-Fix `m ∣ M`, let `ρ : ZMod M →+* ZMod m` be the reduction and `π` its
-restriction to units, and feed `Prop14At M` the pullback `G b = g (ρ b)`.
-Because `π` is a surjective homomorphism of finite groups, all of its fibers
-share one size `c`, so summing over the `φ m` fibers gives both `φ M = c * φ m`
-and `Σ_{U M} G = c * Σ_{U m} g`; the factor `c` then cancels exactly, the
-density hypothesis transports without spending slack, and strictness survives.
-Coming back down, `ρ` is surjective, maps units to units, and commutes with
-the triple sum, so the two numeric conclusions are literally the same terms.
-
-Two places in that construction mislead, and the first is that the fiber
-statement is about `U M` rather than about the full preimage `ρ⁻¹(U m)`, which
-is strictly larger for most divisor pairs;
-at `m = 3` and `M = 15`, for instance, the non-units `5` and `10` reduce to the
-units `2` and `1`. And this step does not need `Odd`, `Squarefree`, or `m`
-coprime to `M / m`, since divisibility alone is enough, with the oddness and
-the squarefreeness entering later in `prop14_of_main`.
-
-The reduction is insensitive to the constants `5/8` and `3/2`, and any other
-pair of constants would reduce in exactly the same way.
+Fix `m ∣ M`, let `ρ : ZMod M →+* ZMod m` be the reduction and `π` its restriction to units.
+We feed `Prop14At M` the pullback `G b = g (ρ b)`.
+The fibers of the surjective homomorphism `π` share one size `c`.
+So `φ M = c * φ m` and `Σ_{U M} G = c * Σ_{U m} g`, and `c` cancels in the density hypothesis.
+The fibers are taken in `U M`, not in `ρ⁻¹(U m)`, which can be larger.
+At `m = 3` and `M = 15`, the non-units `5` and `10` reduce to the units `2` and `1`.
+Divisibility alone is enough here, and oddness and squarefreeness enter later in `prop14_of_main`.
 -/
 
 /-! ## The unit `Finset` as the image of the unit group -/
 
-/-- `Statements.U m` is the image of the unit group under `Units.val`. The same
-step is already inlined in `card_U`, and it is factored out here because
-`divisor_reduction` needs the sum version of it as well as the card version. -/
+/-- The same step as in `card_U`, factored out for the sum version in `sum_U`. -/
 private theorem U_eq_image (m : ℕ) [NeZero m] :
     Statements.U m = Finset.univ.image (Units.val : (ZMod m)ˣ → ZMod m) := by
   classical
@@ -1475,24 +1295,16 @@ private theorem U_eq_image (m : ℕ) [NeZero m] :
     have : IsUnit x := hu ▸ u.isUnit
     simpa [Statements.U] using this
 
-/-- Summing over `Statements.U m` is summing over the unit group. -/
 private theorem sum_U (m : ℕ) [NeZero m] (f : ZMod m → ℝ) :
     ∑ x ∈ Statements.U m, f x = ∑ u : (ZMod m)ˣ, f (u : ZMod m) := by
   classical
   rw [U_eq_image m,
     Finset.sum_image (by intro a _ b _ h; exact Units.val_injective h)]
 
-/-! ## The fiber count, in the only form the proof needs -/
+/-! ## The fiber count -/
 
-/-- For a surjective homomorphism of finite groups, summing a pulled-back
-function multiplies the sum by the common fiber size. All fibers are cosets of
-the kernel, so `MonoidHom.card_fiber_eq_of_mem_range` gives each of them the
-size of the fiber over `1`, and `Finset.sum_fiberwise` does the bookkeeping from
-there.
-
-Taking `F = 1` gives the card identity `|G| = c * |H|`, and that is the route by
-which `φ M = c * φ m` is obtained below. The quotient `|G| / |H|` is never
-formed. -/
+/-- Pulling back along a surjective group homomorphism multiplies a sum by the fiber size.
+Taking `F = 1` gives `φ M = c * φ m` below. -/
 private theorem sum_comp_surj {G H : Type*} [Group G] [Group H] [Fintype G]
     [Fintype H] [DecidableEq H] (π : G →* H) (hsurj : Function.Surjective π)
     (F : H → ℝ) :
@@ -1510,9 +1322,7 @@ private theorem sum_comp_surj {G H : Type*} [Group G] [Group H] [Fintype G]
 
 /-! ## Node `divisor_reduction` -/
 
-/-- Node `divisor_reduction`. `Prop14At` at a modulus `M` implies `Prop14At` at
-every divisor `m` of `M`, by the construction set out in the section header
-above. -/
+/-- Node `divisor_reduction`: `Prop14At M` implies `Prop14At m` for every divisor `m` of `M`. -/
 theorem divisor_reduction : Statements.DivisorReduction := by
   classical
   intro m M _ _ hdvd hM g hg0 hg1 hsum x
@@ -1565,27 +1375,19 @@ theorem divisor_reduction : Statements.DivisorReduction := by
 
 /-! ## Anti-vacuity for `divisor_reduction`
 
-A clean audit says the implication follows from standard axioms, and it does
-not say whether either side is ever true. The witnesses below claim more
-than that the hypothesis class is nonempty, since the last of them is an actual
-modus ponens whose hypothesis `Prop14At 3` is proved outright rather than
-assumed.
+The last witness applies the reduction to `Prop14At 3`, which we prove outright.
 -/
 
-/-- The reduction is an implication between two statements about different
-moduli, so it is not a disguised identity. -/
+/-- The reduction at two different moduli. -/
 example : Statements.Prop14At 15 → Statements.Prop14At 3 :=
   divisor_reduction 3 15 (by norm_num)
 
-/-- The fiber constant of the proof is a real number other than `1`, so the
-reduction does real arithmetic rather than renaming. At `m = 3` and
-`M = 15` it is `φ 15 / φ 3 = 8 / 2 = 4`, exactly the `c` the proof
-constructs. -/
+/-- At `m = 3` and `M = 15` the fiber constant `c` is `φ 15 / φ 3 = 8 / 2 = 4`. -/
 example :
     #{u : (ZMod 15)ˣ | ZMod.unitsMap (show (3 : ℕ) ∣ 15 by norm_num) u = 1} = 4 := by
   decide
 
-/-- The units mod 3, listed, by the same `isUnit_iff_exists_inv` step as `U15`. -/
+/-- The same `isUnit_iff_exists_inv` step as `U15`. -/
 private theorem U3 : Statements.U 3 = ({1, 2} : Finset (ZMod 3)) := by
   ext x
   simp only [Statements.U, Finset.mem_filter, Finset.mem_univ, true_and,
@@ -1593,11 +1395,8 @@ private theorem U3 : Statements.U 3 = ({1, 2} : Finset (ZMod 3)) := by
   revert x
   decide
 
-/-- `Prop14At 3` holds outright. The density hypothesis forces
-`g 1 + g 2 > 5/4` with both values at most `1`, so both values lie above `1/4`
-and the larger of the two lies above `5/8`. The triples `(1,1,1)` and `(2,2,2)`
-hit `0`, the triple `(1,1,2)` hits `1`, and the triple `(1,2,2)` hits `2`, and
-in each of those cases the sum of the three values exceeds `3/2`. -/
+/-- The density hypothesis gives `g 1 + g 2 > 5/4`, so both values exceed `1/4`.
+Then `(1,1,1)` or `(2,2,2)` hits `0`, `(1,1,2)` hits `1`, and `(1,2,2)` hits `2`. -/
 private theorem prop14At_three : Statements.Prop14At 3 := by
   intro g hg0 hg1 hsum y
   have hne : (1 : ZMod 3) ≠ 2 := by decide
@@ -1623,18 +1422,13 @@ private theorem prop14At_three : Statements.Prop14At 3 := by
   · exact ⟨1, hm1, 2, hm2, 2, hm2, by decide,
       mul_pos (mul_pos h1pos h2pos) h2pos, by linarith⟩
 
-/-- The reduction fires on `Prop14At 3` above, which is proved rather than
-hypothesized, transported down the divisibility `1 ∣ 3`, so `divisor_reduction`
-is not vacuously true through an unsatisfiable premise. -/
+/-- The reduction applied to the proved `Prop14At 3` along `1 ∣ 3`. -/
 example : Statements.Prop14At 1 :=
   divisor_reduction 1 3 (one_dvd 3) prop14At_three
 
 /-! ## The `WLOG 15 divides m` step of Proposition 1.4
 
-This step comes ahead of the node it serves, for the same reason as the section
-above, in that it is self-contained, it only needs
-`divisor_reduction`, and it narrows what remains of Proposition 1.4 down to the
-single case `15 divides M`.
+Using only `divisor_reduction`, this narrows Proposition 1.4 to the case `15 divides M`.
 -/
 
 private theorem lcm_ne_zero {a b : ℕ} (ha : a ≠ 0) (hb : b ≠ 0) : Nat.lcm a b ≠ 0 := by
@@ -1664,17 +1458,7 @@ private theorem squarefree_lcm {m : ℕ} (hm0 : m ≠ 0) (hm : Squarefree m) :
   · exact (Nat.squarefree_iff_factorization_le_one hm0).mp hm p
   · exact (Nat.squarefree_iff_factorization_le_one (by norm_num)).mp h15 p
 
-/-- The `WLOG 15 ∣ m` reduction of Proposition 1.4.
-
-The paper opens the proof of Proposition 1.4 with one sentence: "First note that
-if the result holds for `m`, then it also holds for any `m'` dividing `m`. Hence
-we may assume that `15|m`." That sentence is exactly `divisor_reduction` applied
-at `M = lcm m 15`, together with the three closure facts proved above, that the
-lcm of an odd number with `15` is odd, that the lcm of two squarefree numbers is
-squarefree, and that `15` divides it.
-
-The whole content of Proposition 1.4 is therefore the case `15 ∣ M`, and that
-case is the hypothesis `Hmain`. -/
+/-- Shao's "Hence we may assume that `15|m`": `divisor_reduction` at `M = lcm m 15`. -/
 private theorem prop14_of_main (HDR : Statements.DivisorReduction)
     (Hmain : ∀ (M : ℕ), ∀ _ : NeZero M, Odd M → Squarefree M → 15 ∣ M →
       Statements.Prop14At M) :
@@ -1689,26 +1473,12 @@ private theorem prop14_of_main (HDR : Statements.DivisorReduction)
 
 /-! ## A dictionary for Proposition 3.1
 
-Proposition 3.1 opens both of its cases by sorting the values of `f` on the
-units into decreasing order and then reading three level sets off the sorted
-tuple, and `exists_antitone_rearrangement` is that step, stated once for any
-finite set. It comes ahead of the node it serves because it connects the two
-averaging lemmas to `cd_chowla`, which speak different languages; the averaging
-lemmas speak about an antitone `Fin n -> R`, `cd_chowla` speaks about `Finset`
-cardinalities, and the counting clause of the rearrangement translates one into
-the other.
+The averaging lemmas take an antitone `Fin n -> R`, and `cd_chowla` takes `Finset` sizes.
+`exists_antitone_rearrangement` sorts the values of `f` and translates between the two.
 -/
 
-/-- The rearrangement dictionary.
-
-Shao's Proposition 3.1 opens both of its cases with "let `a₀ ≥ a₁ ≥ ... ≥ a_{p-2}`
-be the `p-1` values of `f` in decreasing order", and this lemma is that sentence.
-
-Given any finite `S` and any real `f`, it produces an antitone tuple `a` indexed
-by `Fin S.card` taking exactly the values of `f` on `S`, with the same sum and
-with the counting fact the proof goes on to use, that at least `i+1` elements of
-`S` satisfy `f x ≥ a i`. That last clause is what feeds Cauchy-Davenport-Chowla,
-through `|I| + |J| + |K| ≥ (i+1) + (j+1) + (k+1) ≥ p + 2`. -/
+/-- Shao's "let `a₀ ≥ a₁ ≥ ... ≥ a_{p-2}` be the `p-1` values of `f` in decreasing order".
+At least `i+1` elements of `S` satisfy `f x ≥ a i`, and that count feeds `cd_chowla`. -/
 private theorem exists_antitone_rearrangement {α : Type*}
     (S : Finset α) (f : α → ℝ) :
     ∃ a : Fin S.card → ℝ, Antitone a ∧
@@ -1751,10 +1521,7 @@ private theorem exists_antitone_rearrangement {α : Type*}
     calc (i : ℕ) + 1 = ((Finset.Iic i).image w).card := hcard.symm
       _ ≤ (S.filter (fun x => a i ≤ f x)).card := Finset.card_le_card hsub
 
-/-- Anti-vacuity for `exists_antitone_rearrangement`. The lemma says something
-at a concrete nonempty `S`, and the sum really is preserved, since at
-`S = {1,2,3}` under the identity the rearranged tuple is antitone and sums
-to `6`. -/
+/-- `exists_antitone_rearrangement` at `S = {1,2,3}` and the identity, where the sum is `6`. -/
 example : ∃ a : Fin ({1, 2, 3} : Finset ℕ).card → ℝ, Antitone a ∧ (∑ i, a i) = 6 := by
   obtain ⟨a, h1, -, h3, -⟩ :=
     exists_antitone_rearrangement ({1, 2, 3} : Finset ℕ) (fun n => (n : ℝ))
@@ -1765,54 +1532,32 @@ example : ∃ a : Fin ({1, 2, 3} : Finset ℕ).card → ℝ, Antitone a ∧ (∑
 /-!
 ## Node `prop_3_2`: Shao's Proposition 3.2, the weighted case `m = 15`
 
-Shao, arXiv:1206.6139v2, Proposition 3.2. Given `f₁, f₂, f₃ : ZMod 15 → [0,1]`
-with unit-sums `F₁, F₂, F₃` satisfying `F₁F₂ + F₂F₃ + F₃F₁ > 5(F₁+F₂+F₃)`, every
-`x : ZMod 15` is a sum of three units on which the product is positive and the
-values add to more than `3/2`.
+Shao, arXiv:1206.6139v2, Proposition 3.2. Take `f₁, f₂, f₃ : ZMod 15 → [0,1]` with unit-sums `Fᵢ`.
+If `F₁F₂ + F₂F₃ + F₃F₁ > 5(F₁+F₂+F₃)`, every `x` is a sum of three units `aᵢ`.
+The product of the `fᵢ aᵢ` is positive, and their sum exceeds `3/2`.
 
 ## Shape of the argument
 
-Let `Aᵢ` be the support of `fᵢ` inside `U 15` and `nᵢ = |Aᵢ| ≤ 8`, sort the
-values of `fᵢ` on `Aᵢ` into a decreasing tuple extended by zero to `ℕ → ℝ`, and
-call that tuple `gᵢ`. Then `Fᵢ = ∑_{k < nᵢ} gᵢ k` and `Fᵢ ≤ nᵢ`, so `mono17`
-upgrades Shao's (16) on the `F`s to his (17) on the `n`s.
+Let `Aᵢ` be the support of `fᵢ` in `U 15`, with `nᵢ = |Aᵢ| ≤ 8`.
+Let `gᵢ` be the decreasing rearrangement of `fᵢ` on `Aᵢ`, extended by zero to `ℕ → ℝ`.
+Then `Fᵢ ≤ nᵢ`, so `mono17` upgrades Shao's (16) on the `F`s to his (17) on the `n`s.
+With `T x y z = xy+yz+zx-5(x+y+z)`, let `J = {(k₁,k₂,k₃) : kᵢ < nᵢ and T(k₁+1,k₂+1,k₃+1) > 0}`.
 
-The argument then splits on Shao's dichotomy at the index set
-`J = {(k₁,k₂,k₃) : kᵢ < nᵢ and T(k₁+1,k₂+1,k₃+1) > 0}`, where
-`T x y z = xy+yz+zx-5(x+y+z)`.
+In Case A some `J` triple has `g₁k₁ + g₂k₂ + g₃k₃ > 3/2`.
+Take `Bᵢ = Aᵢ.filter (gᵢ kᵢ ≤ fᵢ ·)`, so `|Bᵢ| ≥ kᵢ + 1` by the rearrangement.
+Since `J` is an up-set (`upset3`), `lemma_2_3` gives `aᵢ ∈ Bᵢ` with `a₁+a₂+a₃ = x`.
 
-In Case A some `J` triple has `g₁k₁ + g₂k₂ + g₃k₃ > 3/2`. Take
-`Bᵢ = Aᵢ.filter (gᵢ kᵢ ≤ fᵢ ·)`; the counting clause of the rearrangement gives
-`|Bᵢ| ≥ kᵢ + 1`, and `J` is an up-set by `upset3`, so `T(|B₁|,|B₂|,|B₃|) > 0`
-and `lemma_2_3` lands `aᵢ ∈ Bᵢ` with `a₁+a₂+a₃ = x`. Every `fᵢ aᵢ ≥ gᵢ kᵢ`, so
-the three values add to more than `3/2`. A `Bᵢ` strictly larger than `kᵢ+1`
-is harmless here, so no subset of exactly that size ever has to be built.
-
-In Case B no `J` triple exceeds `3/2`, which is Shao's constraint family (19),
-expressed here by the predicate `Con`, and `caseB` contradicts (16) outright from
-it. Six-fold symmetry cuts the work down to `caseB_sorted`, `cases34` enumerates
-the 34 admissible sorted triples, and each triple is closed by one linear
-program together with one of the four endgame quadratics `E1` to `E4`.
+In Case B no `J` triple exceeds `3/2`, which is Shao's (19), the predicate `Con`.
+Then `caseB` contradicts (16), and symmetry reduces it to `caseB_sorted`.
+`cases34` lists the 34 admissible sorted triples.
+Each closes by one linear program and one of the endgame quadratics `E1` to `E4`.
 
 ## The 36 linear programs
 
-Shao says "the maximum of `S` can be found using a linear programming
-algorithm" and tabulates the answers. Here each case has an explicit dual
-(Farkas) certificate, and the certificate is spent as the list of `J` rows to
-instantiate, after which `linarith` reconstructs the multipliers itself,
-including the half-integral ones at `(4,7,8)`, `(5,6,8)`, `(6,8,8)`, and
-`(7,7,8)`, where no integral certificate exists. Monotonicity of `gᵢ` is
-provably redundant in every one of the 36 programs and is therefore never passed
-to `linarith`, though it is still needed earlier, both to build the `gᵢ` and to
-run Case A.
-
-The count is 36 rather than the paper's 34, because `(4,5,8)` and `(4,8,8)` each
-split, on `F₁+F₂ ≥ 8` and on `F₁ ≥ 3` respectively, with the branch re-solved
-once the extra row is added; Shao states both of those splits himself.
-
-The certificates were produced by an exact rational simplex and re-verified
-coefficientwise, on nonnegativity, on `Aᵀλ ≥ 1`, and on the value `bᵀλ`, without
-floating point anywhere.
+Shao finds the maximum of `S` "using a linear programming algorithm".
+Here each case lists the `J` rows of a dual certificate, and `linarith` finds the multipliers.
+The count is 36, not 34, because `(4,5,8)` and `(4,8,8)` each split, as Shao himself does.
+The splits are on `F₁+F₂ ≥ 8` and on `F₁ ≥ 3`.
 -/
 namespace P32
 
@@ -1826,8 +1571,7 @@ theorem pair_gt (a b c : ℕ) (h : 5 * (a + b + c) < a * b + b * c + c * a) : 5 
   have hc : c ≤ 5 := by omega
   nlinarith
 
-/-- `J` is an up-set in every coordinate at once. This simultaneity lets Case A
-feed `lemma_2_3` a set strictly larger than the index it came from. -/
+/-- `J` is an up-set in all three coordinates at once. -/
 theorem upset3 (a b c a' b' c' : ℕ) (ha : a ≤ a') (hb : b ≤ b') (hc : c ≤ c')
     (h : 5 * (a + b + c) < a * b + b * c + c * a) :
     5 * (a' + b' + c') < a' * b' + b' * c' + c' * a' := by
@@ -1836,7 +1580,6 @@ theorem upset3 (a b c a' b' c' : ℕ) (ha : a ≤ a') (hb : b ≤ b') (hc : c �
   have h3 : 5 < a + b := pair_gt c a b (by linarith)
   nlinarith
 
-/-- The real-valued pair lemma, for the step from (16) to (17). -/
 theorem pair_real (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
     (h : 5 * (a + b + c) < a * b + b * c + c * a) : 5 < b + c := by
   by_contra hbc
@@ -1845,9 +1588,7 @@ theorem pair_real (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
   have hc5 : c ≤ 5 := by linarith
   nlinarith
 
-/-- Shao's "since `nᵢ ≥ Fᵢ`, we have by (16), (17)", which the paper asserts
-without proof, and which holds because raising each coordinate keeps
-`T > 0`. -/
+/-- Shao states this step without proof, "since `nᵢ ≥ Fᵢ`, we have by (16), (17)": raising each coordinate keeps `T > 0`. -/
 theorem mono17 (a b c A B C : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
     (hA : a ≤ A) (hB : b ≤ B) (hC : c ≤ C)
     (h : 5 * (a + b + c) < a * b + b * c + c * a) :
@@ -1865,10 +1606,8 @@ theorem sum_le_card (g : ℕ → ℝ) (hi : ∀ k, g k ≤ 1) (n : ℕ) :
 
 /-! ## Moving off `Fin n`
 
-Every later step is `Finset.range` arithmetic, so the sorted tuple is extended
-to `ℕ → ℝ` by zero at once and stays there. -/
+Every later step is `Finset.range` arithmetic, so we extend the sorted tuple to `ℕ → ℝ` by zero. -/
 
-/-- Extend a `Fin N` tuple to `ℕ` by zero. -/
 noncomputable def ext {N : ℕ} (a : Fin N → ℝ) : ℕ → ℝ :=
   fun k => if h : k < N then a ⟨k, h⟩ else 0
 
@@ -1880,12 +1619,7 @@ theorem sum_ext {N : ℕ} (a : Fin N → ℝ) : (∑ k ∈ range N, ext a k) = �
   rw [← Fin.sum_univ_eq_sum_range]
   exact Finset.sum_congr rfl (fun i _ => by rw [ext_lt a i.2])
 
-/-- Everything Proposition 3.2 needs about one `fᵢ`, gathered into one package,
-namely its support `A` inside `U 15`, the decreasing rearrangement `g` of its
-values
-extended by zero, the fact that `g` reproduces the unit-sum of `f`, and the
-clause that hands Case A a subset of `A` of size at least `k+1` on which
-`f ≥ g k`. -/
+/-- What Proposition 3.2 needs about one `fᵢ`: its support `A`, its rearrangement `g`, and the Case A subsets. -/
 theorem package (f : ZMod 15 → ℝ) (h0 : ∀ z, 0 ≤ f z) (h1 : ∀ z, f z ≤ 1) :
     ∃ (A : Finset (ZMod 15)) (g : ℕ → ℝ),
       A ⊆ Statements.U 15 ∧
@@ -1923,11 +1657,9 @@ theorem package (f : ZMod 15 → ℝ) (h0 : ∀ z, 0 ≤ f z) (h1 : ∀ z, f z �
       exact this
     · intro z hz; exact (Finset.mem_filter.mp hz).2
 
-/-! ## The four endgame quadratic facts.
+/-! ## The endgame quadratics
 
-Write `T x y z = x*y + y*z + z*x - 5*(x+y+z)`. Each of the four says `T ≤ 0`
-under a bound on the total `x+y+z`, and that contradicts the strict `T > 0` of
-Shao's hypothesis (16). -/
+Each says `T ≤ 0` under a bound on the total, contradicting the strict `T > 0` of Shao's (16). -/
 
 theorem E4 (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
     (hS : a + b + c ≤ 15) : a * b + b * c + c * a ≤ 5 * (a + b + c) := by
@@ -1948,10 +1680,9 @@ theorem E3 (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
   nlinarith [sq_nonneg (a - b), sq_nonneg (a + b - 8), mul_nonneg ha hb,
     mul_nonneg hc (add_nonneg ha hb)]
 
-/-! ## The constraint family (19), and the 36 linear programs. -/
+/-! ## The constraint family (19) and the 36 linear programs -/
 
-/-- Shao's constraint family (19), in 0-based indices, saying that for every
-index triple in `J` the three selected values add to at most `3/2`. -/
+/-- Shao's (19) in 0-based indices: every triple in `J` has values adding to at most `3/2`. -/
 def Con (g₁ g₂ g₃ : ℕ → ℝ) (n₁ n₂ n₃ : ℕ) : Prop :=
   ∀ k₁ k₂ k₃ : ℕ, k₁ < n₁ → k₂ < n₂ → k₃ < n₃ →
     5 * ((k₁ + 1) + (k₂ + 1) + (k₃ + 1))
@@ -2771,8 +2502,7 @@ theorem lp_4_8_8x (g₁ g₂ g₃ : ℕ → ℝ)
     hx]
 
 set_option maxHeartbeats 1000000 in
--- The 34 admissible sorted support-size triples: `interval_cases` walks the
--- 729 sorted boxes and `omega` kills the 695 that fail Shao's (17).
+-- `interval_cases` walks the 165 sorted triples, and `omega` rules out the 131 that fail Shao's (17).
 theorem cases34 (n₁ n₂ n₃ : ℕ) (h12 : n₁ ≤ n₂) (h23 : n₂ ≤ n₃) (h8 : n₃ ≤ 8)
     (hT : 5 * (n₁ + n₂ + n₃) < n₁ * n₂ + n₂ * n₃ + n₃ * n₁) :
     (n₁ = 2 ∧ n₂ = 7 ∧ n₃ = 8) ∨
@@ -2964,7 +2694,7 @@ theorem caseB (n₁ n₂ n₃ : ℕ) (b₁ : n₁ ≤ 8) (b₂ : n₂ ≤ 8) (b�
     have key := caseB_sorted n₁ n₂ n₃ (by omega) (by omega) (by omega) (by linarith)
       g₁ g₂ g₃ lo₁ hi₁ lo₂ hi₂ lo₃ hi₃ hc
     linarith [key]
-  · -- order (1, 2, 3)
+  · -- order (1, 2, 3), all three equal
     have key := caseB_sorted n₁ n₂ n₃ (by omega) (by omega) (by omega) (by linarith)
       g₁ g₂ g₃ lo₁ hi₁ lo₂ hi₂ lo₃ hi₃ hc
     linarith [key]
@@ -3000,7 +2730,7 @@ theorem caseB (n₁ n₂ n₃ : ℕ) (b₁ : n₁ ≤ 8) (b₂ : n₂ ≤ 8) (b�
     have key := caseB_sorted n₂ n₃ n₁ (by omega) (by omega) (by omega) (by linarith)
       g₂ g₃ g₁ lo₂ hi₂ lo₃ hi₃ lo₁ hi₁ hc'
     linarith [key]
-  · -- order (3, 2, 1)
+  · -- order (3, 2, 1), all three equal
     have hc' : Con g₃ g₂ g₁ n₃ n₂ n₁ := by
       intro j₁ j₂ j₃ a₁ a₂ a₃ d
       have h := hc j₃ j₂ j₁ a₃ a₂ a₁ (by linarith)
@@ -3028,11 +2758,7 @@ open P32
 private theorem cardU15 : (Statements.U 15).card = 8 := by
   rw [card_U]; decide
 
-/-- Shao's Proposition 3.2, the weighted case `m = 15`.
-
-Three functions `ZMod 15 → [0,1]` whose unit-sums `F₁, F₂, F₃` satisfy
-`F₁F₂ + F₂F₃ + F₃F₁ > 5(F₁+F₂+F₃)` represent every `x : ZMod 15` as a sum of
-three units with a positive product and a value sum above `3/2`. -/
+/-- Shao's Proposition 3.2, the weighted case `m = 15`. -/
 theorem prop_3_2 : Statements.Prop32 := by
   intro f₁ f₂ f₃ hnn hle F₁ F₂ F₃ hF₁ hF₂ hF₃ hT x
   obtain ⟨A₁, g₁, hs₁, hp₁, lo₁, hi₁, hsum₁, hbr₁⟩ :=
@@ -3084,28 +2810,15 @@ theorem prop_3_2 : Statements.Prop32 := by
     rw [hsum₁, hsum₂, hsum₃, ← hF₁, ← hF₂, ← hF₃] at key
     linarith
 
-/-! ### Anti-vacuity for `prop_3_2`
+/-! ### Anti-vacuity for `prop_3_2` -/
 
-Two witnesses are needed here, because the first of them establishes less than
-its statement suggests and the second supplies what it misses.
--/
-
-/-- The hypothesis class is inhabited, as the constant `7/10` shows, since each
-`Fᵢ` is then `8 * 7/10 = 28/5` and `5(F₁+F₂+F₃) = 84 < 2352/25 = F₁F₂+F₂F₃+F₃F₁`,
-so the hypothesis holds strictly. What this witness does not establish is the
-value clause, which degenerates at a constant `f` into the arithmetic statement
-`3/2 < 21/10`, true of any triple whatever, so satisfiability of the hypothesis
-is all that it certifies. -/
+/-- At the constant `7/10`, each `Fᵢ` is `28/5` and `84 < 2352/25`, so the hypothesis holds.
+A constant `f` makes the value clause trivial, so the next witness is two-valued. -/
 example : (5 : ℝ) * (28 / 5 + 28 / 5 + 28 / 5)
     < 28 / 5 * (28 / 5) + 28 / 5 * (28 / 5) + 28 / 5 * (28 / 5) := by norm_num
 
-/-- The conclusion costs something too, as the following two-valued `f` on the
-units mod 15 shows. Let `f` equal `1` on `{1,2,4,7,8}` and `1/4` on the other
-three, so that each `Fᵢ` is `5 + 3/4 = 23/4` and the hypothesis holds. The value
-clause now matters, since three values drawn from `{1, 1/4}` exceed `3/2`
-only when at least two of them are `1`, so the triple the theorem returns cannot
-be an arbitrary representation of `0`, and exhibiting some triple of units
-summing to `0` would not prove the statement below. -/
+/-- Let `f` be `1` on `{1,2,4,7,8}` and `1/4` on the other three units, so each `Fᵢ` is `23/4`.
+Three values from `{1, 1/4}` exceed `3/2` only when at least two of them are `1`. -/
 example : ∃ a₁ ∈ Statements.U 15, ∃ a₂ ∈ Statements.U 15, ∃ a₃ ∈ Statements.U 15,
     a₁ + a₂ + a₃ = (0 : ZMod 15) ∧
     (3 : ℝ) / 2 < (fun z : ZMod 15 => if z = 1 ∨ z = 2 ∨ z = 4 ∨ z = 7 ∨ z = 8
@@ -3128,29 +2841,17 @@ example : ∃ a₁ ∈ Statements.U 15, ∃ a₂ ∈ Statements.U 15, ∃ a₃ �
       (23 / 4) (23 / 4) (23 / 4) hsum.symm hsum.symm hsum.symm (by norm_num) 0
   exact ⟨a₁, k₁, a₂, k₂, a₃, k₃, hx, hval⟩
 
-/-- The threshold is exactly where Shao puts it. At the constant `5/8`, where
-each `Fᵢ = 5`, the hypothesis reads `75 < 75` and fails. -/
+/-- At the constant `5/8`, each `Fᵢ = 5` and the hypothesis reads `75 < 75`, which fails. -/
 example : ¬ ((5 : ℝ) * (5 + 5 + 5) < 5 * 5 + 5 * 5 + 5 * 5) := by norm_num
 
 end Prop32
 
 /-! ## The CRT core of Proposition 1.4
 
-The case `15 ∣ M` of Proposition 1.4 is everything the `WLOG` step above leaves.
-Write `M = 15 * m'`, split `ZMod M` as `ZMod 15 × ZMod m'`, average `g` over the
-`ZMod 15` fiber to get `f'` on `ZMod m'`, apply Proposition 3.1 to `f'`, and
-then apply Proposition 3.2 to the three fiber functions.
-
-The factor that makes the two propositions meet is `phi 15 = 8`. Proposition 3.1
-returns the normalized inequality
-`f'(a₁)f'(a₂) + f'(a₂)f'(a₃) + f'(a₃)f'(a₁) > 5/8 * (f'(a₁) + f'(a₂) + f'(a₃))`,
-while Proposition 3.2 wants the unnormalized
-`F₁F₂ + F₂F₃ + F₃F₁ > 5 * (F₁ + F₂ + F₃)` with `Fᵢ = 8 * f'(aᵢ)`, and
-multiplying through by `64` matches the two exactly, with the `5` of
-Proposition 3.2 appearing as `8 * (5/8)`.
-
-The `WLOG` is discharged by destructing the divisibility, so `M` becomes the
-literal `15 * m'` and `ZMod.chineseRemainder` applies on the nose.
+Write `M = 15 * m'` and split `ZMod M` as `ZMod 15 × ZMod m'`.
+Average `g` over each `ZMod 15` fiber to get `f'` on `ZMod m'`, and apply Proposition 3.1 to `f'`.
+Then apply Proposition 3.2 to the three fiber functions, with `Fᵢ = 8 * f'(aᵢ)` and `8 = phi 15`.
+Multiplying Proposition 3.1's inequality by `64` gives Proposition 3.2's, with `5 = 8 * (5/8)`.
 -/
 
 /-! ## Dictionary: membership in `U` and the CRT transport of a sum. -/
@@ -3164,8 +2865,7 @@ private theorem isUnit_crt {a b : ℕ} (h : Nat.Coprime a b) (x : ZMod (a * b)) 
         ∧ IsUnit ((ZMod.chineseRemainder h) x).2 := by
   rw [← Prod.isUnit_iff, isUnit_map_iff]
 
-/-- The CRT equivalence carries `U (a*b)` onto `U a ×ˢ U b`, so any sum over the
-units mod `a*b` is a sum over the product of the two unit sets. -/
+/-- The CRT equivalence carries `U (a*b)` onto `U a ×ˢ U b`. -/
 private theorem sum_U_crt {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
     (h : Nat.Coprime a b) (g : ZMod (a * b) → ℝ) :
     ∑ x ∈ Statements.U (a * b), g x
@@ -3186,8 +2886,7 @@ private theorem sum_U_crt {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
   · intro p _; simp
   · intro x _; simp
 
-/-- `sum_U_crt` phrased against a named copy `e` of the CRT equivalence, so the
-main proof never has to unfold the abbreviation. -/
+/-- `sum_U_crt` for a named copy `e` of the CRT equivalence. -/
 private theorem sum_U_crt' {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
     {h : Nat.Coprime a b} {e : ZMod (a * b) ≃+* ZMod a × ZMod b}
     (he : e = ZMod.chineseRemainder h) (g : ZMod (a * b) → ℝ) :
@@ -3195,7 +2894,6 @@ private theorem sum_U_crt' {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
       = ∑ p ∈ (Statements.U a) ×ˢ (Statements.U b), g (e.symm p) := by
   subst he; exact sum_U_crt h g
 
-/-- A pair of units pulls back to a unit mod `a * b`. -/
 private theorem mem_U_symm {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
     {h : Nat.Coprime a b} {e : ZMod (a * b) ≃+* ZMod a × ZMod b}
     (he : e = ZMod.chineseRemainder h) {p : ZMod a × ZMod b}
@@ -3206,38 +2904,22 @@ private theorem mem_U_symm {a b : ℕ} [NeZero a] [NeZero b] [NeZero (a * b)]
   rw [isUnit_crt h, RingEquiv.apply_symm_apply]
   exact ⟨h1, h2⟩
 
-/-! ## Node `prop_3_1`: the induction away from 3 and 5
+/-! ## Node `prop_3_1`: the induction away from 2, 3, and 5
 
 Shao's Proposition 3.1, arXiv:1206.6139v2, proved by strong induction on `m`
 over the squarefree moduli coprime to `30`.
 
-Both cases make the same three moves. Sort the values of the relevant function
-on the units mod a prime `p` into an antitone tuple of length `p - 1`, run the
-contrapositive of an averaging lemma to obtain one index triple `(i, j, k)` with
-`i + j + k ≥ p - 1` on which the inequality runs strictly the other way, and
-read three level sets off those indices. The counting clause of the
-rearrangement gives `|I| + |J| + |K| ≥ (i+1) + (j+1) + (k+1) ≥ p + 2`, which is
-the hypothesis `cd_chowla` asks for, and `p31_transfer` moves the strict
-inequality up from the thresholds to the actual values; that common tail is
-`p31_landing`.
+Each case sorts values on the units mod a prime `p` into an antitone tuple of length `p - 1`.
+An averaging lemma's contrapositive gives a triple `(i, j, k)` where the inequality reverses.
+The level sets at those indices have `|I| + |J| + |K| ≥ p + 2`, as `cd_chowla` needs.
+That common tail is `p31_landing`.
 
-The two cases differ in which averaging lemma runs, and on what.
+* Base, `m = p` prime with `p ≥ 7`: `lemma_2_1` on the sorted values of `f`, at length `p - 1 ≥ 6`.
+* Step, `m = m' * p` with `p` the largest prime factor: average `f` over the `ZMod p` fiber.
+  The induction hypothesis on `m'` picks out three fibers, and `lemma_2_2` runs at length `p - 1 ≥ 10`.
 
-* Base, `m = p` prime with `p ≥ 7`: `lemma_2_1` on the single sorted tuple of
-  `f` on `U p`, at length `p - 1 ≥ 6`.
-* Step, `m = m' * p` with `p` the largest prime factor: average `f` over the
-  `ZMod p` fiber to get `f'` on `ZMod m'`, apply the induction hypothesis to
-  `f'`, then run `lemma_2_2` on the three fiber sequences that the induction
-  hypothesis picks out, at length `p - 1 ≥ 10`.
-
-The largest prime factor is the right one to peel off, because a squarefree `m`
-coprime to `30` has every prime factor at least `7`, and a composite one has at
-least two of them, so its largest factor is at least `11` and the resulting
-`p - 1 ≥ 10` clears the threshold of `lemma_2_2`. That argument is
-`p31_factor`, and it is the only place where the choice of `p` matters.
-
-The modulus `m = 1` is a separate one-line base case, since `ZMod 1` is trivial,
-its only unit is `0`, and the density hypothesis is already the conclusion.
+A composite squarefree `m` coprime to `30` has two prime factors of at least `7`, so the largest is at least `11`.
+That is `p31_factor`. The case `m = 1` is a separate base case.
 -/
 
 /-- Helper for `p31_pairs_of_pos`, giving one of the three cyclic images. -/
@@ -3366,9 +3048,7 @@ private theorem p31_landing {p : ℕ} [NeZero p] (hp : p.Prime)
 
 /-! ## Node `prop_3_1` -/
 
-/-- The contrapositive of `lemma_2_1`, in the form Proposition 3.1 consumes,
-namely that an average above `5/8` yields a single index triple summing to at
-least `n` on which the inequality runs strictly the other way. -/
+/-- Contrapositive of `lemma_2_1`: an average above `5/8` gives a triple where the inequality reverses. -/
 private theorem l21_contra {n : ℕ} (hn : 6 ≤ n) (hev : Even n) (a : Fin n → ℝ)
     (hanti : Antitone a) (h0 : ∀ i, 0 ≤ a i) (h1 : ∀ i, a i ≤ 1)
     (hbig : 5 / 8 * (n : ℝ) < ∑ i, a i) :
@@ -3399,16 +3079,13 @@ private theorem card_U_prime {p : ℕ} [NeZero p] (hp : p.Prime) :
     (Statements.U p).card = p - 1 := by
   rw [card_U, Nat.totient_prime hp]
 
-/-- The unit count at an odd prime is even and at least `p - 1`, and those are
-exactly the two properties the averaging lemmas need of the index length. -/
+/-- The unit count at an odd prime is even, as the averaging lemmas need. -/
 private theorem even_card_U_prime {p : ℕ} [NeZero p] (hp : p.Prime) (hp3 : 3 ≤ p) :
     Even (Statements.U p).card := by
   obtain ⟨k, hk⟩ := hp.odd_of_ne_two (by omega)
   exact ⟨k, by rw [card_U_prime hp]; omega⟩
 
-/-- `exists_antitone_rearrangement` at `S = U p`, with the value bounds carried
-through, so that the output is in the exact input shape of `l21_contra` and
-`l22_contra`. -/
+/-- `exists_antitone_rearrangement` at `S = U p`, in the input shape of `l21_contra` and `l22_contra`. -/
 private theorem p31_sorted {p : ℕ} [NeZero p] (g : ZMod p → ℝ)
     (h0 : ∀ t, 0 ≤ g t) (h1 : ∀ t, g t ≤ 1) :
     ∃ α : Fin (Statements.U p).card → ℝ, Antitone α ∧ (∀ i, 0 ≤ α i) ∧
@@ -3421,9 +3098,7 @@ private theorem p31_sorted {p : ℕ} [NeZero p] (g : ZMod p → ℝ)
   · intro i; obtain ⟨t, -, ht⟩ := hval i; rw [← ht]; exact h0 t
   · intro i; obtain ⟨t, -, ht⟩ := hval i; rw [← ht]; exact h1 t
 
-/-- The base case of Proposition 3.1, `m = p` prime with `p ≥ 7`. Sort the
-values of `f` on the units, take the triple that `l21_contra` returns, and
-land it with `p31_landing`. -/
+/-- The base case `m = p` prime with `p ≥ 7`, by `l21_contra` and `p31_landing`. -/
 private theorem p31_base {p : ℕ} [NeZero p] (hp : p.Prime) (hp7 : 7 ≤ p)
     (f : ZMod p → ℝ) (h0 : ∀ t, 0 ≤ f t) (h1 : ∀ t, f t ≤ 1)
     (hdens : (5 : ℝ) / 8 * (Nat.totient p) < ∑ t ∈ Statements.U p, f t)
@@ -3442,11 +3117,7 @@ private theorem p31_base {p : ℕ} [NeZero p] (hp : p.Prime) (hp7 : 7 ≤ p)
     ((i : ℕ) + 1) ((j : ℕ) + 1) ((k : ℕ) + 1) (by omega) (by omega) (by omega)
     (by omega) (hcount i) (hcount j) (hcount k) x
 
-/-- The induction step of Proposition 3.1, `m = m' * p` with `p` the largest
-prime factor, so that `p ≥ 11` and the fiber length `p - 1` clears the threshold
-of `10` that `lemma_2_2` imposes. Average `f` over the `ZMod p` fiber, feed the
-average to the induction hypothesis on `m'`, then run `lemma_2_2` on the three
-fiber sequences the induction hypothesis picks out. -/
+/-- The induction step `m = m' * p` with `p ≥ 11`, by averaging over the `ZMod p` fiber. -/
 private theorem p31_step {m' p : ℕ} [NeZero m'] [NeZero p] [NeZero (m' * p)]
     (hp : p.Prime) (hp11 : 11 ≤ p) (hcop : Nat.Coprime m' p)
     (IH : ∀ g : ZMod m' → ℝ, (∀ t, 0 ≤ g t) → (∀ t, g t ≤ 1) →
@@ -3549,10 +3220,7 @@ private theorem p31_step {m' p : ℕ} [NeZero m'] [NeZero p] [NeZero (m' * p)]
     exact ⟨by simpa using habc, by simpa using huvw⟩
   rw [hpair, RingEquiv.symm_apply_apply]
 
-/-- The remaining base case `m = 1`. Since `ZMod 1` is trivial its only unit is
-`0`, so the density hypothesis reads `f 0 > 5/8` and the conclusion reads
-`3 * f 0 ^ 2 > 15/8 * f 0`, which is that same inequality multiplied through by
-`3 * f 0`. -/
+/-- At `m = 1` the hypothesis reads `f 0 > 5/8`, and multiplying by `3 * f 0` gives the conclusion. -/
 private theorem p31_one (f : ZMod 1 → ℝ)
     (hdens : (5 : ℝ) / 8 * (Nat.totient 1) < ∑ t ∈ Statements.U 1, f t) (x : ZMod 1) :
     ∃ a ∈ Statements.U 1, ∃ b ∈ Statements.U 1, ∃ c ∈ Statements.U 1, a + b + c = x ∧
@@ -3571,9 +3239,7 @@ private theorem p31_one (f : ZMod 1 → ℝ)
   refine ⟨0, hmem 0, 0, hmem 0, 0, hmem 0, Subsingleton.elim _ _, ?_⟩
   nlinarith [hdens]
 
-/-- Proposition 3.1, by strong induction on `m`, with the two base cases
-`m = 1` and `m` prime handled above and the composite case peeling off the
-largest prime factor. -/
+/-- Proposition 3.1, by strong induction on `m`. -/
 private theorem p31_main (m : ℕ) : ∀ _ : NeZero m, Squarefree m → Nat.Coprime m 30 →
     ∀ f : ZMod m → ℝ, (∀ t, 0 ≤ f t) → (∀ t, f t ≤ 1) →
       (5 : ℝ) / 8 * (Nat.totient m) < (∑ t ∈ Statements.U m, f t) →
@@ -3605,11 +3271,7 @@ theorem prop_3_1 : Statements.Prop31 := by
 
 /-! ### Anti-vacuity for `prop_3_1` -/
 
-/-- The hypothesis class of `prop_3_1` is inhabited at `m = 7`, which is
-squarefree and coprime to `30`, and the theorem accepts a real input there,
-since the constant function `1` has unit-sum `6 > (5/8) * phi(7) = 15/4`. The
-modulus `7` is prime, so this witness runs the base case of the induction and
-exercises `lemma_2_1` and `cd_chowla` from end to end. -/
+/-- `prop_3_1` at `m = 7` and the constant `1`, whose unit-sum is `6 > (5/8) * phi(7) = 15/4`. -/
 example : ∃ a ∈ Statements.U 7, ∃ b ∈ Statements.U 7, ∃ c ∈ Statements.U 7,
     a + b + c = (0 : ZMod 7) ∧
     (5 : ℝ) / 8 * (1 + 1 + 1) < 1 * 1 + 1 * 1 + 1 * 1 := by
@@ -3623,10 +3285,7 @@ example : ∃ a ∈ Statements.U 7, ∃ b ∈ Statements.U 7, ∃ c ∈ Statemen
 
 /-! ## Dictionary: what `M = 15 * m'` odd and squarefree says about `m'`. -/
 
-/-- From `M = 15 * m'` odd and squarefree it follows that `m'` is coprime to
-`30`, coprime to `15`, and squarefree. The three primes are excluded one at a
-time, with oddness of `M` ruling out `2` and squarefreeness ruling out `3` and
-`5`, since `3 ∣ m'` would put `9 ∣ M` and `5 ∣ m'` would put `25 ∣ M`. -/
+/-- Oddness of `M` rules out `2 ∣ m'`, and squarefreeness rules out `3 ∣ m'` and `5 ∣ m'`. -/
 private theorem crt_split_facts {m' : ℕ} (hodd : Odd (15 * m'))
     (hsq : Squarefree (15 * m')) :
     Nat.Coprime 15 m' ∧ Nat.Coprime m' 30 ∧ Squarefree m' := by
@@ -3671,7 +3330,7 @@ private theorem prop14At_of_dvd15 (H31 : Statements.Prop31) (H32 : Statements.Pr
   obtain ⟨e, he⟩ : ∃ e : ZMod (15 * m') ≃+* ZMod 15 × ZMod m',
       e = ZMod.chineseRemainder hcop15 := ⟨_, rfl⟩
   intro g hg0 hg1 hdens y
-  -- the units mod 15 number 8
+  -- there are 8 units mod 15
   have hcardU15 : (Statements.U 15).card = 8 := by rw [card_U]; decide
   have h8 : (∑ _z ∈ Statements.U 15, (1 : ℝ)) = 8 := by
     rw [Finset.sum_const, hcardU15]; norm_num
@@ -3744,35 +3403,25 @@ private theorem prop14At_of_dvd15 (H31 : Statements.Prop31) (H32 : Statements.Pr
 
 /-! ## Anti-vacuity
 
-`prop14At_of_dvd15` takes both `Prop31` and `Prop32` as hypotheses, so its own
-witnesses check both that its hypothesis class is inhabited and that the
-arithmetic dictionary it rests on says something true at a concrete modulus.
+`prop14At_of_dvd15` takes `Prop31` and `Prop32` as hypotheses, so these witnesses check its side conditions.
 -/
 
-/-- The hypotheses `Odd M`, `Squarefree M`, and `15 ∣ M` can be met together, at
-`M = 15` itself and again at `M = 105 = 15 * 7`, so the theorem is not
-quantified over nothing. -/
+/-- `Odd M`, `Squarefree M`, and `15 ∣ M` hold together at `M = 15` and `M = 105`. -/
 example : (Odd 15 ∧ Squarefree 15 ∧ (15 : ℕ) ∣ 15) ∧
     (Odd 105 ∧ Squarefree 105 ∧ (15 : ℕ) ∣ 105) :=
   ⟨⟨⟨7, by norm_num⟩, by decide +kernel, dvd_refl 15⟩,
    ⟨⟨52, by norm_num⟩, by decide +kernel, ⟨7, by norm_num⟩⟩⟩
 
-/-- `crt_split_facts` at `M = 105`, where `m' = 7`, really returns its three
-facts, and each of the three is true at that value. -/
+/-- `crt_split_facts` at `M = 105`, where `m' = 7`. -/
 example : Nat.Coprime 15 7 ∧ Nat.Coprime 7 30 ∧ Squarefree 7 :=
   crt_split_facts (m' := 7) ⟨52, by norm_num⟩ (by decide +kernel)
 
-/-- The factor `8 = phi 15` that turns Shao's (21) into the hypothesis of
-Proposition 3.2 really is `phi 15`, and `5 = phi 15 * (5/8)`. -/
+/-- The factor that turns Shao's (21) into the hypothesis of Proposition 3.2 is `8 = phi 15`. -/
 example : Nat.totient 15 = 8 ∧ (8 : ℝ) * (5 / 8) = 5 := ⟨by decide, by norm_num⟩
 
-/-! ## Proposition 1.4 and Corollary 1.5, reduced to one hypothesis
+/-! ## Proposition 1.4 and Corollary 1.5 from Proposition 3.1
 
-The CRT core above, the `WLOG 15 ∣ m` step, and the `f = 1_A` step reduce the
-whole back half of the argument to a single composition. The two lemmas below
-record it with Proposition 3.1 still taken as a hypothesis, which makes the
-dependency visible, since Proposition 3.1 is the one input either result needs.
-Once it is available, both follow by one application.
+The other inputs are proved above.
 -/
 
 /-- Shao's Proposition 1.4, given Proposition 3.1. -/
@@ -3783,32 +3432,21 @@ private theorem prop14_of_parts (H31 : Statements.Prop31) : Statements.Prop14 :=
 private theorem cor15_of_parts (H31 : Statements.Prop31) : Statements.Cor15 :=
   cor15_of_prop14 (prop14_of_parts H31)
 
-/-! ## Nodes `prop_1_4` and `cor_1_5`
-
-With `prop_3_1` proved above, each of the two is one application of the
-corresponding lemma. -/
+/-! ## Nodes `prop_1_4` and `cor_1_5` -/
 
 /-- Node `prop_1_4`. Shao's Proposition 1.4. -/
 theorem prop_1_4 : Statements.Prop14 := prop14_of_parts prop_3_1
 
-/-- Node `cor_1_5`, the question this development was built to answer. Shao's
-Corollary 1.5: an odd squarefree modulus `m` and a set `A` of units with
+/-- Node `cor_1_5`. Shao's Corollary 1.5: for odd squarefree `m`, units `A` with
 `|A| > (5/8) phi(m)` satisfy `A + A + A = ZMod m`. -/
 theorem cor_1_5 : Statements.Cor15 := cor15_of_parts prop_3_1
 
 /-! ## Anti-vacuity for `prop_1_4` and `cor_1_5`
 
-The `cor_1_5` witness is the sharp one, because the extremal failing set at
-`m = 15` is `{2, 8, 11, 13, 14}`, which misses the target `x = 1`, so `1` is the
-residue at which the bound is tight, and the witness below asks the proved
-theorem for a representation of `1` at the full unit group.
+At `m = 15` the extremal set `{2, 8, 11, 13, 14}` misses `1`, so the `cor_1_5` witness targets `1`.
 -/
 
-/-- `prop_1_4` on a genuinely two-valued `f`, so that the value clause does not
-degenerate. Take `f = 1` on `{1,2,4,7,8}` and `f = 1/4` on the other three units
-mod `15`, so its unit-sum is `23/4 > 5 = (5/8) * phi(15)`. Three values drawn
-from `{1, 1/4}` exceed `3/2` only when at least two of them are `1`, so the
-triple the theorem returns cannot be an arbitrary representation of `0`. -/
+/-- `prop_1_4` on the two-valued `f` from the `prop_3_2` witness, with unit-sum `23/4 > 5`. -/
 example : ∃ a₁ ∈ Statements.U 15, ∃ a₂ ∈ Statements.U 15, ∃ a₃ ∈ Statements.U 15,
     a₁ + a₂ + a₃ = (0 : ZMod 15) ∧
     (3 : ℝ) / 2 < (fun z : ZMod 15 => if z = 1 ∨ z = 2 ∨ z = 4 ∨ z = 7 ∨ z = 8
@@ -3831,10 +3469,7 @@ example : ∃ a₁ ∈ Statements.U 15, ∃ a₂ ∈ Statements.U 15, ∃ a₃ �
       (by rw [hsum, show Nat.totient 15 = 8 from by decide]; norm_num) 0
   exact ⟨a₁, k₁, a₂, k₂, a₃, k₃, hx, hval⟩
 
-/-- `cor_1_5` at `m = 15` on the full unit group, which clears the strict bound
-`5 * phi(15) = 40 < 64 = 8 * |A|`, and at the target `x = 1`, the residue the
-sharp example misses. The advertised statement is therefore not vacuous, and
-the theorem really does produce a representation of the hardest target. -/
+/-- `cor_1_5` at `m = 15` on the full unit group, where `40 < 64`, and at the target `x = 1`. -/
 example : ∃ a ∈ Statements.U 15, ∃ b ∈ Statements.U 15, ∃ c ∈ Statements.U 15,
     a + b + c = (1 : ZMod 15) := by
   have hcard : (Statements.U 15).card = 8 := by rw [card_U]; decide

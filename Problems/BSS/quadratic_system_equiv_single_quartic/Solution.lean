@@ -1,15 +1,13 @@
 import Mathlib
 
 /-!
-A real quadratic system is equivalent to a single quartic equation. The witness
-is the sum of squares. Statement restated here to avoid importing the `sorry`.
+A real quadratic system is equivalent to one quartic, the sum of squares. The
+statement is restated so we don't import the `sorry`.
 -/
 
 open MvPolynomial
 
--- The platform looks up a declaration named exactly `solution`, at top
--- level. A namespaced or differently named theorem returns WA with
--- "Unknown identifier `solution`", which costs a submission to discover.
+-- The platform wants a top-level theorem named exactly `solution`.
 theorem solution {n m : ℕ} (p : Fin m → MvPolynomial (Fin n) ℝ)
     (hdeg : ∀ i, (p i).totalDegree ≤ 2) :
     ∃ f : MvPolynomial (Fin n) ℝ, f.totalDegree ≤ 4 ∧
@@ -31,7 +29,7 @@ theorem solution {n m : ℕ} (p : Fin m → MvPolynomial (Fin n) ℝ)
     rw [Finset.sum_eq_zero_iff_of_nonneg fun i _ => sq_nonneg (eval x (p i))]
     simp
 
-/-- First companion at a concrete family, to witness that the conclusion is not -/
+/-- Companion: for the unsolvable system `x = 0, 1 = 0`, the quartic never vanishes. -/
 example : ∃ f : MvPolynomial (Fin 1) ℝ, f.totalDegree ≤ 4 ∧
     ∀ x : Fin 1 → ℝ, MvPolynomial.eval x f ≠ 0 := by
   obtain ⟨f, hdeg, hzero⟩ :=
@@ -40,7 +38,7 @@ example : ∃ f : MvPolynomial (Fin 1) ℝ, f.totalDegree ≤ 4 ∧
   have h := (hzero x).mp hx 1
   simp at h
 
-/-- Second companion at a concrete family, to witness that the conclusion is not -/
+/-- Companion: for the system `x = 0`, the quartic vanishes at 0 but not at 1. -/
 example : ∃ f : MvPolynomial (Fin 1) ℝ, f.totalDegree ≤ 4 ∧
     MvPolynomial.eval ![(0 : ℝ)] f = 0 ∧ MvPolynomial.eval ![(1 : ℝ)] f ≠ 0 := by
   obtain ⟨f, hdeg, hzero⟩ :=

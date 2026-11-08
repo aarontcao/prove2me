@@ -5,53 +5,39 @@ edit. Edit the json and regenerate. `--check` fails on drift. -->
 # Lovasz Problem 11.8: triangle-free unit vector systems sum to Theta(n^(2/3))
 
 
-Let $u_1, \dots, u_n$ be unit vectors in a Euclidean space such that among any three of them some two are orthogonal. How large can $\|u_1 + \dots + u_n\|$ be?
+Let $u_1, \dots, u_n$ be unit vectors in a Euclidean space such that among any three of them some two are orthogonal. How large can $\|u_1 + \dots + u_n\|$ be? The answer is $\Theta(n^{2/3})$.
 
-**The answer is $\Theta(n^{2/3})$.**
+## Attribution
 
-## Attribution, which is commonly given wrong in both halves
-
-Lovasz posed the question, as Problem 11.8 of *Combinatorial Problems and Exercises* (North Holland, 1979). Konyagin proved the $O(n^{2/3})$ upper bound in *Systems of vectors in Euclidean space and an extremal problem for polynomials*, Mat. Zametki 29 (1981) 63-74, [doi:10.1007/BF01142512](https://doi.org/10.1007/BF01142512). Alon gave a matching lower bound in *Explicit Ramsey graphs and orthonormal labelings*, Electron. J. Combin. 1 (1994) R12, [doi:10.37236/1192](https://doi.org/10.37236/1192). The two together pin the exponent exactly.
+Lovasz posed the question as Problem 11.8 of *Combinatorial Problems and Exercises* (North Holland, 1979). Konyagin proved the $O(n^{2/3})$ upper bound in *Systems of vectors in Euclidean space and an extremal problem for polynomials*, Mat. Zametki 29 (1981) 63-74, translated in Math. Notes 29 (1981) 33-40, [doi:10.1007/BF01142512](https://doi.org/10.1007/BF01142512). Alon proved the matching lower bound in *Explicit Ramsey graphs and orthonormal labelings*, Electron. J. Combin. 1 (1994) R12, [doi:10.37236/1192](https://doi.org/10.37236/1192).
 
 ## Where the proof comes from
 
-The hypothesis is a graph condition in disguise. Join $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$; then "among any three some two are orthogonal" says that graph is triangle-free.
+Join $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$, and call this the non-orthogonality graph. The hypothesis says it is triangle-free. So its complement, the orthogonality graph, doesn't have an independent set of size 3. Write $\theta$ for the Lovasz theta function of the orthogonality graph. Kashin and Konyagin showed that every graph on $n$ vertices without an independent set of size 3 has theta function $O(n^{1/3})$. Their result is cited in Alon 1994, above. The $u_i$ form an orthonormal representation of the non-orthogonality graph. So by Lovasz's characterization of $\theta$, every unit vector $c$ has $\sum_i \langle c, u_i \rangle^2 \le \theta$. Take $c$ along $u_1 + \dots + u_n$. Then Cauchy-Schwarz gives $\|u_1 + \dots + u_n\|^2 \le n\theta = O(n^{4/3})$.
 
-The proof does not run through Ramsey counting, which is the natural first guess and does not reach the right exponent. It runs through the Lovasz theta function. Kashin and Konyagin bound $\theta = O(n^{1/3})$ for graphs of independence number less than 3, that is for complements of triangle-free graphs, and Cauchy-Schwarz turns that into the bound on the norm of the sum. The orthonormal labeling of a graph by unit vectors is not a coincidence of notation: it is the definition of $\theta$ that the argument uses.
+## Why one milestone
 
-## What this mission will cost
+Mathlib doesn't have the Lovasz theta function yet, so we can't split the upper bound into milestones. The one milestone is Alon's lower bound. It needs an explicit Ramsey graph and an orthonormal labeling of that graph, but not $\theta$.
 
-State this honestly rather than discover it later. The Lovasz theta function, orthonormal graph labeling, and Shannon capacity are all absent from Mathlib. So the milestone chain that the upper bound needs cannot be written yet, and this proposal ships with exactly one milestone, which is Alon's lower bound.
+## Formalization
 
-`google-deepmind/formal-conjectures` contains an SDP-form definition of the theta function, with basic bounds such as `lovaszThetaFunction_le_card` since PR #6100 of 2026-09-18. The proof here needs the orthonormal-labeling form instead, so that file is a starting point rather than a foundation. Building the theta function, proving that the two forms agree, and getting the Kashin-Konyagin bound is the real content of this mission and is larger than the statement of the goal suggests.
-
-The lower bound is the tractable half. It needs explicit Ramsey graphs and an orthonormal labeling of one, and it does not need $\theta$ at all.
-
-## Notes on the formalization
-
-Both items are stated in Mathlib primitives alone, so the mission omits definition items. The triangle-free hypothesis is written as a condition on triples of indices rather than through `SimpleGraph.CliqueFree 3`, so that a reader auditing the statement does not have to unfold a graph construction to see what is assumed. Anyone proving it is free to build the graph and use the Mathlib predicate.
+We state both items in Mathlib primitives, so the mission doesn't need definition items. The triangle-free hypothesis is a condition on triples of indices instead of `SimpleGraph.CliqueFree 3`, so an auditor doesn't have to unfold a graph construction.
 
 ## Alon's matching lower bound: $\Omega(n^{2/3})$ is attained
 
 
-There is a positive constant $c$ such that for every $n$ there is a system of $n$ unit vectors, of which among any three some two are orthogonal, whose sum has norm at least $cn^{2/3}$.
+For some $c > 0$ and every $n$, there are $n$ unit vectors, two orthogonal among any three, whose sum has norm at least $cn^{2/3}$.
 
-Together with the upper bound this makes the exponent sharp at $2/3$, so the answer to Lovasz's problem is $\Theta(n^{2/3})$ and not merely $O(n^{2/3})$.
-
-Alon's construction comes from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound and does not need the Lovasz theta function, so it is the half of this mission that can be attacked today.
+With Konyagin's upper bound, this makes the answer to Lovasz's problem $\Theta(n^{2/3})$.
 
 ## Konyagin's theorem: a triangle-free unit vector system sums to $O(n^{2/3})$
 
 
-There is an absolute constant $C$ such that for any system of $n$ unit vectors in a Euclidean space, of which among any three some two are orthogonal, the norm of the sum is at most $Cn^{2/3}$.
+Let $u_1, \dots, u_n$ be unit vectors in a Euclidean space such that among any three some two are orthogonal. Then $\|u_1 + \dots + u_n\| \le Cn^{2/3}$ for an absolute constant $C$.
 
-The hypothesis says exactly that the *non-orthogonality graph*, joining $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$, is triangle-free. It is written here as a condition on triples so that the statement avoids a definition item; in Mathlib's vocabulary it is `SimpleGraph.CliqueFree 3`.
-
-The constant is quantified outside everything, so it depends neither on the dimension nor on $n$.
-
-The attribution is worth stating carefully, because it is commonly given wrong in both halves. Lovasz posed the problem; Konyagin proved the $O(n^{2/3})$ bound.
+The hypothesis says the non-orthogonality graph, joining $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$, is triangle-free (`SimpleGraph.CliqueFree 3` in Mathlib). We quantify $C$ before the dimension and $n$, so it depends on neither.
 
 ## Alon's lower bound, the half that avoids the theta function
 
 
-Exhibit, for every $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings. It is independent of the upper bound, it settles that the exponent $2/3$ is the answer and not just a bound, and unlike the upper bound it does not wait on the Lovasz theta function.
+Exhibit, for every $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings, without the Lovasz theta function.

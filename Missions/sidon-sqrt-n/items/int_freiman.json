@@ -1,7 +1,7 @@
 {
   "theorem_name": "SidonSqrtN.int_freiman",
   "theorem_title": "An integer-valued Freiman 2-embedding of a finite set of reals",
-  "natural_language_statement": "For every finite set $X$ of reals there is a map $\\varphi$ from $\\mathbb{R}$ to $\\mathbb{Z}$, injective on $X$, sending every solution of $a + b = c + d$ in $X$ to a solution of the same equation in $\\mathbb{Z}$.\n\nFrom the previous statement by clearing denominators: the functional takes finitely many rational values on $X$, so a single common denominator turns it into an integer-valued map, and scaling a linear map keeps it linear.",
+  "natural_language_statement": "For every finite set $X$ of reals, some map $\\varphi$ from $\\mathbb{R}$ to $\\mathbb{Z}$ is injective on $X$ and preserves $a + b = c + d$ on $X$.\n\nClear denominators in the rational functional that is injective on $X$. One common denominator sends it into $\\mathbb{Z}$ on $X$, and scaling keeps it linear.",
   "source": "Folklore; the reduction from the reals to the integers in Janos Komlos, Miklos Sulyok, and Endre Szemeredi, \"Linear problems in combinatorial number theory\", Acta Math. Acad. Sci. Hungar. 26 (1975) 113-121",
   "tags": [
     "combinatorics",

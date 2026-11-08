@@ -1,12 +1,4 @@
-"""Tests for numkit. Run with:
-
-    python3 -m pytest lib/ -q
-
-Nothing else in the Lean tree has a test runner, so this file is also the
-statement that a campaign primitive is code and gets tested like code. An
-instrument built on an untested sieve is not validated, whatever its ledger
-event says.
-"""
+"""Tests for numkit. Run with `python3 -m pytest lib/ -q`."""
 import json
 import subprocess
 import sys
@@ -26,15 +18,14 @@ def test_factorize_and_divisors():
     assert numkit.factorize(360) == {2: 3, 3: 2, 5: 1}
     assert numkit.divisors(28) == [1, 2, 4, 7, 14, 28]
     assert numkit.factorize(1) == {}
-    # A prime squared, where a trial-division loop that stops one step early
-    # would silently return the wrong answer.
+    # A prime square catches a trial-division loop that stops one step early.
     assert numkit.factorize(9973 ** 2) == {9973: 2}
 
 
 def test_v2_and_layer():
     assert [numkit.v2(k) for k in (1, 2, 4, 6, 8, 12)] == [0, 1, 2, 1, 3, 2]
     assert numkit.v2(0) == -1
-    # 0 sits in its own top layer, which is the convention the z2n argument uses.
+    # 0 sits in its own top layer.
     assert numkit.layer(0, 5) == 5
     assert numkit.layer(16, 5) == 4
     assert numkit.layer(3, 5) == 0
@@ -43,7 +34,7 @@ def test_v2_and_layer():
 def test_two_routes_agrees_and_disagrees():
     assert numkit.two_routes(1.0, 1.0 + 1e-12, tol=1e-9, quiet=True)["ok"]
     assert not numkit.two_routes(1.0, 1.5, tol=1e-9, quiet=True)["ok"]
-    # Exact objects fall through to equality, which is the whole test there.
+    # Integers go through float() too, so tol=0 asks for exact agreement.
     assert numkit.two_routes(40, 40, tol=0, quiet=True)["ok"]
     assert not numkit.two_routes(40, 41, tol=0, quiet=True)["ok"]
 
@@ -51,14 +42,13 @@ def test_two_routes_agrees_and_disagrees():
 def test_planted_detects_and_misses():
     good = numkit.planted(lambda: 25, truth=25, quiet=True)
     assert good["ok"] and good["recovered"] == 25
-    # A constant function is exactly the failure planted() exists to catch.
+    # A function that returns the wrong value misses the plant.
     bad = numkit.planted(lambda: 0, truth=25, quiet=True)
     assert not bad["ok"]
 
 
 def test_pin_threads_raises_after_numpy(tmp_path):
-    """The silent-failure guard. Setting the BLAS variables after numpy loads
-    does nothing, so numkit must refuse rather than pretend."""
+    """pin_threads must raise once numpy has loaded, since the BLAS variables no longer apply."""
     script = tmp_path / "late.py"
     script.write_text(
         "import sys; sys.path.insert(0, %r)\n"

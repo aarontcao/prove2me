@@ -8,19 +8,19 @@ Each mission is one directory under `Missions/`.
     Missions/<slug>/items/<name>.json   title, natural language statement, source, tags
     Missions/<slug>/milestones.json     item, title, description
 
-The `item_order` field and `milestones.json` hold names rather than ids, because a server item id exists only after `p2m item-add` has run. A definition item is a whole module rather than a single declaration: `p2m item-add --kind definition` uploads the whole `Definitions.lean`, and `definition_name` names the module the platform serves back.
+We edited the json prose after uploading it, and the platform keeps the version we submitted.
 
 ## Building
 
-A mission slug is hyphenated, so the module component needs French quotes:
+Slugs are hyphenated, so module names need French quotes:
 
     lake build 'Missions.«shao-three-units».Statements'
 
-`Missions` is a Lake library and is not in `defaultTargets`, so a bare `lake build` stays small. The gate policy gives this tree `statements` mode: a draft item must end in `:= by sorry`, and `statements` still refuses a hand-written `axiom`, a `native_decide`, and a compile error.
+The p2m client's gate checks this tree in `statements` mode. Each draft item must end in `:= by sorry`. A hand-written `axiom`, a `native_decide`, or a compile error fails the check.
 
 ## The driver
 
-`./upload.py <slug> <step>` runs the upload sequence, resolving the proposal id from the ledger.
+`./upload.py <slug> <step>` runs each upload step through the p2m command-line client. It finds p2m on the path and reads the proposal id from the client's ledger.
 
     ./upload.py <slug> sweep      the duplicate sweep the gate demands
     ./upload.py <slug> dry        every item, exits nonzero if any refuses
@@ -29,11 +29,11 @@ A mission slug is hyphenated, so the module component needs French quotes:
     ./upload.py <slug> finish     read-backs, then milestones
     ./upload.py <slug> order      set item_order and the goal
 
-Run `dry` and see exit 0 before `propose`, every time. `submit`, `explain`, and `field-new` still require a human at a terminal, because each writes to something a later delete cannot undo.
+Get exit 0 from `dry` before every `propose`. The client's `submit`, `explain`, and `field-new` commands can't be undone, so they prompt a human at the terminal.
 
 ## Status
 
-All four missions are complete on the platform. The figures below were read on 2026-10-09; re-read them with `p2m proposal <id>`.
+We read these platform figures on 2026-10-09. `p2m proposal <id>` refreshes them.
 
 | Mission | Items | Platform status | Proved | Proposal id |
 |---|---|---|---|---|
@@ -42,10 +42,8 @@ All four missions are complete on the platform. The figures below were read on 2
 | `sidon-sqrt-n` | 17 theorems | Reviewed | 17 | `75753f60-2f7d-4a4a-b4e8-ea67c9106112` |
 | `konyagin-unit-vectors` | 2 theorems | Reviewed | 2 | `591a6c72-bbae-444d-8ddb-e4b16a94e039` |
 
-`konyagin-unit-vectors` was approved on 2026-09-27 after one requested change.
+Other contributors proved every item of [`shao-three-units`](https://prove2.me/missions/Shao's_three_units_theorem%3A_density_5%2F8_forces_a_three-fold_additive_basis), [`z2n-five-eighths`](https://prove2.me/missions/Long-Wagner_Conjecture_5.1%3A_cube-free_subsets_of_Z%2F2%5EnZ_have_density_at_most_5%2F8), [`sidon-sqrt-n`](https://prove2.me/missions/The_Komlos-Sulyok-Szemeredi_bound%3A_every_finite_set_of_reals_has_a_Sidon_subset_of_size_c_sqrt_n), and [`konyagin-unit-vectors`](https://prove2.me/missions/Lovasz_Problem_11.8%3A_triangle-free_unit_vector_systems_sum_to_Theta(n%5E(2%2F3))). We submitted none of these proofs. Our own proofs in `shao-three-units/Development/` still build without a sorry.
 
-Other contributors proved every item of [`shao-three-units`](https://prove2.me/missions/Shao's_three_units_theorem%3A_density_5%2F8_forces_a_three-fold_additive_basis), [`z2n-five-eighths`](https://prove2.me/missions/Long-Wagner_Conjecture_5.1%3A_cube-free_subsets_of_Z%2F2%5EnZ_have_density_at_most_5%2F8), [`sidon-sqrt-n`](https://prove2.me/missions/The_Komlos-Sulyok-Szemeredi_bound%3A_every_finite_set_of_reals_has_a_Sidon_subset_of_size_c_sqrt_n), and [`konyagin-unit-vectors`](https://prove2.me/missions/Lovasz_Problem_11.8%3A_triangle-free_unit_vector_systems_sum_to_Theta(n%5E(2%2F3))) on the platform. Every accepted proof came from someone else: our ledger lists zero submissions to any of the four. That is the platform's report, never a verdict here. The finished proofs in `shao-three-units/Development/` still audit clean locally, and no item now needs them.
+`z2n-five-eighths/Research/` holds the SAT reproduction of `f(7) = 80`, three referee reports, and the solver script. Its UNSAT half lacks a certificate.
 
-`z2n-five-eighths/Research/` holds the SAT reproduction of `f(7) = 80`, its three referee reports, and the instrument that produced it. The UNSAT half is still uncertified, and the mission rests on neither half.
-
-`prose.md` in each directory is generated by `extract-prose.py` so that `llm_tics.py --repo` can lint prose inside json. Regenerate after editing any json, and run `./extract-prose.py --check` to catch drift.
+`extract-prose.py` copies the json prose into each `prose.md` so a linter can read it. Rerun it after editing json, then run `./extract-prose.py --check`.

@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
-"""Write the prose held inside each mission's json out as `prose.md`, for the linter.
+"""Write the prose in each mission's json out as `prose.md`, so a prose linter can check it.
 
-Mission descriptions, theorem titles, and natural language statements are public
-prose inside json string literals, invisible to `llm_tics.py --repo`. This
-script extracts them so the linter can reach them.
-
-The linter cannot read json directly because the schema knowledge (which keys
-are prose) belongs here, and `--check` catches staleness.
-
-    ./extract-prose.py            rewrite every prose.md
-    ./extract-prose.py --check    exit 1 if any is stale
+Run bare to rewrite every prose.md, or with `--check` to exit 1 if any is stale.
 """
 
 import json
