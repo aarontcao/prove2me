@@ -17,7 +17,7 @@ Join $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$, and call this the non-ort
 
 ## Why one milestone
 
-Mathlib doesn't have the Lovasz theta function yet, so we can't split the upper bound into milestones. The one milestone is Alon's lower bound. It needs an explicit Ramsey graph and an orthonormal labeling of that graph, but not $\theta$.
+Mathlib doesn't have the Lovasz theta function yet, so we can't split the upper bound into milestones. The one milestone is Alon's lower bound, because its statement doesn't mention $\theta$. His proof still uses $\theta$, to get an orthonormal labeling of an explicit Ramsey graph.
 
 ## Formalization
 
@@ -37,7 +37,7 @@ Let $u_1, \dots, u_n$ be unit vectors in a Euclidean space such that among any t
 
 The hypothesis says the non-orthogonality graph, joining $i$ to $j$ when $\langle u_i, u_j \rangle \ne 0$, is triangle-free (`SimpleGraph.CliqueFree 3` in Mathlib). We quantify $C$ before the dimension and $n$, so it depends on neither.
 
-## Alon's lower bound, the half that avoids the theta function
+## Alon's lower bound, the half we can state without the theta function
 
 
-Exhibit, for every $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from explicit Ramsey graphs and orthonormal labelings, without the Lovasz theta function.
+Exhibit, for every $n$, a system of $n$ unit vectors whose non-orthogonality graph is triangle-free and whose sum has norm at least $cn^{2/3}$. Alon builds it from an explicit Ramsey graph and an orthonormal labeling. He gets the labeling from the definition of $\theta$.

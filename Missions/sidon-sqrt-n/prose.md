@@ -154,7 +154,7 @@ Only this direction is ever needed, so the embedding preserves the relation and 
 
 For $A$ and $B$ inside $\mathbb{Z}/m\mathbb{Z}$, some translate $B + i$ meets $A$ in at least $|A||B|/m$ points, by double counting over all $m$ translates.
 
-This replaces the published proof's covering of $\mathbb{Z}/(q^2+q+1)\mathbb{Z}$ by $q+1$ Sidon sets. A Sidon set of size about $\sqrt{m}$ meets a set of size $s$ in about $s/\sqrt{m}$ points, the same order. Singer's constant $1/(3\sqrt{3})$ is better, but the goal only needs some $c > 0$.
+This replaces the published proof's covering of $\mathbb{Z}/(q^2+q+1)\mathbb{Z}$ by $q+1$ Sidon sets. A Sidon set of size about $\sqrt{m}$ meets a set of size $s$ in about $s/\sqrt{m}$ points, the same order. The published constant $1/(3\sqrt{3})$ is better, but the goal only needs some $c > 0$.
 
 ## Milestone A1: a maximum Sidon subset exists
 

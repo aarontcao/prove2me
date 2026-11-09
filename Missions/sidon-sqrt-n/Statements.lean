@@ -97,8 +97,10 @@ theorem sidon_transfer (X : Finset ℝ) (φ : ℝ → ℤ) (hinj : Set.InjOn φ 
 
 `A` reduces to `B` when every Sidon subset of `B` is matched by a Sidon subset
 of `A` at least as large. A lower bound for `B` then transfers back to `A`. We
-skip Lemma 1 (no proof in the paper), Lemmas 2 and 6 (our statements were
-false), and Lemma 7 (not needed for Sidon sets).
+skip Lemma 1 (the paper states it without proof). The chain uses Erdos's
+weaker Lemma 1' instead, and the 2026 route doesn't need it. We also skip
+Lemmas 2 and 6 (our statements were false) and Lemma 7 (not needed for Sidon
+sets).
 -/
 
 /-- Milestone `D0`, Remark 3: small remainders mod `q` are a Freiman 2-homomorphism. -/

@@ -976,7 +976,7 @@ private theorem l22_core {m x0 y0 z0 xm ym zm X1 Y1 Z1 : ℝ} (hm : 5 ≤ m)
     ((x0+xm) * (y0+ym) + (y0+ym) * (z0+zm) + (z0+zm) * (x0+xm))
       + (X1 * Y1 + Y1 * Z1 + Z1 * X1) - (xm * ym + ym * zm + zm * xm) ≤ 3 * m ^ 2 + 9 := by
   by_cases hc1 : (x0+xm) + (y0+ym) < 0 ∨ (y0+ym) + (z0+zm) < 0 ∨ (z0+zm) + (x0+xm) < 0
-  · -- some pair sum of `r, s, t` is negative: `U ≤ 12`, and (8) finishes with no slack
+  · -- some pair sum of `r, s, t` is negative: `U ≤ 12`, and (8) finishes without slack
     have hU := l22_U_le_12 (r := x0+xm) (s := y0+ym) (t := z0+zm)
       (by linarith) (by linarith) (by linarith) (by linarith) (by linarith)
       (by linarith) hc1
