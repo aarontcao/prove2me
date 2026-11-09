@@ -28,7 +28,7 @@ We write $|A| > \frac{5}{8}\varphi(m)$ as `5 * Nat.totient m < 8 * A.card`, whic
 ## Shao's Lemma 2.2: the asymmetric averaging inequality
 
 
-Let $n \ge 10$ be even, and let $a$, $b$, $c$ be decreasing sequences of $n$ reals in $[0,1]$ with averages $A$, $B$, and $C$. Suppose every triple of indices $i, j, k$ with $i + j + k \ge n$ has
+Let $n \ge 10$ be even, and let $a$, $b$, $c$ be decreasing sequences of $n$ reals in $[0,1]$ with averages $A$, $B$, and $C$. Suppose every triple of indices $i, j, k$ in $\{0, \dots, n-1\}$ with $i + j + k \ge n$ has
 
 $$a_i b_j + b_j c_k + c_k a_i \le \tfrac{5}{8}(a_i + b_j + c_k).$$
 
